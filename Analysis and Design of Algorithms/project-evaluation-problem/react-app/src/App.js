@@ -10,11 +10,38 @@ class App extends Component {
 
   addExpert = expert => {
     const { experts } = this.state
+    if (!expert.getName()) {
+      const message = 'Please enter a name.'
+      const err = 'danger'
+      this.setState({ message, err })
+      return
+    } else if (!expert.getArea()) {
+      const message = 'Please choose an area of expertise.'
+      const err = 'danger'
+      this.setState({ message, err })
+    } else if (!expert.getCapacity()) {
+      const message = `Please choose your expert's capacity.`
+      const err = 'danger'
+      this.setState({ message, err })
+    }
+
     this.setState({ experts: [...experts, expert] })
   }
 
   addProject = project => {
     const { projects } = this.state
+
+    if (!project.getName()) {
+      const message = 'Please enter a project name.'
+      const err = 'danger'
+      this.setState({ message, err })
+      return
+    } else if (!project.getArea()) {
+      const message = 'Please choose an expertise area for your project.'
+      const err = 'danger'
+      this.setState({ message, err })
+    }
+
     this.setState({ projects: [...projects, project] })
   }
 
@@ -23,7 +50,7 @@ class App extends Component {
     const { message, err } = this.state
     return (
       <Container>
-        <Row>
+        <Row className="mt-2">
           <Col>
             <Alert color={err}>{message}</Alert>
           </Col>

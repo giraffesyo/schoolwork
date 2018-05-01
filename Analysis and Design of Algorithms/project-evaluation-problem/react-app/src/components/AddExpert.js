@@ -14,7 +14,7 @@ import {
 import { expert } from 'util/expert'
 
 class AddExpert extends React.PureComponent {
-  state = { name: '', area: -1, capacity: 0 }
+  state = { name: '', area: '', capacity: 0 }
 
   handleNameChange = e => {
     const name = e.target.value
@@ -68,7 +68,7 @@ class AddExpert extends React.PureComponent {
                     id="area"
                     type="select"
                   >
-                    <option value="-1" disabled hidden>
+                    <option value="" disabled hidden>
                       Please select Expert's area
                     </option>
                     <option value="0">Education</option>
