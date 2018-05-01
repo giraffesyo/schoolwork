@@ -23,9 +23,11 @@ class App extends Component {
       const message = `Please choose your expert's capacity.`
       const err = 'danger'
       this.setState({ message, err })
+    } else {
+      const message = `Successfully added ${expert.name}.`
+      const err = 'success'
+      this.setState({ experts: [...experts, expert], err, message })
     }
-
-    this.setState({ experts: [...experts, expert] })
   }
 
   addProject = project => {
@@ -40,9 +42,11 @@ class App extends Component {
       const message = 'Please choose an expertise area for your project.'
       const err = 'danger'
       this.setState({ message, err })
+    } else {
+      const message = `Successfully added the project: ${project.name}.`
+      const err = 'success'
+      this.setState({ projects: [...projects, project], err, message})
     }
-
-    this.setState({ projects: [...projects, project] })
   }
 
   render() {
