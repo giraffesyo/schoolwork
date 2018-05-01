@@ -1,13 +1,13 @@
 class Project {
   /*
   Areas:
-  1: education
-  2: health
-  3: natural resources
-  4: transportation
-  5: traveling
-  6: design
-  7: technology
+  0: education
+  1: health
+  2: natural resources
+  3: transportation
+  4: traveling
+  5: design
+  6: technology
   */
 
   constructor(area) {
@@ -17,25 +17,25 @@ class Project {
   getAreaName() {
     const area = this.area
     switch (area) {
-      case 1:
+      case 0:
         return 'education'
         break
-      case 2:
+      case 1:
         return 'health'
         break
-      case 3:
+      case 2:
         return 'natural resources'
         break
-      case 4:
+      case 3:
         return 'transportation'
         break
-      case 5:
+      case 4:
         return 'traveling'
         break
-      case 6:
+      case 5:
         return 'design'
         break
-      case 7:
+      case 6:
         return 'technology'
         break
     }
@@ -80,8 +80,16 @@ class Expert {
     return previousArea
   }
 
+  getAvailableCapacity() {
+    return this.getCapacity() - this.getProjects().length
+  }
+
   getCapacity() {
     return this.capacity
+  }
+
+  getAssignedCount() {
+    return this.getCapacity() - this.getAvailableCapacity()
   }
 
   setCapacity(capacity) {
@@ -93,33 +101,94 @@ class Expert {
   getAreaName() {
     const area = this.area
     switch (area) {
-      case 1:
+      case 0:
         return 'education'
         break
-      case 2:
+      case 1:
         return 'health'
         break
-      case 3:
+      case 2:
         return 'natural resources'
         break
-      case 4:
+      case 3:
         return 'transportation'
         break
-      case 5:
+      case 4:
         return 'traveling'
         break
-      case 6:
+      case 5:
         return 'design'
         break
-      case 7:
+      case 6:
         return 'technology'
         break
     }
   }
 }
 
-const Cline = new Expert(7, 2)
-const VideoGame = new Project(7)
-const MobileApp = new Project(7)
-const VacationPlan = new Project(5)
+Experts = [
+  [new Expert(0, 1)],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [new Expert(6, 2), new Expert(6, 10), new Expert(6, 3)],
+]
+Projects = [
+  new Project(6),
+  new Project(6),
+  new Project(6),
+  new Project(1),
+  new Project(3),
+]
 
+function distributeProject(project) {
+  const area = project.area
+  const currentExperts = Experts[area]
+
+  //Start at negative one and change if we find a candidate
+  let candidate = -1
+  //How many projects they have assigned divided by the capacity
+  let currentCandidateScore = 1
+
+  for (let i = 0; i < currentExperts.length; i++) {
+    const totalCapacity = currentExperts[i].getCapacity()
+    const availableCapacity = currentExperts[i].getAvailableCapacity()
+    const assignedCount = currentExperts[i].getAssignedCount()
+    //Continue if this expert already has maximum capacity
+    if (availableCapacity === 0) continue
+    //If they have no projects at all, they automatically receive the work
+    if (assignedCount === 0) {
+      candidate = i
+      break
+    } else {
+      //At this point we know they have capacity and have at least one job already
+      let ratioUnit = 1 / totalCapacity //.1 if you have capacity of 10
+      let ratio = assignedCount * ratioUnit //.2 if you have 2
+      let newRatio = ratio + ratioUnit //.3 following above two examples
+      //if we have a smaller ratio then this is our new candidate
+      if (newRatio < currentCandidateScore) {
+        currentCandidateScore = newRatio
+        candidate = i
+      }
+    }
+  }
+
+  //If we found a candidate, they are assigned the work
+  if (candidate != -1) Experts[area][candidate].addProject(project)
+  else throw 'no candidate found for project'
+}
+/*
+distributeProject(new Project(6))
+distributeProject(new Project(6))
+distributeProject(new Project(6))
+distributeProject(new Project(6))
+
+console.log(Experts)
+*/
+/*
+const Cline = new Expert(7,2)
+const TechP = new Project(7)
+Cline.addProject(TechP)
+console.log(Cline.getAvailableCapacity())*/
