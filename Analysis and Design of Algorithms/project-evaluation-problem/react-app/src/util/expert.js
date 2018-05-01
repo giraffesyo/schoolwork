@@ -9,8 +9,8 @@ class expert {
   addProject(project) {
     if (this.projects.length < this.capacity)
       if (project.area === this.area) this.projects.push(project)
-      else throw 'Unsupported project, user is not skilled in that area'
-    else throw 'This user is over capacity'
+      else throw new Error('Unsupported project, user is not skilled in that area')
+    else throw new Error('This user is over capacity')
   }
 
   getProjects() {
@@ -73,7 +73,7 @@ class expert {
       case 6:
         return 'technology'
       default:
-        throw 'Incorrect area provided'
+        throw new Error('Incorrect area provided')
     }
   }
 }
