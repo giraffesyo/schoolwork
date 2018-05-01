@@ -35,7 +35,6 @@ class AddProject extends React.PureComponent {
       <Card className="addCard">
         <CardBody>
           <CardTitle>Add Project</CardTitle>
-
           <Form>
             <FormGroup>
               <Row>
@@ -43,7 +42,12 @@ class AddProject extends React.PureComponent {
                   <Label for="name">Name: </Label>
                 </Col>
                 <Col>
-                  <Input id="name" placeholder="Expert's Name" />
+                  <Input
+                    value={name}
+                    onChange={handleNameChange}
+                    id="name"
+                    placeholder="Expert's Name"
+                  />
                 </Col>
               </Row>
             </FormGroup>
@@ -53,7 +57,12 @@ class AddProject extends React.PureComponent {
                   <Label for="area">Area: </Label>
                 </Col>
                 <Col>
-                  <Input id="area" type="select">
+                  <Input
+                    value={area}
+                    onChange={handleAreaChange}
+                    id="area"
+                    type="select"
+                  >
                     <option value="0">Education</option>
                     <option value="1">Health</option>
                     <option value="2">Natural Resources</option>
