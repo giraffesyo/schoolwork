@@ -46,7 +46,7 @@ class AddProject extends React.PureComponent {
                     value={name}
                     onChange={handleNameChange}
                     id="name"
-                    placeholder="Expert's Name"
+                    placeholder="Project Name"
                   />
                 </Col>
               </Row>
@@ -79,7 +79,7 @@ class AddProject extends React.PureComponent {
               style={{ float: 'right' }}
               color="success"
             >
-              Add Expert
+              Add Project
             </Button>
           </Form>
         </CardBody>

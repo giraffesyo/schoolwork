@@ -91,6 +91,7 @@ class AddExpert extends React.PureComponent {
                   <Input
                     id="capacity"
                     type="number"
+                    min="0"
                     onChange={handleCapacityChange}
                     value={capacity}
                   />

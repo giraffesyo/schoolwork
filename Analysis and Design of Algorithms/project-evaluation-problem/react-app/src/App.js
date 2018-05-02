@@ -23,6 +23,10 @@ class App extends Component {
       const message = `Please choose your expert's capacity.`
       const err = 'danger'
       this.setState({ message, err })
+    } else if (expert.getCapacity() < 0) {
+      const message = `Capacity cannot be negative, choose zero instead.`
+      const err = 'danger'
+      this.setState({ message, err })
     } else {
       const message = `Successfully added ${expert.name}.`
       const err = 'success'
@@ -45,7 +49,7 @@ class App extends Component {
     } else {
       const message = `Successfully added the project: ${project.name}.`
       const err = 'success'
-      this.setState({ projects: [...projects, project], err, message})
+      this.setState({ projects: [...projects, project], err, message })
     }
   }
 
