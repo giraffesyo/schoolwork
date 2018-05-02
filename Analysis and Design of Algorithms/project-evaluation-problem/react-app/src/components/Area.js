@@ -8,11 +8,11 @@ class Area extends React.PureComponent {
     ///console.log(`Area is: ${experts[0].getArea()}` )
     //experts[0].addProject(new project('Codecademy', 6))
     //experts[0].addProject(new project('Codecademy', 6))
-    const { experts } = this.props
+    const { experts, area } = this.props
     return (
       <Card>
         <CardBody>
-          <h4>Education</h4>
+          <h4>{area}</h4>
           <Row>
             {experts.map((expert, i) => (
               <Col key={`expert-${i}`} md={3}>
