@@ -19,7 +19,7 @@ class Expert extends React.PureComponent {
             <Col>
               <h5>{name}</h5>
             </Col>
-            <Col xs={3}>
+            <Col md={4}>
               {projects.length}/{expert.capacity}
             </Col>
           </Row>
