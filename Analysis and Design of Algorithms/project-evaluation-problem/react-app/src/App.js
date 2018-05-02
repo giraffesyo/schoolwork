@@ -3,6 +3,7 @@ import { Container, Row, Col, Alert } from 'reactstrap'
 
 import { AddExpert } from 'components/AddExpert'
 import { AddProject } from 'components/AddProject'
+import { Area } from 'components/Area'
 import 'App.css'
 
 class App extends Component {
@@ -71,6 +72,7 @@ class App extends Component {
             <AddProject addProject={addProject} />
           </Col>
         </Row>
+        <Row className='mt-2'><Col><Area /></Col></Row>
       </Container>
     )
   }

@@ -7,11 +7,14 @@ class expert {
   }
 
   addProject(project) {
-    if (this.projects.length < this.capacity)
-      if (project.area === this.area) this.projects.push(project)
-      else
+    if (this.projects.length < this.capacity) {
+      console.log(project.getArea())
+      if (project.getArea() === this.area) {
+        this.projects.push(project)
+      } else {
         throw new Error('Unsupported project, user is not skilled in that area')
-    else throw new Error('This user is over capacity')
+      }
+    } else throw new Error('This user is over capacity')
   }
 
   getProjects() {
