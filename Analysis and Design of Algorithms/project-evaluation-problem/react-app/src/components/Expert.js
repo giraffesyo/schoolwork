@@ -1,13 +1,6 @@
 import React from 'react'
 import { Card, CardBody, CardTitle, CardText, Row, Col } from 'reactstrap'
 
-/*
-    this.area = area //area of expertise
-    this.capacity = capacity //number of projects expert can do
-    this.projects = []
-    this.name = name
-*/
-
 class Expert extends React.PureComponent {
   render() {
     const { expert } = this.props

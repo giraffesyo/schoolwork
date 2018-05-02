@@ -4,7 +4,6 @@ import { Container, Row, Col, Alert } from 'reactstrap'
 import { AddExpert } from 'components/AddExpert'
 import { AddProject } from 'components/AddProject'
 import { Area } from 'components/Area'
-import 'App.css'
 
 class App extends Component {
   state = {
