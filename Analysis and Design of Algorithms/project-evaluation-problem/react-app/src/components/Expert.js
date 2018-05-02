@@ -20,14 +20,14 @@ class Expert extends React.PureComponent {
               <h5>{name}</h5>
             </Col>
             <Col xs={3}>
-              {expert.getAssignedCount()}/{expert.getCapacity()}
+              {projects.length}/{expert.capacity}
             </Col>
           </Row>
           <Row>
             <Col>
               <ul>
                 {projects.map((project, i) => (
-                  <li key={`project-${i}`}>{project.getName()}</li>
+                  <li key={`project-${i}`}>{project.name}</li>
                 ))}
               </ul>
             </Col>

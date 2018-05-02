@@ -11,6 +11,7 @@ class expert {
       console.log(project.getArea())
       if (project.getArea() === this.area) {
         this.projects.push(project)
+        
       } else {
         throw new Error('Unsupported project, user is not skilled in that area')
       }

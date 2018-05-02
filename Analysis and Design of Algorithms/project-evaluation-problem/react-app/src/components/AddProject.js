@@ -63,6 +63,9 @@ class AddProject extends React.PureComponent {
                     id="area"
                     type="select"
                   >
+                    <option value="" disabled hidden>
+                      Please select an area
+                    </option>
                     <option value="0">Education</option>
                     <option value="1">Health</option>
                     <option value="2">Natural Resources</option>

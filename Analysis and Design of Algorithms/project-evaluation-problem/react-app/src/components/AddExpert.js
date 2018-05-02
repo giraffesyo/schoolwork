@@ -14,7 +14,7 @@ import {
 import { expert } from 'util/expert'
 
 class AddExpert extends React.PureComponent {
-  state = { name: '', area: '', capacity: 0 }
+  state = { name: '', area: '', capacity: 1 }
 
   handleNameChange = e => {
     const name = e.target.value

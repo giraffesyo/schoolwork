@@ -44,22 +44,87 @@ class App extends Component {
   }
 
   addProject = project => {
-    const { projects } = this.state
+    const { experts } = this.state
+    const area = project.getArea()
 
     if (!project.getName()) {
       const message = 'Please enter a project name.'
       const err = 'danger'
       this.setState({ message, err })
       return
-    } else if (!project.getArea()) {
+    } else if (area === '') {
       const message = 'Please choose an expertise area for your project.'
       const err = 'danger'
       this.setState({ message, err })
+    } else if (experts[area].length === 0) {
+      const message = 'Please add an expert first.'
+      const err = 'danger'
+      this.setState({ message, err })
     } else {
-      const message = `Successfully added the project: ${project.name}.`
-      const err = 'success'
-      this.setState({ projects: [...projects, project], err, message })
+      this.distributeProject(project)
     }
+  }
+
+  distributeProject(project) {
+    const area = project.area
+    const { experts } = this.state
+    const currentExperts = experts[area]
+
+    //Start at negative one and change if we find a candidate
+    let candidate = -1
+    //How many projects they have assigned divided by the capacity
+    let currentCandidateScore = 1
+
+    for (let i = 0; i < currentExperts.length; i++) {
+      const totalCapacity = currentExperts[i].capacity
+      const assignedCount = currentExperts[i].projects.length
+      const availableCapacity = totalCapacity - assignedCount
+      //Continue if this expert already has maximum capacity
+      if (availableCapacity === 0) continue
+      //If they have no projects at all, they automatically receive the work
+      if (assignedCount === 0) {
+        candidate = i
+        break
+      } else {
+        //At this point we know they have capacity and have at least one job already
+        let ratioUnit = 1 / totalCapacity //.1 if you have capacity of 10
+        let ratio = assignedCount * ratioUnit //.2 if you have 2
+        let newRatio = ratio + ratioUnit //.3 following above two examples
+        //if we have a smaller ratio then this is our new candidate
+        if (newRatio <= currentCandidateScore) {
+          currentCandidateScore = newRatio
+          candidate = i
+        }
+      }
+    }
+
+    //If we found a candidate, they are assigned the work
+    if (candidate !== -1) {
+      const newExperts = [
+        ...experts.slice(0, area),
+        [
+          ...experts[area].slice(0, candidate),
+          {
+            ...experts[area][candidate],
+            projects: [...experts[area][candidate].projects, project],
+          },
+          ...experts[area].slice(candidate + 1),
+        ],
+        ...experts.slice(area + 1),
+      ]
+      console.log(newExperts)
+      this.setState({
+        experts: newExperts,
+        err: 'success',
+        message: `Project successfully distributed to ${experts[area][
+          candidate
+        ].name}.`,
+      })
+    } else
+      this.setState({
+        err: 'warning',
+        message: 'No candidate found for this project',
+      })
   }
 
   render() {
