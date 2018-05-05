@@ -179,14 +179,15 @@ function distributeProject(project) {
   if (candidate != -1) Experts[area][candidate].addProject(project)
   else throw 'no candidate found for project'
 }
-/*
 distributeProject(new Project(6))
 distributeProject(new Project(6))
 distributeProject(new Project(6))
 distributeProject(new Project(6))
 
 console.log(Experts)
-*/
+console.log(Experts[6][0])
+console.log(Experts[6][1])
+console.log(Experts[6][2])
 /*
 const Cline = new Expert(7,2)
 const TechP = new Project(7)
