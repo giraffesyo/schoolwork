@@ -2,7 +2,6 @@
 //  T01_Blue
 
 import UIKit
-import AVFoundation
 
 class GameController : UIViewController, UITextFieldDelegate {
     // Outlets
@@ -17,11 +16,12 @@ class GameController : UIViewController, UITextFieldDelegate {
     @IBOutlet var BoxesStackView: UIStackView!
     @IBOutlet var SolutionTextField: UITextField!
     @IBOutlet var PlayAgainButton: UIButton!
-    var audioPlayer: AVAudioPlayer! //add audio player
-    
+    @IBOutlet weak var Hint: UILabel!
+
     //class variables
     let points:[Int] = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 30, 30, 30, 30, 30, 40, 40, 40, 50, 50, 50, 100, 100, 250, 500]
-    let words: [String] = ["Banana","Busy","Laptop", "Catdog", "Catnip", "Pizza", "Monster", "Energy", "Macbook", "iPhone", "Park", "Family", "Join", "About", "Visit", "Class", "Heater", "Mouse", "Debut", "Donkey", "Printer", "Glasses", "Bottle", "Hoodie", "Shoes", "Socks", "Pajamas", "Pillow", "Sleep", "Soccer", "github", "steam", "apple","swift","java", "android", "linux", "alarm", "paper", "string", "drink", "puzzle", "cable", "tires", "rotor", "motor", "machine", "kellogs", "general"]
+    let words: [String] = ["Banana", "Busy", "Laptop", "Catdog", "Catnip", "Pizza", "Monster", "Energy", "Macbook", "iPhone", "Park", "Family", "Join", "About", "Visit", "Class", "Heater", "Mouse", "Debut", "Donkey", "Printer", "Glass", "Bottle", "Hoodie", "Shoes", "Socks", "Pajamas", "Pillow", "Sleep", "Soccer", "github", "steam", "apple", "swift", "java", "android", "linux", "alarm", "paper", "string", "drink", "puzzle", "cable", "tires", "rotor", "motor", "machine", "kellogs", "general"]
+    let hints: [String] = ["Fruit", "Workload", "Portable technology", "Animated cartoon show", "Herb", "Food", "Scary", "RedBull", "Computer", "Phone", "Play", "Joint or nuclear", "Connection", "Near", "Meet", "School", "Hot", "Computer Hardware", "Launch", "Animal", "Hard Copy", "Fragile", "Water", "Clothes", "Footwear", "Footwear", "Clothes", "Bed", "Bed", "Game", "Software development platform", "Hot", "Fruit", "Language", "Language", "Phone", "Operating system", "Wake-up", "Pen-pencil", "Sentences", "Water", "Game", "Wire", "Car", "Palindrome", "Machine", "Saves time", "Breakfast", "Common"]
     var animatedLever: UIImage = #imageLiteral(resourceName: "frame_00_delay-2s")
     var chosenWord: String = ""
     var boxes: [LetterBox] = []
@@ -29,31 +29,13 @@ class GameController : UIViewController, UITextFieldDelegate {
     var currentPointValue: Int = 0
     var guessesReamining: Int = 0
     var score = 0
-    
-    //create array of images to animate the lever
-    let LeverImages = [#imageLiteral(resourceName: "frame_00_delay-2s"),#imageLiteral(resourceName: "frame_01_delay-0.05s"),#imageLiteral(resourceName: "frame_02_delay-0.04s"),#imageLiteral(resourceName: "frame_03_delay-0.03s"),#imageLiteral(resourceName: "frame_04_delay-0.02s"),#imageLiteral(resourceName: "frame_05_delay-0.02s"),#imageLiteral(resourceName: "frame_06_delay-0.02s"),#imageLiteral(resourceName: "frame_07_delay-0.02s"),#imageLiteral(resourceName: "frame_08_delay-0.02s")]
+    var index = 0
     
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let audioSourceURL = Bundle.main.url(forResource: "wheelsound2", withExtension: "wav")
-            else {
-                print("can not find audio")
-                return
-        }
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: audioSourceURL)
-            
-            //buffer the audio so that it wont pause
-            audioPlayer.prepareToPlay()
-        } catch {
-            print("no audio")
-            print("error")
-        }
-
-        
         SolutionTextField.delegate = self
         self.newGame()
     }
@@ -65,6 +47,7 @@ class GameController : UIViewController, UITextFieldDelegate {
     
     func decrementRevealsReamining() {
         self.setRevealsRemaining(amount: self.revealsRemaining - 1)
+        self.showHint(amount: self.revealsRemaining, index: index)
     }
     
     func setScore(amount: Int) {
@@ -74,6 +57,18 @@ class GameController : UIViewController, UITextFieldDelegate {
     
     func incrementScore(by: Int) {
         setScore(amount: self.score + by)
+    }
+    
+    func showHint(amount: Int, index: Int){
+        print("func showHint() 1")
+        if amount < 2
+        {
+            self.Hint.isHidden = false
+            self.Hint.text = "Hint: \(hints[index])"
+            print ("Hint.text: \(Hint.text!)")
+        }
+        print("func showHint() 2")
+
     }
     
     // Called whenever the lever is pressed, starting off the process of randomly getting a point value, and then choosing a letter
@@ -87,14 +82,13 @@ class GameController : UIViewController, UITextFieldDelegate {
         //show the reveals remaining label
         RevealsRemainingLabel.isHidden = false
         
+        //create array of images to animate
+        let LeverImages = [#imageLiteral(resourceName: "frame_00_delay-2s"),#imageLiteral(resourceName: "frame_01_delay-0.05s"),#imageLiteral(resourceName: "frame_02_delay-0.04s"),#imageLiteral(resourceName: "frame_03_delay-0.03s"),#imageLiteral(resourceName: "frame_04_delay-0.02s"),#imageLiteral(resourceName: "frame_05_delay-0.02s"),#imageLiteral(resourceName: "frame_06_delay-0.02s"),#imageLiteral(resourceName: "frame_07_delay-0.02s"),#imageLiteral(resourceName: "frame_08_delay-0.02s")]
         if let leverImageView = leverButton.imageView {
             leverImageView.animationImages = LeverImages
             leverImageView.animationDuration = 1
             leverImageView.animationRepeatCount = 0
             leverImageView.startAnimating()
-            self.audioPlayer.play()
-    
-            
         } else {
             //couldnt unwrap we'll just proceed with text
             leverButton.titleLabel!.text = "Pull this!"
@@ -102,31 +96,33 @@ class GameController : UIViewController, UITextFieldDelegate {
         animatedLever = UIImage.animatedImage(with: LeverImages, duration: 1)!
         //start the animation
         
-        //get a random value that will be awarded if they get it right
-        currentPointValue = points.randomElement()!
-        //animate the value changing a bunch
-        let wheelTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: {timer in
-            self.pointsDisplay.text =  String(self.points.randomElement()!)
-        })
         //hide lever 1 second after it's pulled, instead put a solve button
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { thistimer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: {timer in
             self.leverButton.isHidden = true
             self.solveButton.isHidden = false
             self.SolutionTextField.isHidden = false
             self.leverButton.imageView?.stopAnimating()
-            
-            
-            //invalidate wheel animation timer (changing numbers animation)
-            wheelTimer.invalidate()
-            //invalidate myself
-            thistimer.invalidate()
+            timer.invalidate()
+        })
+        //get a random value that will be awarded if they get it right
+        currentPointValue = points.randomElement()!
+        //animate the value changing a bunch
+        let timer1 = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: {timer in
+            self.pointsDisplay.text =  String(self.points.randomElement()!)
+        })
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { _ in
+            timer1.invalidate()
             // set point display to the real point value
             self.updatePointDisplay()
         })
         // if we change this to get an array from the internet we should do a
         // real nil check here
         //Chose a random word from the array of words
+        
         chosenWord = words.randomElement()!
+        index = words.index(of: chosenWord)!
+        //showHint(amount: 2, index: index)
+       
         // print the word in the debug console so we know what it is
         print(chosenWord)
         
@@ -159,6 +155,9 @@ class GameController : UIViewController, UITextFieldDelegate {
         if revealsRemaining > 0{
             revealLetters(letter: letterTapped)
             self.decrementRevealsReamining()
+            //self.showHint(amount: 2, index: index)
+            print ("showHint() done")
+
             self.updatePointDisplay()
         }
     }
@@ -228,6 +227,7 @@ class GameController : UIViewController, UITextFieldDelegate {
         //hide solve stuff
         self.SolutionTextField.isHidden = true
         self.solveButton.isHidden = true
+        self.Hint.isHidden = true
         //show the lever
         self.leverButton.isHidden = false
         //reset strikes to hidden
@@ -290,6 +290,8 @@ class GameController : UIViewController, UITextFieldDelegate {
         PlayAgainButton.isHidden = true
         //unhide lever
         leverButton.isHidden = false
+        //hide hint
+        Hint.isHidden = true
         // reset score and reveals remaining
         setRevealsRemaining(amount: 2)
         setScore(amount: 0)
