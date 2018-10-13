@@ -1,8 +1,14 @@
 import React from 'react'
+import { Nav } from '../blocks/Nav'
 
 class LoggedInHome extends React.PureComponent {
-
   render() {
-    return null
+    return (
+      <div>
+        <Nav />
+      </div>
+    )
   }
 }
+
+export { LoggedInHome }
