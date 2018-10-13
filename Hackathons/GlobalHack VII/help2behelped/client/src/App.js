@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { LoggedInHome } from './pages/LoggedInHome'
 
-class App extends Component {
+class App extends React.PureComponent {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route exact path="/home" component={LoggedInHome} />
           <Route exact path="/login" component={Login} />
