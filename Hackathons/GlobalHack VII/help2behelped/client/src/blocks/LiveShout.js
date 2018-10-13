@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gray, green } from '../colors'
+import { gray, green, purple } from '../colors'
 import { FaCaretUp } from 'react-icons/fa'
 
 const Box = styled.div`
@@ -20,10 +20,13 @@ const Distance = styled.div`
 `
 const Description = styled.div`
   font-size: 1rem;
-  padding-top: 0.5rem;
+  padding: 0.5rem 0;
   font-weight: 700;
   text-align: center;
   color: ${green};
+`
+const Purple = styled.span`
+  color: ${purple};
 `
 
 class LiveShout extends React.PureComponent {
@@ -34,7 +37,11 @@ class LiveShout extends React.PureComponent {
       <Box>
         <Distance>{distance} miles from you</Distance>
         <Description>
-          Someone received {received} for <FaCaretUp /> {price} points
+          Someone received {received} for{' '}
+          <Purple>
+            <FaCaretUp />
+            {price} favor points
+          </Purple>
         </Description>
       </Box>
     )
