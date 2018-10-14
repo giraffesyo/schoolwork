@@ -42,11 +42,25 @@ const ForgotPasswordButton = styled.button`
 `
 
 class Login extends React.PureComponent {
+  state = { username: '', password: '' }
+
+  handleChangeUsername = event => {
+    const username = event.target.value
+    this.setState({ username })
+  }
+  handleChangePassword = event => {
+    const password = event.target.value
+    this.setState({ password })
+  }
   handleSignUp = data => {
-    console.log(data)
+    const { username, password } = this.state
+    console.log(`username: ${username}`)
+    console.log(`password: ${password}`)
   }
   handleLogin = data => {
-    console.log(data)
+    const { username, password } = this.state
+    console.log(`username: ${username}`)
+    console.log(`password: ${password}`)
   }
 
   handleForgotPassword = data => {
@@ -55,16 +69,31 @@ class Login extends React.PureComponent {
   }
 
   render() {
-    const { handleSignUp, handleLogin, handleForgotPassword } = this
+    const {
+      handleSignUp,
+      handleLogin,
+      handleForgotPassword,
+      handleChangeUsername,
+      handleChangePassword,
+      state: { username, password }
+    } = this
     return (
       <CenteredDiv>
         <h1>Help 2 Be Helped</h1>
         <StyledLogin>
           <InputGroup>
-            <input placeholder="username" />
+            <input
+              onChange={handleChangeUsername}
+              value={username}
+              placeholder="username"
+            />
           </InputGroup>
           <InputGroup>
-            <input placeholder="password" />
+            <input
+              onChange={handleChangePassword}
+              value={password}
+              placeholder="password"
+            />
           </InputGroup>
           <RegisterButton onClick={handleSignUp}>Register</RegisterButton>
           <LoginButton onClick={handleLogin}>Login</LoginButton>
