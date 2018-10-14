@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {
   FaCog,
@@ -29,9 +30,11 @@ class Nav extends React.PureComponent {
   render() {
     return (
       <NavBar>
-        <Option>
-          <FaGlobeAmericas />
-        </Option>
+        <Link to="/home">
+          <Option>
+            <FaGlobeAmericas />
+          </Option>
+        </Link>
         <Option>
           <FaSearch />
         </Option>
