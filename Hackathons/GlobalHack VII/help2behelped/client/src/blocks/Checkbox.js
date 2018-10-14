@@ -5,8 +5,10 @@ import Color from 'color'
 
 const Box = styled.div`
   border-radius: 5px;
-  width: 15px;
-  height: 10px;
+  width: 25px;
+  height: 15px;
+  display: inline-block;
+  margin: 0.25rem;
 
   border: 1px solid
     ${Color(green)
@@ -20,11 +22,11 @@ const FilledGreenBox = styled(Box)`
 
 class Checkbox extends React.PureComponent {
   render() {
-    const { checked, onClick } = this.props
+    const { checked, onClick, name } = this.props
     return checked ? (
-      <FilledGreenBox onClick={onClick} />
+      <FilledGreenBox name={name} onClick={onClick} />
     ) : (
-      <Box onClick={onClick} />
+      <Box name={name} onClick={onClick} />
     )
   }
 }
