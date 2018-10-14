@@ -5,6 +5,8 @@ import { FaPencilAlt } from 'react-icons/fa'
 import { green } from '../colors'
 import { Checkbox } from '../blocks/Checkbox'
 import { SearchTopNav } from '../blocks/SearchTopNav'
+import localForage from 'localforage'
+import firebase from '../firebase'
 
 const SearchStyles = styled.div`
   overflow-x: hidden;
@@ -58,44 +60,99 @@ const SearchStyles = styled.div`
     margin-left: -25px;
   }
 
-  .containerDate
-   {
-     color: ${green};
-   }
+  .containerDate {
+    color: ${green};
+  }
+`
 
+const iniitialOptions = {
+  Babysitting: false,
+  Petcare: false,
+  Housekeeping: false,
+  Gardening: false,
+  Teaching: false,
+  Cooking: false,
+  Elderly: false
+}
+
+const Header = styled.h3`
+  display: inline-block;
+  color: ${green};
+  text-decoration: underline;
+  margin-top: 2rem;
 `
 
 const Label = styled.label`
-    color: ${green};
-    font-size: 1.2em;
+  color: ${green};
+  font-size: 1.2em;
+`
+
+const Input = styled.input`
+  border: 1px solid ${green};
+`
+
+const BigInput = styled.textarea`
+  margin-top: 1rem;
+  height: 60px;
+  border: 1px solid ${green};
 `
 
 class Offer extends React.PureComponent {
   state = {
     options: {
-      Babysitting: false,
-      Petcare: false,
-      Housekeeping: false,
-      Gardening: false,
-      Teaching: false,
-      Cooking: false,
-      Elderly: false
-    }
+      ...iniitialOptions
+    },
+    distance: 0,
+    task: null,
+    user: {}
+  }
+
+  async componentDidMount() {
+    const username = (await localForage.getItem('user')) || 'test'
+
+    const ref = await firebase
+      .database()
+      .ref('users')
+      .once('value')
+    const users = ref.val()
+    const user = users[username]
+    this.setState({ user, loaded: true, username })
   }
 
   handleChange = e => {
-    console.log(e)
-    console.log(e.target.getAttribute('name'))
     const key = e.target.getAttribute('name')
     this.setState({
-      options: { ...this.state.options, [key]: !this.state.options[key] }
+      task: key,
+      options: { ...iniitialOptions, [key]: !this.state.options[key] }
     })
+  }
+
+  handleChangeDescription = e => {
+    this.setState({ description: e.target.value })
+  }
+
+  handleSlide = e => {
+    const distance = e.target.value
+    this.setState({ distance })
+  }
+
+  makeOffer = async () => {
+    const username = this.state.user.username
+    const { task, description } = this.state
+    //dont do it if we dont have both task and username
+    console.log('here')
+    if (!task || !username || !description) return
+    const offersRef = firebase.database().ref('offers')
+    offersRef.push({ user: username, task, description })
   }
 
   render() {
     const {
+      handleSlide,
       handleChange,
-      state: { options }
+      handleChangeDescription,
+      state: { options, distance, description },
+      makeOffer
     } = this
     let Options = []
     for (let key in options) {
@@ -107,35 +164,39 @@ class Offer extends React.PureComponent {
       )
     }
     return (
-      <Layout TopNav={SearchTopNav}>
+      <Layout>
         <SearchStyles>
-            <div className="lookingText">I am offering ...</div>
-            <div className="distanceForm">
-              <form>
-                <div className="form-group">
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    step="0.01"
-                    className="form-control-range slider"
-                    id="formControlRange"
-                  />
-                </div>
-              </form>
-            </div>
-            <div className="milesText">5 miles away</div>
-          <div className="containerList">{Options}</div>
-              <div className="containerDate">
-                Available from
-                <div className="startDate">
-                <input type="date"/>
-                </div>
-                To
-                <div className="endDate">
-                <input type="date"/>
-                </div>
+          <div className="lookingText">I am offering ...</div>
+          <div className="distanceForm">
+            <form>
+              <div className="form-group">
+                <input
+                  onChange={handleSlide}
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value={distance}
+                  className="form-control-range slider"
+                  id="formControlRange"
+                />
               </div>
+            </form>
+          </div>
+          <div className="milesText">{distance} miles away</div>
+          <div className="containerList">{Options}</div>
+          <div className="containerDate row">
+            <div className="col-7">
+              <BigInput
+                onChange={handleChangeDescription}
+                value={description}
+                placeholder="Put a description about your offer!"
+              />
+            </div>
+            <div className="col-2">
+              <Header onClick={makeOffer}>Offer</Header>
+            </div>
+          </div>
         </SearchStyles>
       </Layout>
     )

@@ -24,11 +24,11 @@ const Purple = styled.span`
 
 class Posting extends React.PureComponent {
   render() {
-    const { user, action, skill, message } = this.props
+    const { user, skill, message } = this.props
     return (
       <Box>
         <Description>
-          {user} wants to {action} you{' '}
+          {user} wants to help you with{' '}
           <Purple>
             {skill} <br />
           </Purple>
