@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { green } from '../colors'
-import Color from 'color'
+import React from "react"
+import styled from "styled-components"
+import { Link } from "react-router-dom"
+import { green } from "../colors"
+import Color from "color"
 
 const NavBar = styled.nav`
-  background: ${green};
+  background: #bde3d3;
   display: flex;
   flex-flow: row;
   justify-content: space-around;
@@ -15,12 +15,13 @@ const NavBar = styled.nav`
   width: 100%;
   height: 80px;
   z-index: 1000;
+  border-bottom: solid 2px #60a184;
 `
 
 const Option = styled.div`
   flex-basis: 0.25;
-  color: white;
-  font-size: 2rem;
+  color: #60a083;
+  font-size: 1.2rem;
   padding: 0.25rem;
   text-decoration-color: ${Color(green)
     .darken(0.2)
