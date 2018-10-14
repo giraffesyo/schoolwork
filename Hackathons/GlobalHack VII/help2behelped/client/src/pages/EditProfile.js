@@ -4,8 +4,13 @@ import { ProfileTopNav } from '../blocks/ProfileTopNav'
 import {FaEdit}from 'react-icons/fa'
 import styled from 'styled-components'
 import { bold } from 'ansi-colors';
+import EmptyProfile from '../images/edit_pic.jpg'
 
 
+const Avatar = styled.img`
+  height: 100px;
+  width: 100px;
+`
 const StyleName = styled.div`
 font-size: medium;
 text-align: right;
@@ -26,12 +31,13 @@ class EditProfile extends React.PureComponent {
     return (
       <Layout TopNav={ProfileTopNav}>
         <div className="container">
+        <Avatar src={EmptyProfile} className="img-fluid"/>
           <div className="row">
             <div className="col">
               <StyleName>Giraffesyo <FaEdit /></StyleName>
             </div>
             <div ClassName="col">
-            <BioInfo>Hi! I'm a senior programmer at OSU and bla bla bla</BioInfo>
+            <BioInfo>Hi! I'm a senior programmer at OSU and bla bla bla </BioInfo> 
             </div>
           </div>
           <div className="row">
