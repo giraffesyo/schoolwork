@@ -1,15 +1,15 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import React from "react"
+import { Link } from "react-router-dom"
+import styled from "styled-components"
 import {
   FaCog,
   FaGlobeAmericas,
   FaSearch,
   FaHandHoldingHeart
-} from 'react-icons/fa'
+} from "react-icons/fa"
 
 const NavBar = styled.nav`
-  background: #323232;
+  background: #8ac4ab;
   display: flex;
   flex-flow: row;
   justify-content: space-around;
@@ -19,6 +19,7 @@ const NavBar = styled.nav`
   bottom: 0;
   width: 100%;
   z-index: 1000;
+  opacity: 0.9;
 `
 
 const Option = styled.div`
