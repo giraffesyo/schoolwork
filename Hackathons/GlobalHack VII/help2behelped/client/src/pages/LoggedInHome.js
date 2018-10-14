@@ -1,17 +1,13 @@
 import React from 'react'
-import { Nav } from '../blocks/Nav'
+import Layout from '../HOC/Layout'
 import { Shouts } from '../components/Shouts'
-
-
-
 
 class LoggedInHome extends React.PureComponent {
   render() {
     return (
-      <div>
-        <Nav />
+      <Layout>
         <Shouts />
-      </div>
+      </Layout>
     )
   }
 }
