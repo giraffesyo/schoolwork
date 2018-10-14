@@ -1,8 +1,13 @@
 import React from 'react'
 import { Nav } from '../blocks/Nav'
 import styled from 'styled-components'
+import '../overrides.css'
 
 const Translate = styled.div`
+  margin-right: 1rem;
+  img { 
+    display: none;
+  }
   text-align: right;
   & > div {
     color: transparent;
