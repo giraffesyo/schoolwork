@@ -7,6 +7,7 @@ import { Checkbox } from '../blocks/Checkbox'
 import { SearchTopNav } from '../blocks/SearchTopNav'
 import localForage from 'localforage'
 import firebase from '../firebase'
+import { Redirect } from 'react-router-dom'
 
 const SearchStyles = styled.div`
   overflow-x: hidden;
@@ -144,6 +145,7 @@ class Offer extends React.PureComponent {
     if (!task || !username || !description) return
     const offersRef = firebase.database().ref('offers')
     offersRef.push({ user: username, task, description })
+    this.setState({offered: true})
   }
 
   render() {
@@ -151,7 +153,7 @@ class Offer extends React.PureComponent {
       handleSlide,
       handleChange,
       handleChangeDescription,
-      state: { options, distance, description },
+      state: { options, distance, description, offered },
       makeOffer
     } = this
     let Options = []
@@ -164,6 +166,7 @@ class Offer extends React.PureComponent {
       )
     }
     return (
+
       <Layout>
         <SearchStyles>
           <div className="lookingText">I am offering ...</div>
@@ -198,6 +201,7 @@ class Offer extends React.PureComponent {
             </div>
           </div>
         </SearchStyles>
+        {offered && <Redirect to='/search' />}
       </Layout>
     )
   }
