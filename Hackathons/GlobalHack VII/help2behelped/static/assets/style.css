@@ -44,4 +44,13 @@ nav a:hover {
   padding: 2rem;
   margin: 2rem;
   text-align: center;
+  position: static;
+}
+.time-footer {
+  text-align: right;
+  color: lightsalmon;
+}
+.where {
+  position: relative;
+  left: 0%;
 }
