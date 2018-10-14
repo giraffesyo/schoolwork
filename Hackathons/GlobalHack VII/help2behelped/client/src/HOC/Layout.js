@@ -3,13 +3,13 @@ import { Nav } from '../blocks/Nav'
 import styled from 'styled-components'
 import '../overrides.css'
 
-const Wrapper = styled.div`
-  margin: 100px 0;
-`
-
 class Layout extends React.PureComponent {
   render() {
     const { TopNav } = this.props
+
+    const Wrapper = styled.div`
+      margin: ${!!TopNav ? '100px 0' : '0'};
+    `
     return (
       <>
         {!!TopNav && <TopNav />}

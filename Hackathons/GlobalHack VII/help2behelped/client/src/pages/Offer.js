@@ -28,8 +28,6 @@ class Offer extends React.PureComponent {
   render() {
     return (
       <Layout>
-        <ProfileTopNav />
-
         <Box>
           <Description>
             Desh wants to teach you{' '}
