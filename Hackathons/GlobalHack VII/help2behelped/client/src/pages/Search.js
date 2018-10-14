@@ -4,31 +4,10 @@ import styled from 'styled-components'
 import { FaPencilAlt } from 'react-icons/fa'
 import { green } from '../colors'
 import { Checkbox } from '../blocks/Checkbox'
+import { SearchTopNav } from '../blocks/SearchTopNav'
 
 const SearchStyles = styled.div`
   overflow-x: hidden;
-  .greenBackground {
-    background-color: ${green};
-    padding: 10px 0 10px 10px;
-    border-bottom-style: solid;
-    border-bottom-color: #428266;
-  }
-
-  .round {
-    width: 80%;
-    border-radius: 10px;
-    border: 1px #60a084 solid;
-  }
-
-  .pencil {
-    color: white;
-  }
-
-  .filter {
-    text-decoration: underline;
-    font-size: 1.2em;
-    letter-spacing: 1px;
-  }
 
   .lookingText {
     color: #60a084;
@@ -117,25 +96,8 @@ class Search extends React.PureComponent {
       )
     }
     return (
-      <Layout>
+      <Layout TopNav={SearchTopNav}>
         <SearchStyles>
-          <div className="container greenBackground">
-            <div className="row">
-              <div className="col-8">
-                <div className="search">
-                  <input
-                    type="text"
-                    className="round"
-                    id="search"
-                    placeholder=" Search..."
-                  />
-                  <FaPencilAlt className="ml-3 pencil" />
-                </div>
-              </div>
-              <div className="col-4 filter">Filter</div>
-            </div>
-          </div>
-          <div className="container distance">
             <div className="lookingText">I am looking for</div>
             <div className="distanceForm">
               <form>
@@ -152,7 +114,6 @@ class Search extends React.PureComponent {
               </form>
             </div>
             <div className="milesText">5 miles away</div>
-          </div>
           <div className="containerList">{Options}</div>
         </SearchStyles>
       </Layout>
