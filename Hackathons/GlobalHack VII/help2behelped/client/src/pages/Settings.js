@@ -1,17 +1,18 @@
-import React from "react";
-import Layout from "../HOC/Layout";
+import React from 'react'
+import Layout from '../HOC/Layout'
 
-import styled from "styled-components";
-import avatar from "../images/wolf-avatar.png";
+import styled from 'styled-components'
+import avatar from '../images/wolf-avatar.png'
+import { ProfileTopNav } from '../blocks/ProfileTopNav'
 
 const Avatar = styled.img`
   height: 100px;
   width: 100px;
-`;
+`
 class Settings extends React.PureComponent {
   render() {
     return (
-      <Layout>
+      <Layout TopNav={ProfileTopNav}>
         <div className="container">
           <div className="col-lg-4 order-lg-1 text-center">
             <Avatar
@@ -133,7 +134,7 @@ class Settings extends React.PureComponent {
                       <td>
                         <span className="float-right font-weight-bold">
                           Yesterday
-                        </span>{" "}
+                        </span>{' '}
                         There has been a request on your account since that
                         was..
                       </td>
@@ -142,7 +143,7 @@ class Settings extends React.PureComponent {
                       <td>
                         <span className="float-right font-weight-bold">
                           9/10
-                        </span>{" "}
+                        </span>{' '}
                         Porttitor vitae ultrices quis, dapibus id dolor. Morbi
                         venenatis lacinia rhoncus.
                       </td>
@@ -151,7 +152,7 @@ class Settings extends React.PureComponent {
                       <td>
                         <span className="float-right font-weight-bold">
                           9/4
-                        </span>{" "}
+                        </span>{' '}
                         Vestibulum tincidunt ullamcorper eros eget luctus.
                       </td>
                     </tr>
@@ -159,7 +160,7 @@ class Settings extends React.PureComponent {
                       <td>
                         <span className="float-right font-weight-bold">
                           9/4
-                        </span>{" "}
+                        </span>{' '}
                         Maxamillion ais the fix for tibulum tincidunt
                         ullamcorper eros.
                       </td>
@@ -171,8 +172,8 @@ class Settings extends React.PureComponent {
           </div>
         </div>
       </Layout>
-    );
+    )
   }
 }
 
-export { Settings };
+export { Settings }
