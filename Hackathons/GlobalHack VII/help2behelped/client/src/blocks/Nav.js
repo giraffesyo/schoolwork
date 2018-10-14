@@ -15,8 +15,10 @@ const NavBar = styled.nav`
   justify-content: space-around;
   align-items: center;
   position: fixed;
+  height: 80px;
   bottom: 0;
   width: 100%;
+  z-index: 1000;
 `
 
 const Option = styled.div`
