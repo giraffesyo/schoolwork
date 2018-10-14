@@ -117,8 +117,7 @@ class Login extends React.PureComponent {
   }
   handleLogin = async data => {
     const { username, password, users } = this.state
-    console.log(`username: ${username}`)
-    console.log(`password: ${password}`)
+
     if (username.toLowerCase() in users) {
       if (users[username].password === password) {
         //login
