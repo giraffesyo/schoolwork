@@ -20,8 +20,7 @@ class App extends React.PureComponent {
           <Route exact path="/offer" component={Offer} />
           <Route exact path="/settings" component={Settings} />
           <Route exact path="/home" component={LoggedInHome} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Login} />
         </Switch>
       </Router>
     )
