@@ -57,6 +57,17 @@ const SearchStyles = styled.div`
     margin-top: 15px;
     margin-left: -25px;
   }
+
+  .containerDate
+   {
+     color: ${green};
+   }
+
+`
+
+const Label = styled.label`
+    color: ${green};
+    font-size: 1.2em;
 `
 
 class Search extends React.PureComponent {
@@ -91,7 +102,7 @@ class Search extends React.PureComponent {
       Options.push(
         <div key={key}>
           <Checkbox name={key} onClick={handleChange} checked={options[key]} />
-          <label>{key}</label>
+          <Label>{key}</Label>
         </div>
       )
     }
