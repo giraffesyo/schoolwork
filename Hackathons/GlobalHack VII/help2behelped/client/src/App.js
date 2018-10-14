@@ -8,12 +8,14 @@ import { Settings } from './pages/Settings'
 import { Search } from './pages/Search'
 import { EditProfile } from './pages/EditProfile'
 import { Messages } from './pages/Messages'
+import { SearchFilter } from './pages/SearchFilter'
 
 class App extends React.PureComponent {
   render() {
     return (
       <Router basename={process.env.PUBLIC_URL}>
         <Switch>
+          <Route exact path="/searchfilter" component={SearchFilter} />
           <Route exact path="/editprofile" component={EditProfile} />
           <Route exact path="/messages" component={Messages} />
           <Route exact path="/search" component={Search} />

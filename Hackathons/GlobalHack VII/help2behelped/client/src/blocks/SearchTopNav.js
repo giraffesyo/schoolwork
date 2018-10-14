@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { green } from '../colors'
 import { FaPencilAlt } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const TopNav = styled.div`
   position: fixed;
@@ -10,6 +11,7 @@ const TopNav = styled.div`
   width: 100vw;
   overflow-x: hidden;
   z-index: 1000;
+
   .greenBackground {
     height: 80px;
     background-color: ${green};
@@ -29,9 +31,12 @@ const TopNav = styled.div`
   }
 
   .filter {
-    text-decoration: underline;
-    font-size: 1.2em;
+
+    font-size: 1.2rem;
     letter-spacing: 1px;
+  }
+  a {
+    color: #fff !important;
   }
 `
 
@@ -49,10 +54,11 @@ class SearchTopNav extends React.PureComponent {
                   id="search"
                   placeholder=" Search..."
                 />
-                <FaPencilAlt className="ml-3 pencil" />
               </div>
             </div>
-            <div className="col-4 filter">Filter</div>
+            <div className="col-4 filter">
+              <Link to="/searchfilter">Filter</Link>
+            </div>
           </div>
         </div>
       </TopNav>

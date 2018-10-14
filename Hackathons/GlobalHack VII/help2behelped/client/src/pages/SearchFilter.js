@@ -70,7 +70,7 @@ const Label = styled.label`
     font-size: 1.2em;
 `
 
-class Offer extends React.PureComponent {
+class SearchFilter extends React.PureComponent {
   state = {
     options: {
       Babysitting: false,
@@ -109,7 +109,7 @@ class Offer extends React.PureComponent {
     return (
       <Layout TopNav={SearchTopNav}>
         <SearchStyles>
-            <div className="lookingText">I am offering ...</div>
+            <div className="lookingText">I am looking for</div>
             <div className="distanceForm">
               <form>
                 <div className="form-group">
@@ -126,19 +126,9 @@ class Offer extends React.PureComponent {
             </div>
             <div className="milesText">5 miles away</div>
           <div className="containerList">{Options}</div>
-              <div className="containerDate">
-                Available from
-                <div className="startDate">
-                <input type="date"/>
-                </div>
-                To
-                <div className="endDate">
-                <input type="date"/>
-                </div>
-              </div>
         </SearchStyles>
       </Layout>
     )
   }
 }
-export { Offer }
+export { SearchFilter }
