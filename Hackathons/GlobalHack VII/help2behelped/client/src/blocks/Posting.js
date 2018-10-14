@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
-import { gray, green, purple } from '../colors'
+import { gray, green, purple } from "../colors"
 
 const Box = styled.div`
-  background-color: ${gray};
+  background-color: #feedd3;
   flex-basis: 1;
   border-radius: 25px;
   margin: 1rem;
@@ -16,10 +16,10 @@ const Description = styled.div`
   padding: 0.5rem 0;
   font-weight: 700;
   text-align: center;
-  color: ${green};
+  color: #d1a263;
 `
 const Purple = styled.span`
-  color: ${purple};
+  color: #8ac4ab;
 `
 
 class Posting extends React.PureComponent {
@@ -28,7 +28,7 @@ class Posting extends React.PureComponent {
     return (
       <Box>
         <Description>
-          {user} wants to help you with{' '}
+          {user} is looking for{" "}
           <Purple>
             {skill} <br />
           </Purple>
