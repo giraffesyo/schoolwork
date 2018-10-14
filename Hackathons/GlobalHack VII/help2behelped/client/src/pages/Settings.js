@@ -5,12 +5,30 @@ import styled from 'styled-components'
 import avatar from '../images/wolf-avatar.png'
 import { ProfileTopNav } from '../blocks/ProfileTopNav'
 
+import firebase from '../firebase'
+import localForage from 'localforage'
+
 const Avatar = styled.img`
   height: 100px;
   width: 100px;
 `
 class Settings extends React.PureComponent {
+  state = { user: {}, loaded: false }
+  async componentDidMount() {
+    const username = (await localForage.getItem('user')) || 'test'
+
+    const ref = await firebase
+      .database()
+      .ref('users')
+      .once('value')
+    const users = ref.val()
+    const user = users[username]
+    this.setState({ user, loaded: true })
+  }
+
   render() {
+    const { user, loggedIn } = this.state
+    console.log(user)
     return (
       <Layout TopNav={ProfileTopNav}>
         <div className="container">
@@ -20,10 +38,9 @@ class Settings extends React.PureComponent {
               className="mx-auto img-fluid img-circle d-block"
               alt="avatar"
             />
-            <h6 className="mt-2">Upload a different photo</h6>
           </div>
           <div className="col-md-6">
-            <h5 className="mb-3">User Profile : Giraffesyo</h5>
+            <h5 className="mb-3">User Profile: {user.username}</h5>
             <h6>Stats:</h6>
             <span className="badge badge-primary">
               <i className="fa fa-user" /> 25 Points

@@ -1,8 +1,8 @@
-import React from "react"
-import styled from "styled-components"
-import firebase from "../firebase"
-import localForage from "localforage"
-import { Redirect } from "react-router-dom"
+import React from 'react'
+import styled from 'styled-components'
+import firebase from '../firebase'
+import localForage from 'localforage'
+import { Redirect } from 'react-router-dom'
 
 const CenteredDiv = styled.div`
   display: flex;
@@ -79,11 +79,11 @@ const StyledText = styled.div`
   margin: 1rem;
 `
 class Login extends React.PureComponent {
-  state = { username: "", password: "", users: [], loggedIn: false }
+  state = { username: '', password: '', users: [], loggedIn: false }
 
   async componentDidMount() {
     // check if user is logged in
-    const loggedIn = !!(await localForage.getItem("user"))
+    const loggedIn = !!(await localForage.getItem('user'))
     if (loggedIn) {
       // redirect to home by setting state to logged in
       this.setState({ loggedIn })
@@ -91,8 +91,8 @@ class Login extends React.PureComponent {
     //add users to state
     const ref = await firebase
       .database()
-      .ref("users")
-      .once("value")
+      .ref('users')
+      .once('value')
     const users = ref.val()
     this.setState({ users })
     console.log(users)
@@ -106,23 +106,26 @@ class Login extends React.PureComponent {
     const password = event.target.value
     this.setState({ password })
   }
-  handleSignUp = data => {
+  handleSignUp = async data => {
     const { username, password } = this.state
-    const usersRef = firebase.database().ref("users")
-    usersRef.child(username).set({ username, password })
-    this.setState({ message: "Registration Successful" })
-    console.log("Registration successful")
+    const usersRef = firebase.database().ref('users')
+    usersRef.child(username).set({ username: username.toLowerCase(), password })
+    await localForage.setItem('user', username)
+    this.setState({ message: 'Registration Successful', loggedIn: true })
+
+    console.log('Registration successful')
   }
   handleLogin = async data => {
     const { username, password, users } = this.state
     console.log(`username: ${username}`)
     console.log(`password: ${password}`)
-    if (username in users) {
+    if (username.toLowerCase() in users) {
       if (users[username].password === password) {
         //login
-        await localForage.setItem("user", username)
+        await localForage.setItem('user', username)
+        this.setState({ loggedIn: true })
       } else {
-        this.setState({ message: "Incorrect password." })
+        this.setState({ message: 'Incorrect password.' })
       }
     } else {
       this.setState({ message: "Sorry, that user doesn't exist" })
@@ -130,7 +133,7 @@ class Login extends React.PureComponent {
   }
 
   handleForgotPassword = data => {
-    console.log("we are clicking the forget password")
+    console.log('we are clicking the forget password')
     console.log(data)
   }
 
