@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { green } from '../colors'
-import { FaPencilAlt } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import React from "react"
+import styled from "styled-components"
+import { green } from "../colors"
+import { FaPencilAlt } from "react-icons/fa"
+import { Link } from "react-router-dom"
 
 const TopNav = styled.div`
   position: fixed;
@@ -14,7 +14,7 @@ const TopNav = styled.div`
 
   .greenBackground {
     height: 80px;
-    background-color: ${green};
+    background-color: #bde3d3;
     padding: 30px 0 10px 10px;
     border-bottom-style: solid;
     border-bottom-color: #428266;
@@ -31,15 +31,13 @@ const TopNav = styled.div`
   }
 
   .filter {
-
     font-size: 1.2rem;
     letter-spacing: 1px;
   }
   a {
-    color: #fff !important;
+    color: #60a083 !important;
   }
 `
-
 class SearchTopNav extends React.PureComponent {
   render() {
     return (
