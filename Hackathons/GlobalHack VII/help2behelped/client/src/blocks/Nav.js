@@ -35,15 +35,21 @@ class Nav extends React.PureComponent {
             <FaGlobeAmericas />
           </Option>
         </Link>
-        <Option>
-          <FaSearch />
-        </Option>
-        <Option>
-          <FaHandHoldingHeart />
-        </Option>
-        <Option>
-          <FaCog />
-        </Option>
+        <Link to="/search">
+          <Option>
+            <FaSearch />
+          </Option>
+        </Link>
+        <Link to="/offer">
+          <Option>
+            <FaHandHoldingHeart />
+          </Option>
+        </Link>
+        <Link to="/settings">
+          <Option>
+            <FaCog />
+          </Option>
+        </Link>
       </NavBar>
     )
   }
