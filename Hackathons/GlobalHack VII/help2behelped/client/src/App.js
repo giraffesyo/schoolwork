@@ -7,6 +7,7 @@ import { Offer } from './pages/Offer'
 import { Settings } from './pages/Settings'
 import { Search } from './pages/Search'
 
+
 class App extends React.PureComponent {
   render() {
     return (

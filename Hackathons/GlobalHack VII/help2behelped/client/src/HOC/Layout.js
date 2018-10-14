@@ -4,12 +4,11 @@ import styled from 'styled-components'
 import '../overrides.css'
 
 
-
 class Layout extends React.PureComponent {
   render() {
     return (
       <>
-        {this.props.children}
+        <div className="container">{this.props.children}</div>
         <Nav />
       </>
     )
