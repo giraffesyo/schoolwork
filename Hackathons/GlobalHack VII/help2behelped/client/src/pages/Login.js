@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import firebase from '../firebase'
+import localForage from 'localforage'
+import { Redirect } from 'react-router-dom'
 
 const CenteredDiv = styled.div`
   display: flex;
@@ -42,7 +45,24 @@ const ForgotPasswordButton = styled.button`
 `
 
 class Login extends React.PureComponent {
-  state = { username: '', password: '' }
+  state = { username: '', password: '', users: [], loggedIn: false }
+
+  async componentDidMount() {
+    // check if user is logged in
+    const loggedIn = !!(await localForage.getItem('user'))
+    if (loggedIn) {
+      // redirect to home by setting state to logged in
+      this.setState({ loggedIn })
+    }
+    //add users to state
+    const ref = await firebase
+      .database()
+      .ref('users')
+      .once('value')
+    const users = ref.val()
+    this.setState({ users })
+    console.log(users)
+  }
 
   handleChangeUsername = event => {
     const username = event.target.value
@@ -54,13 +74,25 @@ class Login extends React.PureComponent {
   }
   handleSignUp = data => {
     const { username, password } = this.state
-    console.log(`username: ${username}`)
-    console.log(`password: ${password}`)
+    const usersRef = firebase.database().ref('users')
+    usersRef.child(username).set({ username, password })
+    this.setState({ message: 'Registration Successful' })
+    console.log('Registration successful')
   }
-  handleLogin = data => {
-    const { username, password } = this.state
+  handleLogin = async data => {
+    const { username, password, users } = this.state
     console.log(`username: ${username}`)
     console.log(`password: ${password}`)
+    if (username in users) {
+      if (users[username].password === password) {
+        //login
+        await localForage.setItem('user', username)
+      } else {
+        this.setState({ message: 'Incorrect password.' })
+      }
+    } else {
+      this.setState({ message: "Sorry, that user doesn't exist" })
+    }
   }
 
   handleForgotPassword = data => {
@@ -75,10 +107,11 @@ class Login extends React.PureComponent {
       handleForgotPassword,
       handleChangeUsername,
       handleChangePassword,
-      state: { username, password }
+      state: { username, password, loggedIn }
     } = this
     return (
       <CenteredDiv>
+        {loggedIn && <Redirect to="/home" />}
         <h1>Help 2 Be Helped</h1>
         <StyledLogin>
           <InputGroup>
@@ -92,6 +125,7 @@ class Login extends React.PureComponent {
             <input
               onChange={handleChangePassword}
               value={password}
+              type="password"
               placeholder="password"
             />
           </InputGroup>
