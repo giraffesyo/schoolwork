@@ -473,6 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 25
   koopa: {fileID: 6099281720737065123, guid: 9b3ca4bc0fcc04f59a1b5b15adaf7000, type: 3}
+  animator: {fileID: 4821039980571945240}
 --- !u!61 &1667885764301783324
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -519,7 +520,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 6
 --- !u!1001 &3196364980491487636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -619,3 +620,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 334668ce3ec2b4b3b8aa10ad6b2c21c3, type: 3}
+--- !u!95 &4821039980571945240 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4821039980571945240, guid: 36e4af357bdf2487f99592cb2672c8d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1601973290349479418}
+  m_PrefabAsset: {fileID: 0}
