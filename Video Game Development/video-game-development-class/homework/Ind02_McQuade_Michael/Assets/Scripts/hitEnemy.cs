@@ -6,27 +6,25 @@ public class hitEnemy : MonoBehaviour
 {
     private AudioSource audioSource;
     private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
+        // get the audiosource and animator off the instance
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        // check if the gameobject we hit has the tag bullet
         if (collision.gameObject.tag == "bullet")
         {
             Debug.Log("goomba was hit");
-            animator.SetTrigger("goomba_hit");
+            // play the hit noise
             audioSource.Play();
+            // play the spin animation
+            animator.SetTrigger("goomba_hit");
         }
     }
 
