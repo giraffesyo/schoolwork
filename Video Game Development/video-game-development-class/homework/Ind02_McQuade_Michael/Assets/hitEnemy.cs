@@ -22,6 +22,7 @@ public class hitEnemy : MonoBehaviour
         if (collision.gameObject.tag == "enemy")
         {
             Debug.Log("we hit the goomba");
+            collision.gameObject.GetComponent<Animator>().SetTrigger("goomba_hit");
         }
     }
 
