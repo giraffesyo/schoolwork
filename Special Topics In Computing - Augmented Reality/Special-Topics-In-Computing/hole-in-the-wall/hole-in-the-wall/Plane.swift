@@ -19,8 +19,6 @@ class Plane: SCNNode {
         super.init()
         self.updateGeometry(anchor: anchor)
         self.updatePosition(anchor: anchor)
-        //self.simdPosition = anchor.center
-        
         // the orientation is "up" in its coordinate space, which is normal to the plane,
         // rotate to make it parallel with the plane
         self.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
@@ -40,14 +38,13 @@ class Plane: SCNNode {
         self.geometry?.firstMaterial?.isDoubleSided = true
     }
     
-    func updatePosition(anchor: ARPlaneAnchor)
-    {
+    func updatePosition(anchor: ARPlaneAnchor){
         // set the position of the plane to be at the position of the anchor
-        self.simdPosition = anchor.center    }
+        self.simdPosition = anchor.center
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
 }
