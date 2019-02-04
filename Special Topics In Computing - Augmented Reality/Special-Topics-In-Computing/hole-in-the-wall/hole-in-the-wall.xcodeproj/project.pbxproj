@@ -12,6 +12,7 @@
 		51FABAD122087A3F00B7642A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51FABACF22087A3F00B7642A /* Main.storyboard */; };
 		51FABAD322087A4000B7642A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51FABAD222087A4000B7642A /* Assets.xcassets */; };
 		51FABAD622087A4000B7642A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51FABAD422087A4000B7642A /* LaunchScreen.storyboard */; };
+		51FABADE2208A1F900B7642A /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FABADD2208A1F900B7642A /* Plane.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		51FABAD222087A4000B7642A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		51FABAD522087A4000B7642A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		51FABAD722087A4000B7642A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51FABADD2208A1F900B7642A /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		51FABACA22087A3F00B7642A /* hole-in-the-wall */ = {
 			isa = PBXGroup;
 			children = (
+				51FABADD2208A1F900B7642A /* Plane.swift */,
 				51FABACB22087A3F00B7642A /* AppDelegate.swift */,
 				51FABACD22087A3F00B7642A /* ViewController.swift */,
 				51FABACF22087A3F00B7642A /* Main.storyboard */,
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51FABACE22087A3F00B7642A /* ViewController.swift in Sources */,
+				51FABADE2208A1F900B7642A /* Plane.swift in Sources */,
 				51FABACC22087A3F00B7642A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,6 +289,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R4VGXX56KF;
 				INFOPLIST_FILE = "hole-in-the-wall/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -303,6 +308,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R4VGXX56KF;
 				INFOPLIST_FILE = "hole-in-the-wall/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
