@@ -8,12 +8,13 @@ public class hitEnemy : MonoBehaviour
     private Animator animator;
     private int hitCount = 0;
     private GameObject objectHit;
-
+    private HUDScript UI;
     // Start is called before the first frame update
     void Start()
     {
         // get the audiosource and animator off the instance
         audioSource = GetComponent<AudioSource>();
+        UI = ReferenceHolder.instance.canvas.GetComponent<HUDScript>();
 
     }
 
@@ -30,6 +31,8 @@ public class hitEnemy : MonoBehaviour
             audioSource.Play();
             // play the enemy hit animation
             animator.SetTrigger("enemy_hit");
+            // increment the score
+            UI.incrementScore();
         }
         // increase hitcount (we hit something after all!)
         hitCount++;
