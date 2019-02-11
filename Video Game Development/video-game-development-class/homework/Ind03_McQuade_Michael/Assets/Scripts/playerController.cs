@@ -11,6 +11,7 @@ public class playerController : MonoBehaviour
     // these will be set on the game object in unity
     public GameObject koopa;
     public Animator animator;
+    private bool firing = false;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class playerController : MonoBehaviour
     private void Update()
     {
         // check if we should fire
-        if (shouldFire())
+        if (ShouldFire())
         {
             // add the koopa to the playing field at our current position
             GameObject newKoopa = Instantiate(koopa, transform);
@@ -47,14 +48,18 @@ public class playerController : MonoBehaviour
         rb2d.AddForce(movement * speed);
     }
 
-    bool shouldFire()
+    bool ShouldFire()
     {
-        if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton7))
+        // "Drop Rock" axis will be greater than 0 if any fire button is pressed
+        bool fireButtonHeldDown = Input.GetAxis("Drop Rock") > 0;
+        if ( fireButtonHeldDown && !firing)
         {
+            // when we first fire, we should make note of it so we know not to keep firing
+            firing = true;
             // if space key or R2 was released, we should fire
             return true;
-        }
-        // else we shouldn't fire
+        } else firing &= fireButtonHeldDown; // reset firing to false when button isn't held down
+        // if we're not firing and the button isnt held down we shouldn't fire 
         return false;
     }
 }
