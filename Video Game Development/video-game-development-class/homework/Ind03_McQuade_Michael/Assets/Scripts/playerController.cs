@@ -20,8 +20,8 @@ public class playerController : MonoBehaviour
 
     private void Update()
     {
-        // check if they pressed space
-        if (Input.GetKeyUp(KeyCode.Space))
+        // check if we should fire
+        if (shouldFire())
         {
             // add the koopa to the playing field at our current position
             GameObject newKoopa = Instantiate(koopa, transform);
@@ -45,5 +45,16 @@ public class playerController : MonoBehaviour
         Vector2 movement = new Vector2(moveHorizontal, 0);
         // multiply movement and speed to get the force we'll apply
         rb2d.AddForce(movement * speed);
+    }
+
+    bool shouldFire()
+    {
+        if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton7))
+        {
+            // if space key or R2 was released, we should fire
+            return true;
+        }
+        // else we shouldn't fire
+        return false;
     }
 }
