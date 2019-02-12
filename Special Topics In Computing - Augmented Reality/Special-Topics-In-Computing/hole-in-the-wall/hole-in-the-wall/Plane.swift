@@ -30,8 +30,12 @@ class Plane: SCNNode {
         let newWidth: CGFloat = CGFloat(anchor.extent.x)
         let newHeight: CGFloat = CGFloat(anchor.extent.z)
         // create a SCNPlane object with the width and height of the anchor
+        print("Updating a plane's geometry to height: \(newHeight) and  width: \(newWidth)")
         self.geometry = SCNPlane(width: newWidth, height: newHeight)
-        self.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        // making this really high so it doesnt block other things since its only for visual debugging
+        self.renderingOrder = 2000
+        self.geometry?.firstMaterial?.diffuse.contents = UIColor.blue.withAlphaComponent(0.5)
+        
         // If you don't render both sides and it ends up that the material is facing the other way
         // then you will be left with nothing visible ( not super necessary but very useful
         // to see what is going on
