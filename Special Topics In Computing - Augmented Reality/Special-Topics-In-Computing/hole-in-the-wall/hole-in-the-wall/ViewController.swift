@@ -11,12 +11,14 @@ import ARKit
 
 // make view controller a delegate so that we can access AR callbacks
 class ViewController: UIViewController, ARSCNViewDelegate {
-// Redoing without the custom Plane class
-//    var firstPlane: Plane?
+    // Redoing without the custom Plane class
+    //    var firstPlane: Plane?
     var planeCount = 0 // just important so we can see when we have our first plane
     var holeNode: SCNNode = SCNNode()
+    var holeAdded: Bool = false
     
     @IBOutlet var sceneView: ARSCNView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let configuration = ARWorldTrackingConfiguration()
@@ -59,34 +61,34 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         planeNode.position = SCNVector3(x,y,z)
         // roate the plane by 90 degrees because it is by default normal to the anchor, causing it to be horizontal
         planeNode.eulerAngles.x = -.pi/2
-//
-//        if(planeCount == 0) {
-//
-//            print("Found first plane at \(planeNode.position)")
-//            self.firstPlane = planeNode
-//            print("setting hole with mario's anchor node to position \(planeAnchor.center), camera position is \(sceneView.session.currentFrame!.camera.transform)")
-//            //holeNode.simdPosition = planeAnchor.center
-//
-//
-//
-//
-//
-//            //holeNode.scale = SCNVector3(1, 1,1)
-//
-//
-//            // when i add it to a child of the plane, it moves with the phone
-//            planeNode.addChildNode(holeNode)
-//
-//            //when i add it as a child of the scene, it does not move
-//            holeNode.simdTransform = planeAnchor.transform
-//            // the hole will be positioned normal to the plan so we need to rotate it
-//            //holeNode.eulerAngles = SCNVector3(-Double.pi, 0, 0)
-//            //flip on z axis ( so that it mario is right side up)
-//            holeNode.eulerAngles = SCNVector3(Double.pi,0,-Double.pi)
-//            sceneView.scene.rootNode.addChildNode(holeNode)
-//            print("adding hole with mario to scene")
-//        }
-//
+        //
+        //        if(planeCount == 0) {
+        //
+        //            print("Found first plane at \(planeNode.position)")
+        //            self.firstPlane = planeNode
+        //            print("setting hole with mario's anchor node to position \(planeAnchor.center), camera position is \(sceneView.session.currentFrame!.camera.transform)")
+        //            //holeNode.simdPosition = planeAnchor.center
+        //
+        //
+        //
+        //
+        //
+        //            //holeNode.scale = SCNVector3(1, 1,1)
+        //
+        //
+        //            // when i add it to a child of the plane, it moves with the phone
+        //            planeNode.addChildNode(holeNode)
+        //
+        //            //when i add it as a child of the scene, it does not move
+        //            holeNode.simdTransform = planeAnchor.transform
+        //            // the hole will be positioned normal to the plan so we need to rotate it
+        //            //holeNode.eulerAngles = SCNVector3(-Double.pi, 0, 0)
+        //            //flip on z axis ( so that it mario is right side up)
+        //            holeNode.eulerAngles = SCNVector3(Double.pi,0,-Double.pi)
+        //            sceneView.scene.rootNode.addChildNode(holeNode)
+        //            print("adding hole with mario to scene")
+        //        }
+        //
         // increment plane counter (not using this in current branch)
         self.planeCount += 1
         
@@ -124,5 +126,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             node.removeFromParentNode()
         }
     }
-   
+    
+    @IBAction func sceneTapped(_ sender: UITapGestureRecognizer) {
+        // do nothing if we already added the hole to the scene
+        if(holeAdded) {
+            print("tap detected but hole was already added")
+            return
+        }
+        // get the location of the tap
+        let tapLocation = sender.location(in: sceneView)
+        // detect if the tap was on a plane (thanks Apple!) https://developer.apple.com/documentation/scenekit/scnscenerenderer/1522929-hittest
+        // hitTest() returns an array of SCNHitTestResult objects, we just want the first one (and only one in our case since there shouldnt be any other nodes besides the plane intersecting the ray and we're only testing for planes added by plane detection)
+        guard let hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent).first else {
+            print("tap wasnt on a plane")
+            return
+        }
+        print("tap was on a detected plane" )
+        
+        
+    }
+    
 }

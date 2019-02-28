@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,6 +22,7 @@
                             </arscnView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="VSS-ui-5RR" secondAttribute="bottom" id="FrM-mw-r1P"/>
                             <constraint firstItem="VSS-ui-5RR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WAM-CQ-7M8"/>
@@ -30,12 +30,20 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="VSS-ui-5RR" secondAttribute="trailing" id="zf0-3L-Qgs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="kdj-wD-PHD" appends="YES" id="fg0-Zd-NNp"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="sceneView" destination="VSS-ui-5RR" id="mjg-ik-l32"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="kdj-wD-PHD">
+                    <connections>
+                        <action selector="sceneTapped:" destination="BYZ-38-t0r" id="dCU-hn-GKm"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
         </scene>
     </scenes>
