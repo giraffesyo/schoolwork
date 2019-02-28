@@ -26,6 +26,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
         sceneView.session.run(configuration)
         sceneView.delegate = self
+        
+        // extract the holeNode from the scene and save it into our view controller  instance variable 'holeNode'
         let scene : SCNScene =  SCNScene(named: "Assets.scnassets/hole.scn")!
         holeNode = scene.rootNode.childNodes.first!
         sceneView.scene = scene
@@ -101,7 +103,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // again we should do nothing if we're not dealing with an anchor that can be cast to the appropriate ARPlaneAnchor type
         guard let planeAnchor = anchor as? ARPlaneAnchor,
             let planeNode = node.childNodes.first,
-            let plane = planeNode.geometry as? SCNPlane else { return }
+            let plane = planeNode.geometry as? SCNPlane else {
+                return
+        }
         
         // match this plane's width and height to the anchors detected width and height
         let width = CGFloat(planeAnchor.extent.x)
@@ -134,15 +138,71 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
         // get the location of the tap
-        let tapLocation = sender.location(in: sceneView)
-        // detect if the tap was on a plane (thanks Apple!) https://developer.apple.com/documentation/scenekit/scnscenerenderer/1522929-hittest
+        let tappedLocation = sender.location(in: sceneView)
+        // detect if the tap was on a plane (thanks Apple!) https://developer.apple.com/documentation/arkit/arscnview/2875544-hittest
         // hitTest() returns an array of SCNHitTestResult objects, we just want the first one (and only one in our case since there shouldnt be any other nodes besides the plane intersecting the ray and we're only testing for planes added by plane detection)
-        guard let hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent).first else {
+        guard let hitTestResult = sceneView.hitTest(tappedLocation, types: .existingPlaneUsingExtent).first else {
             print("tap wasnt on a plane")
             return
         }
+        
+        
+//         translation is in the last column of the local transform
+//        let translation = hitTestResult.worldTransform.columns.3
+        // i dont believe the following unwrap is necessary since we guaranteed our hit test result previously, but guarding just in case and would be interesting to know what cases would make this nil
+//        guard let planeAnchor = hitTestResult.anchor as? ARPlaneAnchor else {
+//            print("Plane Anchor not found in hit test result")
+//            return
+//        }
         print("tap was on a detected plane" )
         
+        //        let anchor = ARAnchor(transform: hitTestResult.worldTransform)
+//        addHole(worldTransform: translation)
+//        hitTestResult.anchor.
+        guard let holeScene = SCNScene(named: "Assets.scnassets/hole.scn"), let holeNode2 = holeScene.rootNode.childNode(withName: "hole", recursively: false) else {
+            print("Failed to load hole node from hole scene")
+            return
+        }
+        let translation = hitTestResult.worldTransform.columns.3
+        let x = translation.x
+        let y = translation.y
+        let z = translation.z
+        print("Adding mario at (\(x),\(y),\(z)) ")
+
+        holeNode2.position = SCNVector3(x,y,z)
+        //holeNode2.eulerAngles.x = -.pi
+//
+        guard let planeNode = sceneView.node(for: planeAnchor) else {
+//            print("not able to get plane node from anchor")
+//            return
+//        }
+        print("Adding hole to scene")
+        holeNode2.position = SCNVector3(x,y,z)
+        sceneView.scene.rootNode.addChildNode(holeNode2)
+    }
+    
+    
+    
+    // FUTURE USE:
+    // Apple has a great write up on user control https://github.com/gao0122/ARKit-Example-by-Apple
+    
+    
+    func addHole( worldTransform translation: simd_float4){
+        // position our hole using the local translation and the anchor for the plane that was tapped
+        // the position vector is the fourth column of a transform matrix
+        guard let holeScene = SCNScene(named: "Assets.scnassets/hole.scn"), let holeNode2 = holeScene.rootNode.childNode(withName: "hole", recursively: false) else {
+            print("Failed to get hole node from hole scene")
+            return
+        }
+        
+        let x = translation.x
+        let y = translation.y
+        let z = translation.z
+        print("Adding mario at (\(x),\(y),\(z)) ")
+        
+        holeNode2.position = SCNVector3(x,y,z)
+        
+        sceneView.scene.rootNode.addChildNode(holeNode2)
         
     }
     
