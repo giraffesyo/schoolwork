@@ -50,12 +50,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // color the plane so we can see it, it has an alpha of 0.4 so it doesn't block whats behind it
         plane.materials.first?.diffuse.contents = UIColor.blue.withAlphaComponent(0.4)
-        // the material should be double sided otherwise theres a chance we wont be able to see it
-        plane.materials.first?.isDoubleSided = true
+        
+        
+        // if debugging: the material should be double sided otherwise theres a chance we wont be able to see it
+        //plane.materials.first?.isDoubleSided = false
         
         // Create the plane node from the geometry that we created above
         let planeNode = SCNNode(geometry: plane)
-        
+        // set rendering order high
+        planeNode.renderingOrder = 100
         // position the plane node at the new anchor's origin
         let x = CGFloat(planeAnchor.center.x)
         let y = CGFloat(planeAnchor.center.y)
@@ -150,10 +153,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //         translation is in the last column of the local transform
 //        let translation = hitTestResult.worldTransform.columns.3
         // i dont believe the following unwrap is necessary since we guaranteed our hit test result previously, but guarding just in case and would be interesting to know what cases would make this nil
-//        guard let planeAnchor = hitTestResult.anchor as? ARPlaneAnchor else {
-//            print("Plane Anchor not found in hit test result")
-//            return
-//        }
+        guard let planeAnchor = hitTestResult.anchor as? ARPlaneAnchor else {
+            print("Plane Anchor not found in hit test result")
+            return
+        }
         print("tap was on a detected plane" )
         
         //        let anchor = ARAnchor(transform: hitTestResult.worldTransform)
@@ -163,22 +166,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             print("Failed to load hole node from hole scene")
             return
         }
-        let translation = hitTestResult.worldTransform.columns.3
+        let translation = hitTestResult.localTransform.columns.3
         let x = translation.x
         let y = translation.y
         let z = translation.z
-        print("Adding mario at (\(x),\(y),\(z)) ")
+        print("Adding hole at (\(x),\(y),\(z)) ")
 
         holeNode2.position = SCNVector3(x,y,z)
-        //holeNode2.eulerAngles.x = -.pi
+        // child node added is normal to plane so we have to rotate it around x
+        holeNode2.eulerAngles.x = -.pi/2
+        //rotate entire hole around z by 180 degrees so that mario is face up
+        holeNode2.eulerAngles.z = .pi
 //
         guard let planeNode = sceneView.node(for: planeAnchor) else {
-//            print("not able to get plane node from anchor")
-//            return
-//        }
+            print("not able to get plane node from anchor")
+            return
+        }
         print("Adding hole to scene")
         holeNode2.position = SCNVector3(x,y,z)
-        sceneView.scene.rootNode.addChildNode(holeNode2)
+        planeNode.addChildNode(holeNode2)
     }
     
     
