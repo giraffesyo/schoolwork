@@ -42,9 +42,10 @@ public class PlayerController : MonoBehaviour
     void UpdateCountText()
     {
         countText.text = $"Count: {count}";
-        if(count >= 12)
+        if(count >= 1)
         {
             winText.text = "You win!";
+            winText.transform.parent.gameObject.SetActive(true);
         }
     }
 }
