@@ -10,7 +10,9 @@ public class PlayerController : MonoBehaviour
     public Text countText, endText, timeText, startCountdownText;
     public float initialMatchTime = 90.0f;
     public float speed = 10.0f;
+    public GameObject Pickups;
 
+    private Text NextLevelButtonText;
     private Vector3 initialPosition;
     private int count;
     private int level;
@@ -18,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private float startCountdownTimeRemaining;
     private bool countingDownToStart = false;
     private float timeRemaining;
+    private bool mustReset = false;
+
 
     private void startStartingCountdown()
     {
@@ -26,6 +30,8 @@ public class PlayerController : MonoBehaviour
         // this way we always get a full 3 seconds
         startCountdownTimeRemaining = 3.99f;
         countingDownToStart = true;
+        countText.gameObject.SetActive(false);
+        timeText.gameObject.SetActive(false);
         setStartCountdown();
     }
     private void setStartCountdown()
@@ -45,23 +51,50 @@ public class PlayerController : MonoBehaviour
         }
         else if (countdownString == "GO!")
         {
+            // change GO! to green
             startCountdownText.color = Color.green;
+            // enable player controls and countdown
             gameActive = true;
+            // re-enable the timer and score UI
+            countText.gameObject.SetActive(true);
+            timeText.gameObject.SetActive(true);
         }
         startCountdownText.text = countdownString;
         startCountdownTimeRemaining -= Time.deltaTime;
     }
 
+    void RestoreAllPickups()
+    {
+        // get reference to all the pickups and loop through them setting them all active
+        Transform[] transforms = Pickups.GetComponentsInChildren<Transform>(true);
+
+        for (int i = 0; i < transforms.GetLength(0); i++)
+        {
+            transforms[i].gameObject.SetActive(true);
+        }
+    }
+
+    // initial values
     private void ResetGame()
     {
+        RestoreAllPickups();
+        // must reset should be false at beginning so we're not forced to restart
+        mustReset = false;
+        // hide end screen if its visible
+        toggleEndScreen(false);
+        // reset the position of the player to the beginning of the maze
+        transform.position = initialPosition;
+        // remove forces from the player
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
         // initial score/count = 0
         count = 0;
         // set the count text to this initial value
         UpdateCountText();
         // clear the endText
         endText.text = "";
-        // Set time remaining to our initial match time
-        timeRemaining = initialMatchTime;
+        // Set time remaining to our initial match time, adding a little bit so the first time is visible
+        timeRemaining = initialMatchTime + .999f;
         // level modifier starts at 1, this is used to know the multiplier for the timer
         level = 1;
         // set the game to be counting down to start
@@ -71,6 +104,8 @@ public class PlayerController : MonoBehaviour
     void NextLevel()
     {
         level++;
+        // Restore all pickups
+        RestoreAllPickups();
         // ensure count and timer are visible
         countText.gameObject.SetActive(true);
         timeText.gameObject.SetActive(true);
@@ -82,8 +117,8 @@ public class PlayerController : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
 
-        // Set remaining time to appropriate time for level
-        timeRemaining = getLevelTime();
+        // Set remaining time to appropriate time for level, adding a little bit so the first number is visible
+        timeRemaining = getLevelTime() + .99f;
 
         // reset the position of the player
         transform.position = initialPosition;
@@ -94,13 +129,17 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        // Set game up
-        ResetGame();
+        // Store players initial position from the unity editor
+        initialPosition = transform.position;
+        // get reference to next level button text
+        NextLevelButtonText = AllOrNothingButton.GetComponentInChildren<Text>();
         // get reference to the rigid body
         rb = GetComponent<Rigidbody>();
         // Describe what method to call when all or nothing button is clicked
         AllOrNothingButton.onClick.AddListener(AllOrNothingClicked);
-        initialPosition = transform.position;
+
+        // Set game up
+        ResetGame();
     }
     private void Update()
     {
@@ -171,6 +210,7 @@ public class PlayerController : MonoBehaviour
         // set game to inactive, show the end screen
         gameActive = false;
         showEndScreen(false);
+        mustReset = true;
     }
 
     void setTimer()
@@ -205,6 +245,7 @@ public class PlayerController : MonoBehaviour
 
     void showEndScreen(bool win)
     {
+
         // hide the Count and timer
         countText.gameObject.SetActive(false);
         timeText.gameObject.SetActive(false);
@@ -213,10 +254,18 @@ public class PlayerController : MonoBehaviour
         string loseString = $"You lose! Score: 0";
 
         // Hide the all or nothing button when the player has beaten the game
-        if (level >= 3)
+        if (level >= 3 && win)
         {
-            AllOrNothingButton.gameObject.SetActive(false);
             winString = $"You win! Score: {count}";
+            mustReset = true;
+        }
+        if (mustReset)
+        {
+            NextLevelButtonText.text = "Play again?";
+        }
+        else
+        {
+            NextLevelButtonText.text = "All or Nothing?";
         }
 
         // Decide which string to show
@@ -237,6 +286,13 @@ public class PlayerController : MonoBehaviour
 
     void AllOrNothingClicked()
     {
-        NextLevel();
+        if (mustReset)
+        {
+            ResetGame();
+        }
+        else
+        {
+            NextLevel();
+        }
     }
 }
