@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     public Button AllOrNothingButton;
-    public Text countText, endText, timeText;
+    public Text countText, endText, timeText, startCountdownText;
     public float initialMatchTime = 90.0f;
     public float speed = 10.0f;
 
@@ -15,9 +15,42 @@ public class PlayerController : MonoBehaviour
     private int count;
     private int level;
     private bool gameActive;
-
+    private float startCountdownTimeRemaining;
+    private bool countingDownToStart = false;
     private float timeRemaining;
 
+    private void startStartingCountdown()
+    {
+        gameActive = false;
+        startCountdownText.gameObject.SetActive(true);
+        // this way we always get a full 3 seconds
+        startCountdownTimeRemaining = 3.99f;
+        countingDownToStart = true;
+        setStartCountdown();
+    }
+    private void setStartCountdown()
+    {
+        if (startCountdownTimeRemaining < 0) startCountdownTimeRemaining = 0;
+
+        // Make it say go! or the number depending on whats shown
+        string countdownString = Mathf.FloorToInt(startCountdownTimeRemaining).ToString();
+        countdownString = countdownString == "0" ? "GO!" : countdownString;
+        if (countdownString == "3")
+        {
+            startCountdownText.color = Color.red;
+        }
+        if (countdownString == "2")
+        {
+            startCountdownText.color = Color.yellow;
+        }
+        else if (countdownString == "GO!")
+        {
+            startCountdownText.color = Color.green;
+            gameActive = true;
+        }
+        startCountdownText.text = countdownString;
+        startCountdownTimeRemaining -= Time.deltaTime;
+    }
 
     private void ResetGame()
     {
@@ -31,9 +64,8 @@ public class PlayerController : MonoBehaviour
         timeRemaining = initialMatchTime;
         // level modifier starts at 1, this is used to know the multiplier for the timer
         level = 1;
-        // set the game to be active, used to control player movement and updating timers
-        gameActive = true;
-
+        // set the game to be counting down to start
+        startStartingCountdown();
     }
 
     void NextLevel()
@@ -56,9 +88,8 @@ public class PlayerController : MonoBehaviour
         // reset the position of the player
         transform.position = initialPosition;
 
-        // turn game back on
-        gameActive = true;
-
+        // start the countdown timer
+        startStartingCountdown();
     }
 
     private void Start()
@@ -83,6 +114,15 @@ public class PlayerController : MonoBehaviour
             {
                 // if we have no remaining time we lose
                 loseGame();
+            }
+        }
+        if (countingDownToStart)
+        {
+            setStartCountdown();
+            if (startCountdownTimeRemaining <= 0)
+            {
+                countingDownToStart = false;
+                startCountdownText.gameObject.SetActive(false);
             }
         }
     }
@@ -188,7 +228,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // only used to turn it on or off, above method should be used when advancing to that screen
+    // only used to turn it on or off, showEndScreen method should be used when advancing to that screen
     void toggleEndScreen(bool show)
     {
         endText.transform.parent.gameObject.SetActive(show);
