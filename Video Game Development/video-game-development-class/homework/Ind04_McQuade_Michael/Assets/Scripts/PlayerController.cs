@@ -116,8 +116,11 @@ public class PlayerController : MonoBehaviour
     }
 
     void showEndScreen(bool win)
-    // 
-    {   // Create win and lose strings
+    {
+        // hide the Count and timer
+        countText.gameObject.SetActive(false);
+        timeText.gameObject.SetActive(false);
+        // Create win and lose strings
         string winString = $"You win! Score: {count}";
         string loseString = $"You lose! Score: 0";
         // Decide which one to show
