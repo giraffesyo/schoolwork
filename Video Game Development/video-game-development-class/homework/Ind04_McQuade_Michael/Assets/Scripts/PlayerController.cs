@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     public Button AllOrNothingButton;
-    public Text countText, endText, timeText, startCountdownText;
+    public Text countText, endText, timeText, startCountdownText, LevelCountText;
     public float initialMatchTime = 90.0f;
     public float speed = 10.0f;
     public GameObject Pickups;
@@ -97,6 +97,9 @@ public class PlayerController : MonoBehaviour
         timeRemaining = initialMatchTime + .999f;
         // level modifier starts at 1, this is used to know the multiplier for the timer
         level = 1;
+        // Set level counter
+        LevelCountText.gameObject.SetActive(true);
+        LevelCountText.text = $"Level: {level}";
         // set the game to be counting down to start
         startStartingCountdown();
     }
@@ -104,6 +107,8 @@ public class PlayerController : MonoBehaviour
     void NextLevel()
     {
         level++;
+        // Set level counter
+        LevelCountText.text = $"Level: {level}";
         // Restore all pickups
         RestoreAllPickups();
         // ensure count and timer are visible
