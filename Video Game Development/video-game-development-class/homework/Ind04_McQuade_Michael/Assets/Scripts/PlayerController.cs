@@ -14,11 +14,13 @@ public class PlayerController : MonoBehaviour
     public AudioClip countdownGoSound;
     public AudioClip countdownNumberSound;
     public AudioClip happySound;
+    public AudioClip unhappySound;
 
     private AudioSource audioSource;
     private Text NextLevelButtonText;
     private Vector3 initialPosition;
-    private int count;
+    private int totalCount;
+    private int currentCount;
     private int level;
     private bool gameActive;
     private float startCountdownTimeRemaining;
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
             if (timeRemaining <= 0)
             {
                 // if we have no remaining time we lose
+                audioSource.PlayOneShot(unhappySound);
                 loseGame();
             }
         }
@@ -91,7 +94,7 @@ public class PlayerController : MonoBehaviour
             // hide the pick up
             other.gameObject.SetActive(false);
             // increase the score
-            count += 1;
+            incrementScore();
             // update the text displaying the score
             UpdateCountText();
         }
@@ -105,7 +108,11 @@ public class PlayerController : MonoBehaviour
             showEndScreen(true);
         }
     }
-
+    private void incrementScore()
+    {
+        totalCount += 1;
+        currentCount += 1;
+    }
     private void startStartingCountdown()
     {
         gameActive = false;
@@ -185,7 +192,8 @@ public class PlayerController : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
         // initial score/count = 0
-        count = 0;
+        totalCount = 0;
+        currentCount = 0;
         // set the count text to this initial value
         UpdateCountText();
         // clear the endText
@@ -206,6 +214,9 @@ public class PlayerController : MonoBehaviour
         level++;
         // Set level counter
         LevelCountText.text = $"Level: {level}";
+        // Set current count to 0
+        currentCount = 0;
+        UpdateCountText();
         // Restore all pickups
         RestoreAllPickups();
         // ensure count and timer are visible
@@ -233,15 +244,15 @@ public class PlayerController : MonoBehaviour
     void UpdateCountText()
     {
         // Update the count text in the HUD to the current score
-        countText.text = $"Count: {count}";
+        countText.text = $"Count: {currentCount}";
     }
 
     void loseGame()
     {
         // set game to inactive, show the end screen
         gameActive = false;
-        showEndScreen(false);
         mustReset = true;
+        showEndScreen(false);
     }
 
     void setTimer()
@@ -283,13 +294,13 @@ public class PlayerController : MonoBehaviour
         countText.gameObject.SetActive(false);
         timeText.gameObject.SetActive(false);
         // Create win and lose strings
-        string winString = $"Score: {count}";
+        string winString = $"Score: {totalCount}";
         string loseString = $"You lose! Score: 0";
 
         // Hide the all or nothing button when the player has beaten the game
         if (level >= 3 && win)
         {
-            winString = $"You win! Score: {count}";
+            winString = $"You win! Score: {totalCount}";
             mustReset = true;
         }
         if (mustReset)
