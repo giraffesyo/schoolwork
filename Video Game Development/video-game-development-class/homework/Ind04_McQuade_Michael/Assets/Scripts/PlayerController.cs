@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviour
     public float initialMatchTime = 90.0f;
     public float speed = 10.0f;
     public GameObject Pickups;
+    public AudioClip countdownGoSound;
+    public AudioClip countdownNumberSound;
+    public AudioClip happySound;
 
+    private AudioSource audioSource;
     private Text NextLevelButtonText;
     private Vector3 initialPosition;
     private int count;
@@ -23,114 +27,6 @@ public class PlayerController : MonoBehaviour
     private bool mustReset = false;
 
 
-    private void startStartingCountdown()
-    {
-        gameActive = false;
-        startCountdownText.gameObject.SetActive(true);
-        // this way we always get a full 3 seconds
-        startCountdownTimeRemaining = 3.99f;
-        countingDownToStart = true;
-        countText.gameObject.SetActive(false);
-        timeText.gameObject.SetActive(false);
-        setStartCountdown();
-    }
-    private void setStartCountdown()
-    {
-        if (startCountdownTimeRemaining < 0) startCountdownTimeRemaining = 0;
-
-        // Make it say go! or the number depending on whats shown
-        string countdownString = Mathf.FloorToInt(startCountdownTimeRemaining).ToString();
-        countdownString = countdownString == "0" ? "GO!" : countdownString;
-        if (countdownString == "3")
-        {
-            startCountdownText.color = Color.red;
-        }
-        if (countdownString == "2")
-        {
-            startCountdownText.color = Color.yellow;
-        }
-        else if (countdownString == "GO!")
-        {
-            // change GO! to green
-            startCountdownText.color = Color.green;
-            // enable player controls and countdown
-            gameActive = true;
-            // re-enable the timer and score UI
-            countText.gameObject.SetActive(true);
-            timeText.gameObject.SetActive(true);
-        }
-        startCountdownText.text = countdownString;
-        startCountdownTimeRemaining -= Time.deltaTime;
-    }
-
-    void RestoreAllPickups()
-    {
-        // get reference to all the pickups and loop through them setting them all active
-        Transform[] transforms = Pickups.GetComponentsInChildren<Transform>(true);
-
-        for (int i = 0; i < transforms.GetLength(0); i++)
-        {
-            transforms[i].gameObject.SetActive(true);
-        }
-    }
-
-    // initial values
-    private void ResetGame()
-    {
-        RestoreAllPickups();
-        // must reset should be false at beginning so we're not forced to restart
-        mustReset = false;
-        // hide end screen if its visible
-        toggleEndScreen(false);
-        // reset the position of the player to the beginning of the maze
-        transform.position = initialPosition;
-        // remove forces from the player
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = Vector3.zero;
-        // initial score/count = 0
-        count = 0;
-        // set the count text to this initial value
-        UpdateCountText();
-        // clear the endText
-        endText.text = "";
-        // Set time remaining to our initial match time, adding a little bit so the first time is visible
-        timeRemaining = initialMatchTime + .999f;
-        // level modifier starts at 1, this is used to know the multiplier for the timer
-        level = 1;
-        // Set level counter
-        LevelCountText.gameObject.SetActive(true);
-        LevelCountText.text = $"Level: {level}";
-        // set the game to be counting down to start
-        startStartingCountdown();
-    }
-
-    void NextLevel()
-    {
-        level++;
-        // Set level counter
-        LevelCountText.text = $"Level: {level}";
-        // Restore all pickups
-        RestoreAllPickups();
-        // ensure count and timer are visible
-        countText.gameObject.SetActive(true);
-        timeText.gameObject.SetActive(true);
-        // hide the end screen
-        endText.text = "";
-        toggleEndScreen(false);
-
-        // remove forces from the player
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = Vector3.zero;
-
-        // Set remaining time to appropriate time for level, adding a little bit so the first number is visible
-        timeRemaining = getLevelTime() + .99f;
-
-        // reset the position of the player
-        transform.position = initialPosition;
-
-        // start the countdown timer
-        startStartingCountdown();
-    }
 
     private void Start()
     {
@@ -140,6 +36,8 @@ public class PlayerController : MonoBehaviour
         NextLevelButtonText = AllOrNothingButton.GetComponentInChildren<Text>();
         // get reference to the rigid body
         rb = GetComponent<Rigidbody>();
+        // get reference to happy sound
+        audioSource = GetComponent<AudioSource>();
         // Describe what method to call when all or nothing button is clicked
         AllOrNothingButton.onClick.AddListener(AllOrNothingClicked);
 
@@ -188,6 +86,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Pick Up"))
         {
+            // play pickup sound
+            audioSource.PlayOneShot(happySound);
             // hide the pick up
             other.gameObject.SetActive(false);
             // increase the score
@@ -197,12 +97,138 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.CompareTag("Exit"))
         {
+            // play exit sound
+            other.GetComponent<AudioSource>().Play();
             // set the game to inactive
             gameActive = false;
             // show the end game screen
             showEndScreen(true);
         }
     }
+
+    private void startStartingCountdown()
+    {
+        gameActive = false;
+        startCountdownText.gameObject.SetActive(true);
+        // this way we always get a full 3 seconds
+        startCountdownTimeRemaining = 3.99f;
+        countingDownToStart = true;
+        countText.gameObject.SetActive(false);
+        timeText.gameObject.SetActive(false);
+        setStartCountdown();
+    }
+    private void setStartCountdown()
+    {
+        string lastText = startCountdownText.text;
+        if (startCountdownTimeRemaining < 0) startCountdownTimeRemaining = 0;
+
+        // Make it say go! or the number depending on whats shown
+        string countdownString = Mathf.FloorToInt(startCountdownTimeRemaining).ToString();
+        countdownString = countdownString == "0" ? "GO!" : countdownString;
+        if (countdownString == "3")
+        {
+            startCountdownText.color = Color.red;
+        }
+        if (countdownString == "2")
+        {
+            startCountdownText.color = Color.yellow;
+        }
+        else if (countdownString == "GO!")
+        {
+            // change GO! to green
+            startCountdownText.color = Color.green;
+            // enable player controls and countdown
+            gameActive = true;
+            // re-enable the timer and score UI
+            countText.gameObject.SetActive(true);
+            timeText.gameObject.SetActive(true);
+        }
+        startCountdownText.text = countdownString;
+        startCountdownTimeRemaining -= Time.deltaTime;
+
+        if (lastText != countdownString)
+        {
+            if (countdownString == "GO!")
+            {
+                audioSource.PlayOneShot(countdownGoSound);
+            }
+            else
+            {
+                audioSource.PlayOneShot(countdownNumberSound);
+            }
+        }
+
+    }
+
+    void RestoreAllPickups()
+    {
+        // get reference to all the pickups and loop through them setting them all active
+        Transform[] transforms = Pickups.GetComponentsInChildren<Transform>(true);
+
+        for (int i = 0; i < transforms.GetLength(0); i++)
+        {
+            transforms[i].gameObject.SetActive(true);
+        }
+    }
+
+    // initial values
+    private void ResetGame()
+    {
+        RestoreAllPickups();
+        // must reset should be false at beginning so we're not forced to restart
+        mustReset = false;
+        // hide end screen if its visible
+        toggleEndScreen(false);
+        // reset the position of the player to the beginning of the maze
+        transform.position = initialPosition;
+        // remove forces from the player
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+        // initial score/count = 0
+        count = 0;
+        // set the count text to this initial value
+        UpdateCountText();
+        // clear the endText
+        endText.text = "";
+        // Set time remaining to our initial match time
+        timeRemaining = initialMatchTime;
+        // level modifier starts at 1, this is used to know the multiplier for the timer
+        level = 1;
+        // Set level counter
+        LevelCountText.gameObject.SetActive(true);
+        LevelCountText.text = $"Level: {level}";
+        // set the game to be counting down to start
+        startStartingCountdown();
+    }
+
+    void NextLevel()
+    {
+        level++;
+        // Set level counter
+        LevelCountText.text = $"Level: {level}";
+        // Restore all pickups
+        RestoreAllPickups();
+        // ensure count and timer are visible
+        countText.gameObject.SetActive(true);
+        timeText.gameObject.SetActive(true);
+        // hide the end screen
+        endText.text = "";
+        toggleEndScreen(false);
+
+        // remove forces from the player
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+
+        // Set remaining time to appropriate time for level, adding a little bit so the first number is visible
+        timeRemaining = getLevelTime() + .99f;
+
+        // reset the position of the player
+        transform.position = initialPosition;
+
+        // start the countdown timer
+        startStartingCountdown();
+    }
+
 
     void UpdateCountText()
     {
@@ -241,10 +267,12 @@ public class PlayerController : MonoBehaviour
 
     float getLevelTime()
     {
+        int numberOfLevels = 3;
+        // Works like this: 
         // level 1 == initialMatchTime * 3/3 
         // level 2 == initialMatchTime * 2/3
         // level 3 == initialMatchTime * 1/3
-        float levelTime = initialMatchTime * (4 - level) / 3;
+        float levelTime = initialMatchTime * (numberOfLevels - level + 1) / numberOfLevels;
         return levelTime;
     }
 
