@@ -6,20 +6,21 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
-    public Text countText;
-    public Text endText;
-    public Text timeText;
+    public Button AllOrNothingButton;
+    public Text countText, endText, timeText;
     public float initialMatchTime = 90.0f;
     public float speed = 10.0f;
+
+    private Vector3 initialPosition;
     private int count;
     private int level;
     private bool gameActive;
 
     private float timeRemaining;
-    private void Start()
+
+
+    private void ResetGame()
     {
-        // get reference to the rigid body
-        rb = GetComponent<Rigidbody>();
         // initial score/count = 0
         count = 0;
         // set the count text to this initial value
@@ -32,6 +33,43 @@ public class PlayerController : MonoBehaviour
         level = 1;
         // set the game to be active, used to control player movement and updating timers
         gameActive = true;
+
+    }
+
+    void NextLevel()
+    {
+        level++;
+        // ensure count and timer are visible
+        countText.gameObject.SetActive(true);
+        timeText.gameObject.SetActive(true);
+        // hide the end screen
+        endText.text = "";
+        toggleEndScreen(false);
+
+        // remove forces from the player
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+
+        // Set remaining time to appropriate time for level
+        timeRemaining = getLevelTime();
+
+        // reset the position of the player
+        transform.position = initialPosition;
+
+        // turn game back on
+        gameActive = true;
+
+    }
+
+    private void Start()
+    {
+        // Set game up
+        ResetGame();
+        // get reference to the rigid body
+        rb = GetComponent<Rigidbody>();
+        // Describe what method to call when all or nothing button is clicked
+        AllOrNothingButton.onClick.AddListener(AllOrNothingClicked);
+        initialPosition = transform.position;
     }
     private void Update()
     {
@@ -103,16 +141,26 @@ public class PlayerController : MonoBehaviour
         if (timeRemaining < 0) timeRemaining = 0;
 
         timeText.text = Mathf.FloorToInt(timeRemaining).ToString();
+        float currentLevelTime = getLevelTime();
         // if we have less than 2/3 of the remaining time change countdown to yellow
-        if (timeRemaining <= initialMatchTime * 2 / 3)
+        if (timeRemaining <= currentLevelTime * 2 / 3)
         {
             timeText.color = Color.yellow;
         }
         // if we have less than a third of the remaining time change countdown to red
-        if (timeRemaining <= initialMatchTime / 3)
+        if (timeRemaining <= currentLevelTime / 3)
         {
             timeText.color = Color.red;
         }
+    }
+
+    float getLevelTime()
+    {
+        // level 1 == initialMatchTime * 3/3 
+        // level 2 == initialMatchTime * 2/3
+        // level 3 == initialMatchTime * 1/3
+        float levelTime = initialMatchTime * (4 - level) / 3;
+        return levelTime;
     }
 
     void showEndScreen(bool win)
@@ -121,11 +169,34 @@ public class PlayerController : MonoBehaviour
         countText.gameObject.SetActive(false);
         timeText.gameObject.SetActive(false);
         // Create win and lose strings
-        string winString = $"You win! Score: {count}";
+        string winString = $"Score: {count}";
         string loseString = $"You lose! Score: 0";
-        // Decide which one to show
+
+        // Hide the all or nothing button when the player has beaten the game
+        if (level >= 3)
+        {
+            AllOrNothingButton.gameObject.SetActive(false);
+            winString = $"You win! Score: {count}";
+        }
+
+        // Decide which string to show
         endText.text = win ? winString : loseString;
+
+
         // Unhide the gameobject that holds the panel and the end text
-        endText.transform.parent.gameObject.SetActive(true);
+        toggleEndScreen(true);
+
+    }
+
+    // only used to turn it on or off, above method should be used when advancing to that screen
+    void toggleEndScreen(bool show)
+    {
+        endText.transform.parent.gameObject.SetActive(show);
+
+    }
+
+    void AllOrNothingClicked()
+    {
+        NextLevel();
     }
 }
