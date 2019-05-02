@@ -9,4 +9,10 @@ Button backgrounds were created using Da Button Factory at https://dabuttonfacto
 
 Ki Comic font free for personal use from https://www.dafont.com/ki-comic.font
 
+Mr. Raindrop Song, copyright Viz Media, used without permission (https://www.youtube.com/watch?v=vnU81QnWhXA)
+
+
+
+
+
 
