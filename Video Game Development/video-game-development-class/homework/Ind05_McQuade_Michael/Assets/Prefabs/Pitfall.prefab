@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6239156326698184051}
   - component: {fileID: 6239156326698184048}
   - component: {fileID: 6239156326698184049}
-  - component: {fileID: 6239156326698184046}
+  - component: {fileID: 6508663023566421753}
   m_Layer: 0
-  m_Name: PitfallLeft
+  m_Name: Pitfall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &6239156326698184046
+--- !u!114 &6508663023566421753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,7 +102,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6239156326698184047}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21a1f3fe3c22e47de91a41e6bf6a240f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9db3f3601881c4a9cacdadfeb22ba117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPoint: {fileID: 0}

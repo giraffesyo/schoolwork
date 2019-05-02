@@ -6,12 +6,11 @@ public class SendToStart : MonoBehaviour
 {
     public GameObject startingPoint;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
+        public void SendHome()
         {
-            Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+            Rigidbody rb = GetComponent<Rigidbody>();
             rb.MovePosition(startingPoint.transform.position);
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
     }
-}
