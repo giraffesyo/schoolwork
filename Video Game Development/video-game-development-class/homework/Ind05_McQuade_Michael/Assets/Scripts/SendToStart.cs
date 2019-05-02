@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SendToStart : MonoBehaviour
 {
-    public GameObject startingPoint;
 
         public void SendHome()
         {
             Rigidbody rb = GetComponent<Rigidbody>();
-            rb.MovePosition(startingPoint.transform.position);
+
+            rb.transform.localPosition = (Vector3.zero);
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }

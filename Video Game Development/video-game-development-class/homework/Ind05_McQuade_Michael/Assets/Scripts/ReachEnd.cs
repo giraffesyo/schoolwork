@@ -9,7 +9,7 @@ public class ReachEnd : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player") {
-            Destroy(other);
+            Destroy(other.gameObject);
             victoryCheck.Goal();
         }
 

@@ -10,7 +10,7 @@ public class Menu : MonoBehaviour
     public Button PlayButton;
     public GameObject MenuContainer;
     public Text CounterText;
-    public LevelRestart resetBalls;
+    public LevelRestart reset;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class Menu : MonoBehaviour
 
 
     public void PlayClicked() {
-        Unpause();
+        Restart();
     }
 
     public void QuitClicked() {
@@ -70,9 +70,8 @@ public class Menu : MonoBehaviour
     }
     public void Restart()
     {
+        reset.Restart();
         CounterText.text = "00:00";
-
         Unpause();
-        resetBalls.Restart();
     }
 }
