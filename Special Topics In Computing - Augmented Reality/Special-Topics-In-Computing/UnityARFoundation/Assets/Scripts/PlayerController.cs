@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
 {
 
     public Material[] materials;
+    public Transform device;
+    private bool wasInFront = false;
+    private bool inOtherWorld = false;
+
 
     void Start()
     {
@@ -29,6 +33,23 @@ public class PlayerController : MonoBehaviour
             mat.SetInt("_StencilTest", (int)CompareFunction.NotEqual);
         }
     }
+
+
+    //bool CheckIfInFront() {
+
+    //    Vector3 pos = transform.InverseTransformPoint(device.position);
+    //    return pos.z >= 
+    //}
+
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.transform != device) {
+    //        return;
+    //        }
+    //    //wasInFront = CheckIfInFront()
+
+    //}
 
     private void OnTriggerStay(Collider other)
     {
