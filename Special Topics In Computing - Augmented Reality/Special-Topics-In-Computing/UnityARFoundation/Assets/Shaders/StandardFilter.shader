@@ -6,8 +6,7 @@ Shader "Custom/Standard Filter"
     {
         _Color("Color", Color) = (1,1,1,1)
         _MainTex("Albedo", 2D) = "white" {}
-        [Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
-
+      
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 
         _Glossiness("Smoothness", Range(0.0, 1.0)) = 0.5
@@ -39,6 +38,7 @@ Shader "Custom/Standard Filter"
         _DetailNormalMap("Normal Map", 2D) = "bump" {}
 
         [Enum(UV0,0,UV1,1)] _UVSec ("UV Set for secondary textures", Float) = 0
+        [Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
 
 
         // Blending state
@@ -56,7 +56,7 @@ Shader "Custom/Standard Filter"
     {
         Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
         LOD 300
-              Stencil {
+        Stencil {
             Ref 1
             Comp [_StencilTest]
         }
@@ -230,7 +230,7 @@ Shader "Custom/Standard Filter"
     {
         Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
         LOD 150
-              Stencil {
+        Stencil {
             Ref 1
             Comp [_StencilTest]
         }
