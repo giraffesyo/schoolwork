@@ -15,7 +15,6 @@ public class ARTapToPlaceObject : MonoBehaviour
     private bool placed = false;
     public GameObject placementIndicator;
     public GameObject objectToPlace;
-    public PlayerController playerController;
 
     void Start()
     {
@@ -43,7 +42,9 @@ public class ARTapToPlaceObject : MonoBehaviour
     private void PlaceObject()
     {
         GameObject portal = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        PlayerController playerController = FindObjectOfType<PlayerController>();
         playerController.SetPortalsParent(portal);
+
         // disable placement indicator
     }
 

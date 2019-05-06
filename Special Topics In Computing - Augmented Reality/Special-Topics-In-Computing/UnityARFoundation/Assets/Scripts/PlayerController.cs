@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
 
 public Transform device;
-    public GameObject portalsParent;
+    private GameObject portalsParent;
     private bool portalPlaced;
     private bool insidePortal;
     private GameObject currentPortal;
@@ -15,6 +15,7 @@ public Transform device;
     private GameObject portal1;
     private GameObject portal2;
     public bool testing;
+    //private GameObject portalWindow;
 
     private bool wasInFront = false;
 
@@ -35,8 +36,9 @@ public Transform device;
         portalPlaced = true;
         currentPortal = GameObject.FindWithTag("Portal1");
         otherPortal = GameObject.FindWithTag("Portal2");
+        //portalWindow = GameObject.FindWithTag("PortalWindow");
         otherPortal.SetActive(false);
-         portal1 = currentPortal;
+        portal1 = currentPortal;
         portal2 = otherPortal;
 
     }

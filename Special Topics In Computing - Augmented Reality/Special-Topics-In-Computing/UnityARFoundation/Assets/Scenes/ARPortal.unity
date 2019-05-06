@@ -453,7 +453,6 @@ GameObject:
   - component: {fileID: 1743933828}
   - component: {fileID: 1743933827}
   - component: {fileID: 1743933829}
-  - component: {fileID: 1743933830}
   m_Layer: 0
   m_Name: Logic
   m_TagString: Untagged
@@ -474,9 +473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placementIndicator: {fileID: 282644237}
-  objectToPlace: {fileID: 216572927716398463, guid: 30be0f209c71e419e84e5a2d8b89d067,
+  objectToPlace: {fileID: 2791236093824711280, guid: 30be0f209c71e419e84e5a2d8b89d067,
     type: 3}
-  playerController: {fileID: 1743933830}
 --- !u!4 &1743933828
 Transform:
   m_ObjectHideFlags: 0
@@ -503,21 +501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 998c8683308114748b67f8e26a640a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1743933830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743933826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b0f111c812514f8eb36e3b991046634, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  device: {fileID: 1016756814}
-  portalsParent: {fileID: 216572927716398463, guid: 30be0f209c71e419e84e5a2d8b89d067,
-    type: 3}
 --- !u!1 &1881665103
 GameObject:
   m_ObjectHideFlags: 0
