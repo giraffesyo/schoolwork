@@ -11,7 +11,7 @@ Properties {
     _GroundColor ("Ground", Color) = (.369, .349, .341, 1)
 
     _Exposure("Exposure", Range(0, 8)) = 1.3
-   [Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
+   //[Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
 }
 
 SubShader {

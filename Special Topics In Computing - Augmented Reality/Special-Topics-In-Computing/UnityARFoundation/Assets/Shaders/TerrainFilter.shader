@@ -5,7 +5,7 @@ Shader "Custom/Terrain Filter" {
         // used in fallback on old cards & base map
         [HideInInspector] _MainTex ("BaseMap (RGB)", 2D) = "white" {}
         [HideInInspector] _Color ("Main Color", Color) = (1,1,1,1)
-        [Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
+        //[Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
     }
 
     CGINCLUDE

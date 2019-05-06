@@ -6,50 +6,20 @@ using UnityEngine.Rendering;
 public class PlayerController : MonoBehaviour
 {
 
-    public Material[] materials;
-    public Transform device;
-    private bool wasInFront = false;
-    private bool inOtherWorld = false;
-
+public Transform device;
 
     void Start()
     {
-        MakeInvisible();
+        SetRender(false);
     }
 
-
-    private void MakeInvisible()
+    void SetRender(bool render)
     {
-        foreach (var mat in materials)
-        {
-            mat.SetInt("_StencilTest", (int)CompareFunction.Equal);
-        }
+        // Outside of portal is "equls"
+        // Inside of portal is "not equals"
+        var StencilTest = render ? CompareFunction.NotEqual : CompareFunction.Equal;
+        Shader.SetGlobalInt("_StencilTest", (int)StencilTest);
     }
-
-    private void MakeVisible()
-    {
-        foreach (var mat in materials)
-        {
-            mat.SetInt("_StencilTest", (int)CompareFunction.NotEqual);
-        }
-    }
-
-
-    //bool CheckIfInFront() {
-
-    //    Vector3 pos = transform.InverseTransformPoint(device.position);
-    //    return pos.z >= 
-    //}
-
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.transform != device) {
-    //        return;
-    //        }
-    //    //wasInFront = CheckIfInFront()
-
-    //}
 
     private void OnTriggerStay(Collider other)
     {
@@ -57,28 +27,20 @@ public class PlayerController : MonoBehaviour
             return;
           }
 
-        // Outside of portal is "equls"
-        // Inside of portal is "not equals"
+
         if(transform.position.z > other.transform.position.z)
         {
-            MakeInvisible();
+            SetRender(false);
         }
         else
         {// inside portal
-            MakeVisible();
+            SetRender(true);
         }
     }
 
-    // Since we're dealing with shader materials these aren't reset on play mode enter/exit
-    // so we need to reset them
     private void OnDestroy()
     {
-        MakeVisible();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SetRender(false);
     }
 }
+

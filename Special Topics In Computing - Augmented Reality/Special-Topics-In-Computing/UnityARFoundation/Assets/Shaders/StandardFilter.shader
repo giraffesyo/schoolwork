@@ -38,7 +38,7 @@ Shader "Custom/Standard Filter"
         _DetailNormalMap("Normal Map", 2D) = "bump" {}
 
         [Enum(UV0,0,UV1,1)] _UVSec ("UV Set for secondary textures", Float) = 0
-        [Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
+       // [Enum(Equal,3,NotEqual,6)] _StencilTest ("Stencil Test", int) = 6
 
 
         // Blending state
