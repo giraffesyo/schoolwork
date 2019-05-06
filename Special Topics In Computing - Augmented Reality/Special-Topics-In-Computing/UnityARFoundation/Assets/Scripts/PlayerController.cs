@@ -41,14 +41,6 @@ public Transform device;
 
     }
 
-//    bool CheckInFront()
-//    {
-//        Vector3 pos = transform.InverseTransformPoint(device.position);
-//        bool inFront = pos.z >= 0;
-////        Debug.Log("Is in front:" + inFront);
-    //    return inFront;
-    //}
-
     void SetRender(bool render)
     {
         // Outside of portal is "equls"
@@ -56,54 +48,6 @@ public Transform device;
         var StencilTest = render ? CompareFunction.NotEqual : CompareFunction.Equal;
         Shader.SetGlobalInt("_StencilTest", (int)StencilTest);
     }
-
-    //private void Update()
-    //{
-    //    if (portalPlaced)
-    //    {
-    //        if (!insidePortal && ((isInFront && !wasInFront) || (wasInFront && !isInFront)))
-    //        {
-    //            var tempPortal = currentPortal;
-    //            currentPortal = otherPortal;
-    //            otherPortal = tempPortal;
-    //            currentPortal.SetActive(true);
-    //            otherPortal.SetActive(false);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.transform != device)
-    //    {
-    //      //  Debug.Log("other.transform was not device");
-    //        return;
-    //    }
-
-    //    wasInFront = CheckInFront();
-    //    //Debug.Log("Trigger entered was in front set to: ," + wasInFront);
-    //}
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.transform != device) {
-    //        //Debug.Log("other.transform was not device");
-    //        return; 
-    //    }
-    //    isInFront = CheckInFront();
-    //    Debug.Log($"Is in front {isInFront}");
-
-    //    if((isInFront && !wasInFront) || (wasInFront && !isInFront))
-    //    {
-    //        insidePortal = !insidePortal;
-    //        SetRender(insidePortal);
-    //        Debug.Log("Flipping set render");
-    //    }
-    //}
-
-
-    // begin other code
-
 
     void WhileCameraColliding()
     {
