@@ -474,8 +474,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placementIndicator: {fileID: 282644237}
-  objectToPlace: {fileID: 8877840272931257681, guid: f17772c2cda9d4c9199dc61b3842648a,
+  objectToPlace: {fileID: 216572927716398463, guid: 30be0f209c71e419e84e5a2d8b89d067,
     type: 3}
+  playerController: {fileID: 1743933830}
 --- !u!4 &1743933828
 Transform:
   m_ObjectHideFlags: 0
@@ -514,13 +515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0f111c812514f8eb36e3b991046634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materials:
-  - {fileID: 2100000, guid: 88198c791a716b9479c2f987a2cdab6e, type: 2}
-  - {fileID: 2100000, guid: 465db2bfea47c4dc1aab5113db39b4b5, type: 2}
-  - {fileID: 2100000, guid: 7cd68361dd29d4d78bbdcb2309c07b8b, type: 2}
-  - {fileID: 2100000, guid: 854144f2dc0784eda915898801499a5b, type: 2}
-  - {fileID: 2100000, guid: 8fd7e88fe7ea74f0fab413338e8128dc, type: 2}
-  device: {fileID: 0}
+  device: {fileID: 1016756814}
+  portalsParent: {fileID: 216572927716398463, guid: 30be0f209c71e419e84e5a2d8b89d067,
+    type: 3}
 --- !u!1 &1881665103
 GameObject:
   m_ObjectHideFlags: 0

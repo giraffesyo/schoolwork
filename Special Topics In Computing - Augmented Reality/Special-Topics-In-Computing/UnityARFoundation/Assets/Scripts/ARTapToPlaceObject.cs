@@ -12,9 +12,10 @@ public class ARTapToPlaceObject : MonoBehaviour
     private Pose placementPose;
     // we only consider this true if hits array has one item in it
     private bool placementPoseIsValid = false;
-
+    private bool placed = false;
     public GameObject placementIndicator;
     public GameObject objectToPlace;
+    public PlayerController playerController;
 
     void Start()
     {
@@ -24,6 +25,8 @@ public class ARTapToPlaceObject : MonoBehaviour
 
     void Update()
     {
+        // this script is done when we place the indicator
+        if (placed) return;
         // We want to find out where the camera is pointing and find out if there
         // is a position in virtual space that we can place an object
         UpdatePlacementPose();
@@ -32,12 +35,15 @@ public class ARTapToPlaceObject : MonoBehaviour
         if(placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             PlaceObject();
+            placed = true;
+            placementIndicator.SetActive(false);
         }
     }
 
     private void PlaceObject()
     {
-        Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        GameObject portal = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        playerController.SetPortalsParent(portal);
         // disable placement indicator
     }
 
