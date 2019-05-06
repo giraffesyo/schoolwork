@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class PlayerController : MonoBehaviour
 {
 
-public Transform device;
+    private Transform device;
     private GameObject portalsParent;
     private bool portalPlaced;
     private bool insidePortal;
@@ -40,6 +40,7 @@ public Transform device;
         otherPortal.SetActive(false);
         portal1 = currentPortal;
         portal2 = otherPortal;
+        device = GameObject.FindWithTag("MainCamera").transform;
 
     }
 
@@ -51,7 +52,7 @@ public Transform device;
         Shader.SetGlobalInt("_StencilTest", (int)StencilTest);
     }
 
-    void WhileCameraColliding()
+    void MainLoop()
     {
 
         bool isInFront = CheckInFront();
@@ -84,7 +85,12 @@ public Transform device;
         Vector3 worldPos = device.position + device.forward * Camera.main.nearClipPlane;
 
         Vector3 pos = transform.InverseTransformPoint(worldPos);
-        return pos.z >= 0;
+        bool inFront = pos.z >= 0;
+        if(inFront && !wasInFront || !inFront && wasInFront) {
+            Debug.Log("We switched sides");
+          }
+
+        return inFront;
     }
 
     void OnTriggerEnter(Collider other)
@@ -103,7 +109,7 @@ public Transform device;
     }
     void Update()
     {
-        WhileCameraColliding();
+        MainLoop();
     }
 
     private void OnDestroy()

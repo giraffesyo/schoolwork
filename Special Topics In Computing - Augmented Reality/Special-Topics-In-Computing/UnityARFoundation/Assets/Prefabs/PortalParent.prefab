@@ -3741,9 +3741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0f111c812514f8eb36e3b991046634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  device: {fileID: 0}
-  portalsParent: {fileID: 2791236093824711280}
-  testing: 1
+  testing: 0
 --- !u!1 &6739666260686700730
 GameObject:
   m_ObjectHideFlags: 0

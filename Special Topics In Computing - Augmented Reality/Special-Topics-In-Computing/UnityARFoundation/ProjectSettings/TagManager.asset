@@ -7,7 +7,6 @@ TagManager:
   - Portal1
   - Portal2
   - PortalParent
-  - Device
   - PortalWindow
   layers:
   - Default
