@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PickupCoin : MonoBehaviour
 {
+    public AudioClip pickupSound;
     private GameManager gameManager;
 
     private void Start()
@@ -13,9 +14,8 @@ public class PickupCoin : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameManager.IncrementScore();
+        gameManager.GetComponent<AudioSource>().PlayOneShot(pickupSound);
         this.gameObject.SetActive(false);
     }
-
-
 
 }
