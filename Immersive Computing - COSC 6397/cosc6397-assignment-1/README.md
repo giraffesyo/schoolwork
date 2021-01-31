@@ -12,4 +12,6 @@ The dogecoin model was obtained for free from [TurboSquid](https://www.turbosqui
 
 The coin sound is a free sound from the [GDC yearly giveaway pack](https://sonniss.com/gameaudiogdc).
 
+Mr. Raindrop BGM is probably copyrighted music, it's the second ending song from Gintama. Downloaded it from YouTube.
+
 The live dogecoin price is coming from a microservice I created for this project. I didnt't want to embed API credentials into my Unity app so I made a small wrapper around [CoinMarketCap](https://coinmarketcap.com/api/documentation/v1/)'s API and deployed it using [Vercel](https://vercel.com). You can see the full code in the other [repo here](https://github.com/giraffesyo/dogecoin). It's live at https://dogecoin.giraffesyo.dev/api and does not require an api key. In order to prevent hammering CoinMarketCap's API I'm using `Cache-Control` headers with `s-maxage` which causes Vercel's CDN to cache responses for the length specified by `s-maxage`. In this case, responses are cached for 5 minutes.

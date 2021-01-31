@@ -14,7 +14,7 @@ public class PickupCoin : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameManager.IncrementScore();
-        gameManager.GetComponent<AudioSource>().PlayOneShot(pickupSound);
+        gameManager.GetComponent<AudioSource>().PlayOneShot(pickupSound, 1.0f);
         this.gameObject.SetActive(false);
     }
 
