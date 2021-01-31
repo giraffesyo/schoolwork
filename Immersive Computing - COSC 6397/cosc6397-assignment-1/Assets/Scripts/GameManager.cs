@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public void IncrementScore()
     {
         this.score += dogecoinPrice;
-        SetPriceText(this.score);
+        SetScoreText(this.score);
     }
 
     private void Start()
