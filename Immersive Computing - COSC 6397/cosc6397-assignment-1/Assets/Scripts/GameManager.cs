@@ -13,16 +13,35 @@ public class GameManager : MonoBehaviour
 
     public Text textPrice;
     public Text textScore;
+    public GameObject prefabDogecoin;
+    public Transform spawnPointsParent;
 
-    // Start is called before the first frame update
-    void Start()
+    public void IncrementScore()
     {
-
+        this.score += dogecoinPrice;
+        SetPriceText(this.score);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
+        SpawnDogecoins();
+    }
 
+    private void SetPriceText(float newPrice)
+    {
+        textPrice.text = "Dogecoin live price: $" + newPrice.ToString();
+    }
+
+    private void SetScoreText(float newScore)
+    {
+        textScore.text = "Wallet: $" + newScore.ToString();
+    }
+
+    private void SpawnDogecoins()
+    {
+        foreach (Transform spawnPoint in spawnPointsParent)
+        {
+            Instantiate(prefabDogecoin, spawnPoint);
+        }
     }
 }
