@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 
@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(GetLiveDogecoinPrice());
         SpawnDogecoins();
     }
 
@@ -44,4 +45,29 @@ public class GameManager : MonoBehaviour
             Instantiate(prefabDogecoin, spawnPoint);
         }
     }
+
+    private IEnumerator GetLiveDogecoinPrice()
+    {
+        UnityWebRequest dogeWr = UnityWebRequest.Get("https://dogecoin.giraffesyo.dev/api");
+        yield return dogeWr.SendWebRequest();
+        if (dogeWr.result == UnityWebRequest.Result.Success)
+        {
+            // Show results as text
+            Debug.Log(dogeWr.downloadHandler.text);
+            DogecoinRequest dogeReq = JsonUtility.FromJson<DogecoinRequest>(dogeWr.downloadHandler.text);
+            this.dogecoinPrice = dogeReq.price;
+            SetPriceText(dogecoinPrice);
+        }
+        else
+        {
+            Debug.Log(dogeWr.error);
+        }
+    }
+}
+
+class DogecoinRequest
+{
+    public float price;
+    public bool error;
+
 }
