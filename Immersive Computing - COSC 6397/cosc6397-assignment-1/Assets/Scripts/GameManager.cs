@@ -52,8 +52,6 @@ public class GameManager : MonoBehaviour
         yield return dogeWr.SendWebRequest();
         if (dogeWr.result == UnityWebRequest.Result.Success)
         {
-            // Show results as text
-            Debug.Log(dogeWr.downloadHandler.text);
             DogecoinRequest dogeReq = JsonUtility.FromJson<DogecoinRequest>(dogeWr.downloadHandler.text);
             this.dogecoinPrice = dogeReq.price;
             SetPriceText(dogecoinPrice);
