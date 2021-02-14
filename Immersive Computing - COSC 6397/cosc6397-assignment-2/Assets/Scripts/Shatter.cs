@@ -23,7 +23,7 @@ public class Shatter : MonoBehaviour
                 Rigidbody rb = t.gameObject.AddComponent<Rigidbody>();
                 rb.AddForce(new Vector3(Random.Range(-250, 1000), Random.Range(-250, 1000), Random.Range(-250, 1000)));
             }
-            IEnumerator destroyCoroutine = DestroyAfter(goShattered, 2.0f);
+            IEnumerator destroyCoroutine = DestroyAfter(goShattered, 5.0f);
             StartCoroutine(destroyCoroutine);
             isShattered = true;
         }
