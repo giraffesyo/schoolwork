@@ -34,6 +34,7 @@ public class ModelManager : MonoBehaviour
 
     public void ContextAction()
     {
+
         if (Models[currentModel].name == "penny")
         {
             // play spin animation
@@ -43,6 +44,7 @@ public class ModelManager : MonoBehaviour
         else if (Models[currentModel].name == "chalice")
         {
             Debug.Log("hello chalice");
+            Models[currentModel].GetComponent<Shatter>().shatter();
 
         }
     }
