@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SizeSlider : MonoBehaviour
+public class SizeSlider : SliderBase
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject gameObjectToResize;
+    override public void OnSliderChanged(float delta)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector3 scale = new Vector3(transform.localScale.x * delta, transform.localScale.y * delta, transform.localScale.z * delta);
+        this.gameObjectToResize.transform.localScale = scale;
     }
 }

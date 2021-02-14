@@ -3,26 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RotationSlider : MonoBehaviour
+public class RotationSlider : SliderBase
 {
-    private Slider slider;
+
     public GameObject gameobjectToRotate;
-    // Start is called before the first frame update
-    private float previousValue;
-
-    void Start()
+    override public void OnSliderChanged(float delta)
     {
-        slider = GetComponent<Slider>();
-
-        slider.onValueChanged.AddListener(OnSliderChanged);
-        // initialize previousValue
-        previousValue = this.slider.value;
-    }
-
-    void OnSliderChanged(float newValue)
-    {
-        float change = newValue - this.previousValue;
-        this.gameobjectToRotate.transform.Rotate(Vector3.right * change * 360);
-        this.previousValue = newValue;
+        this.gameobjectToRotate.transform.Rotate(Vector3.right * delta * 360);
     }
 }
