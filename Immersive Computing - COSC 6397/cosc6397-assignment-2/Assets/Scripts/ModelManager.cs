@@ -8,7 +8,6 @@ public class ModelManager : MonoBehaviour
 
     public int currentModel = 0;
     public List<GameObject> Models;
-
     public GameObject GetCurrentModel()
     {
         return Models[currentModel];
@@ -37,8 +36,9 @@ public class ModelManager : MonoBehaviour
     {
         if (Models[currentModel].name == "penny")
         {
+            // play spin animation
+            GetCurrentModel().GetComponent<Animator>().Play("flip");
 
-            Debug.Log("hello penny");
         }
         else if (Models[currentModel].name == "chalice")
         {
@@ -46,4 +46,8 @@ public class ModelManager : MonoBehaviour
 
         }
     }
+
+
+
+
 }

@@ -10,6 +10,17 @@ public class RotationSlider : SliderBase
     public ModelManager models;
     override public void OnSliderChanged(float delta)
     {
-        this.models.GetCurrentModel().transform.Rotate(Vector3.right * delta * 360);
+        GameObject currentModel = this.models.GetCurrentModel();
+        if (currentModel.name == "penny")
+        {
+            Debug.Log("rotating penny");
+            this.models.transform.Rotate(Vector3.up * delta * 360);
+
+        }
+        else if (currentModel.name == "chalice")
+        {
+            this.models.transform.Rotate(Vector3.right * delta * 360);
+
+        }
     }
 }
