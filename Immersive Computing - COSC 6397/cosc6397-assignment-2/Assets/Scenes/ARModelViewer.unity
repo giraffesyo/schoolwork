@@ -615,6 +615,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentModel: 0
   Models: []
+  NextButton: {fileID: 1626108226}
+  ContextButton: {fileID: 1961151993}
 --- !u!1 &670222352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,19 +1328,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1626108227}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 457047776}
-        m_TargetAssemblyTypeName: ModelSwitcher, Assembly-CSharp
-        m_MethodName: NextModel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1626108227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1748,19 +1738,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1961151994}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 457047776}
-        m_TargetAssemblyTypeName: ModelManager, Assembly-CSharp
-        m_MethodName: ContextAction
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1961151994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,6 +1851,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7336750525701121666, guid: 9ab394f88799641efbb7e8e08eb9730f, type: 3}
   m_PrefabInstance: {fileID: 7087512176872784391}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &919132148204650051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148204650047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba2bdea61b5340f394811272235ccc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShatteredChalice: {fileID: 7819883589830021174, guid: 0f1a1266adc5144e99dc4c7da4de01e3, type: 3}
 --- !u!1001 &3543606726880594902
 PrefabInstance:
   m_ObjectHideFlags: 0
