@@ -7,7 +7,7 @@ public class RotationSlider : SliderBase
 {
 
     public GameObject gameobjectToRotate;
-    public ModelSwitcher models;
+    public ModelManager models;
     override public void OnSliderChanged(float delta)
     {
         this.models.GetCurrentModel().transform.Rotate(Vector3.right * delta * 360);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SizeSlider : SliderBase
 {
-    public ModelSwitcher models;
+    public ModelManager models;
     override public void OnSliderChanged(float delta)
     {
         Vector3 scale = new Vector3(transform.localScale.x * delta, transform.localScale.y * delta, transform.localScale.z * delta);
