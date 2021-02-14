@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 387853885}
   - component: {fileID: 387853884}
   m_Layer: 5
-  m_Name: NextModelText
+  m_Name: ContextText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

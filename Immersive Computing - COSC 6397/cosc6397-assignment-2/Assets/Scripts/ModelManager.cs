@@ -32,4 +32,18 @@ public class ModelManager : MonoBehaviour
         currentModel = currentModel == Models.Count - 1 ? 0 : currentModel + 1;
         Models[currentModel].SetActive(true);
     }
+
+    public void ContextAction()
+    {
+        if (Models[currentModel].name == "penny")
+        {
+
+            Debug.Log("hello penny");
+        }
+        else if (Models[currentModel].name == "chalice")
+        {
+            Debug.Log("hello chalice");
+
+        }
+    }
 }
