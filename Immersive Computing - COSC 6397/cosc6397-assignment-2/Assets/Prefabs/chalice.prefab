@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7336750525701121666}
   - component: {fileID: 5944333893361232167}
   - component: {fileID: 8474212537587244525}
+  - component: {fileID: 1948774404527126074}
   m_Layer: 0
   m_Name: chalice
   m_TagString: Untagged
@@ -81,3 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1948774404527126074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7969839822227586104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba2bdea61b5340f394811272235ccc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShatteredChalice: {fileID: 7819883589830021174, guid: 0f1a1266adc5144e99dc4c7da4de01e3, type: 3}
