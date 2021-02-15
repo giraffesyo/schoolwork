@@ -3,6 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+static class ModelNames
+{
+    public const string AANG = "aang";
+    public const string CHALICE = "chalice";
+    public const string PENNY = "penny";
+}
+
+static class ButtonTexts
+{
+    public const string SHATTER = "Shatter";
+    public const string WOOPS = "woops";
+    public const string FLIP = "Flip";
+    public const string WAVE = "Wave";
+}
+
 public class ModelManager : MonoBehaviour
 {
 
@@ -16,6 +32,7 @@ public class ModelManager : MonoBehaviour
     {
         return Models[currentModel];
     }
+
 
     private void Start()
     {
@@ -42,13 +59,25 @@ public class ModelManager : MonoBehaviour
     {
         Text btnText = ContextButton.GetComponentInChildren<Text>();
         string name = Models[currentModel].name;
-        if (name == "penny")
+        if (name == ModelNames.PENNY)
         {
-            btnText.text = "Flip";
+            ContextButton.gameObject.SetActive(true);
+            btnText.text = ButtonTexts.FLIP;
         }
-        else if (name == "chalice")
+        else if (name == ModelNames.CHALICE)
         {
-            btnText.text = "Shatter";
+            ContextButton.gameObject.SetActive(true);
+            btnText.text = ButtonTexts.SHATTER;
+        }
+        else if (name == ModelNames.AANG)
+        {
+            ContextButton.gameObject.SetActive(true);
+            btnText.text = ButtonTexts.WAVE;
+        }
+        else
+        {
+            // hide the button if the model isnt one of the above (won't happen in current setup without adding more models)
+            ContextButton.gameObject.SetActive(false);
         }
     }
     // Switches out the current model shown, and handles any cleanup that might need to be done when switching
@@ -59,7 +88,7 @@ public class ModelManager : MonoBehaviour
         currentModel = currentModel == Models.Count - 1 ? 0 : currentModel + 1;
         SetButtonText();
         Models[currentModel].SetActive(true);
-        if (Models[currentModel].name == "chalice")
+        if (Models[currentModel].name == ModelNames.CHALICE)
         {
             Models[currentModel].GetComponent<Shatter>().unshatter();
         }
@@ -70,24 +99,28 @@ public class ModelManager : MonoBehaviour
     public void ContextAction()
     {
 
-        if (Models[currentModel].name == "penny")
+        if (Models[currentModel].name == ModelNames.PENNY)
         {
             // play spin animation
             GetCurrentModel().GetComponent<Animator>().Play("flip");
 
         }
-        else if (Models[currentModel].name == "chalice")
+        else if (Models[currentModel].name == ModelNames.CHALICE)
         {
             Text contextText = ContextButton.GetComponentInChildren<Text>();
             bool shattered = Models[currentModel].GetComponent<Shatter>().shatter();
             if (shattered)
             {
-                contextText.text = "woops";
+                contextText.text = ButtonTexts.WOOPS;
             }
             else
             {
-                contextText.text = "Shatter";
+                contextText.text = ButtonTexts.SHATTER;
             }
+        }
+        else if (Models[currentModel].name == ModelNames.AANG)
+        {
+
         }
     }
 
