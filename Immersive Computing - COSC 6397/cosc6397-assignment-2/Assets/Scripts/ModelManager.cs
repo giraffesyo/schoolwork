@@ -120,7 +120,7 @@ public class ModelManager : MonoBehaviour
         }
         else if (Models[currentModel].name == ModelNames.AANG)
         {
-
+            GetCurrentModel().GetComponent<Animation>().Play();
         }
     }
 
