@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ModelManager : MonoBehaviour
 {
 
-    public int currentModel = 1;
+    public int currentModel = 0;
     public List<GameObject> Models;
 
     public Button NextButton;
@@ -54,11 +54,12 @@ public class ModelManager : MonoBehaviour
         Models[currentModel].SetActive(false);
         currentModel = currentModel == Models.Count - 1 ? 0 : currentModel + 1;
         SetButtonText();
+        Models[currentModel].SetActive(true);
         if (Models[currentModel].name == "chalice")
         {
             Models[currentModel].GetComponent<Shatter>().unshatter();
         }
-        Models[currentModel].SetActive(true);
+
     }
 
 
