@@ -19,21 +19,25 @@ public class ModelManager : MonoBehaviour
 
     private void Start()
     {
+        // Add event listeners to the buttons
         NextButton.onClick.AddListener(NextModel);
         ContextButton.onClick.AddListener(ContextAction);
 
+        // Loop through all children, adding them to list for later use
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject child = transform.GetChild(i).gameObject;
             Models.Add(child);
             if (i != 0)
             {
+                // Disable all other models besides first one in list
                 child.SetActive(false);
             }
         }
         SetButtonText();
     }
 
+    // Sets the context button initial text based on current model name
     private void SetButtonText()
     {
         Text btnText = ContextButton.GetComponentInChildren<Text>();
@@ -47,7 +51,7 @@ public class ModelManager : MonoBehaviour
             btnText.text = "Shatter";
         }
     }
-
+    // Switches out the current model shown, and handles any cleanup that might need to be done when switching
     public void NextModel()
     {
 
@@ -62,7 +66,7 @@ public class ModelManager : MonoBehaviour
 
     }
 
-
+    // Handles performing actions that are specific to each model
     public void ContextAction()
     {
 
