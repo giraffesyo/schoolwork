@@ -92,7 +92,6 @@ public class ModelManager : MonoBehaviour
         {
             Models[currentModel].GetComponent<Shatter>().unshatter();
         }
-
     }
 
     // Handles performing actions that are specific to each model
@@ -103,7 +102,6 @@ public class ModelManager : MonoBehaviour
         {
             // play spin animation
             GetCurrentModel().GetComponent<Animator>().Play("flip");
-
         }
         else if (Models[currentModel].name == ModelNames.CHALICE)
         {
