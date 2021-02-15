@@ -13,7 +13,6 @@ public class RotationSlider : SliderBase
         GameObject currentModel = this.models.GetCurrentModel();
         if (currentModel.name == "penny")
         {
-            Debug.Log("rotating penny");
             this.models.transform.Rotate(Vector3.up * delta * 360);
 
         }
@@ -21,6 +20,11 @@ public class RotationSlider : SliderBase
         {
             this.models.transform.Rotate(Vector3.right * delta * 360);
 
+        }
+        else
+        {
+            // default rotation around y axis
+            this.models.transform.Rotate(Vector3.up * delta * 360);
         }
     }
 }
