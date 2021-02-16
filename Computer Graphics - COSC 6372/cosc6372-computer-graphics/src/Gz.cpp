@@ -18,10 +18,10 @@ void Gz::initFrameSize(GzInt width, GzInt height)
 // 	frameBuffer.clear(buffer);
 // }
 
-// void Gz::clearColor(const GzColor &color)
-// {
-// 	frameBuffer.setClearColor(color);
-// }
+void Gz::clearColor(const GzColor &color)
+{
+	frameBuffer.setClearColor(color);
+}
 
 // void Gz::clearDepth(GzReal depth)
 // {

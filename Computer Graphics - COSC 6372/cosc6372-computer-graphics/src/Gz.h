@@ -18,8 +18,8 @@ public:
 												   // GzImage toImage();							   //Convert the current rendering result to image
 
 	// void clear(GzFunctional buffer);	   //Clear buffers to preset values
-	// void clearColor(const GzColor &color); //Specify clear values for the color buffer
-	// void clearDepth(GzReal depth);		   //Specify the clear value for the depth buffer
+	void clearColor(const GzColor &color); //Specify clear values for the color buffer
+										   // void clearDepth(GzReal depth);		   //Specify the clear value for the depth buffer
 
 	// void enable(GzFunctional f);  //Enable some capabilities
 	// void disable(GzFunctional f); //Disable some capabilities

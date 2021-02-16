@@ -36,7 +36,7 @@ int main()
 {
 	gz.initFrameSize(640, 480);
 
-	// gz.clearColor(GzColor(0, 0, 0));	//Background color: Black
+	gz.clearColor(GzColor(0, 0, 0)); //Background color: Black
 	// gz.clear(GZ_COLOR_BUFFER);			//Clear frame buffer with background color
 	// gz.disable(GZ_DEPTH_TEST);			//No depth test
 	// draw();

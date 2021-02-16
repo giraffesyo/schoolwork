@@ -22,8 +22,9 @@ public:
 
 private:
 	//Put any variables and private functions for your implementation here
-	// GzInt width;
-	// GzInt height;
+	GzInt width;
+	GzInt height;
+	GzColor clearColor;
 };
 //----------------------------------------------------------------------------
 
