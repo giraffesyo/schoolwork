@@ -13,10 +13,10 @@ void Gz::initFrameSize(GzInt width, GzInt height)
 // 	return frameBuffer.toImage();
 // }
 
-// void Gz::clear(GzFunctional buffer)
-// {
-// 	frameBuffer.clear(buffer);
-// }
+void Gz::clear(GzFunctional buffer)
+{
+	frameBuffer.clear(buffer);
+}
 
 void Gz::clearColor(const GzColor &color)
 {

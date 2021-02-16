@@ -17,7 +17,7 @@ public:
 	void initFrameSize(GzInt width, GzInt height); //Initialize
 												   // GzImage toImage();							   //Convert the current rendering result to image
 
-	// void clear(GzFunctional buffer);	   //Clear buffers to preset values
+	void clear(GzFunctional buffer);	   //Clear buffers to preset values
 	void clearColor(const GzColor &color); //Specify clear values for the color buffer
 										   // void clearDepth(GzReal depth);		   //Specify the clear value for the depth buffer
 

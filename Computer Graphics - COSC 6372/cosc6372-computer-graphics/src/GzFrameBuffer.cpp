@@ -12,3 +12,7 @@ void GzFrameBuffer::setClearColor(const GzColor &color)
 {
     clearColor = color;
 }
+
+void GzFrameBuffer::clear(GzFunctional buffer)
+{
+}
