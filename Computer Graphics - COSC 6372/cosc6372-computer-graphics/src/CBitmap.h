@@ -14,15 +14,15 @@
 
 #pragma once
 
-
-#pragma warning (disable:4996)
-#pragma warning (disable:4018)
+#pragma warning(disable : 4996)
+#pragma warning(disable : 4018)
 
 #define BITMAP_SIGNATURE 'MB'
 
 #pragma pack(push, 1)
 
-typedef struct {
+typedef struct
+{
 	unsigned short int Signature;
 	unsigned int Size;
 	unsigned int Reserved;
@@ -31,7 +31,8 @@ typedef struct {
 
 #define BITMAP_FILEHEADER_SIZE 14
 
-typedef struct {
+typedef struct
+{
 	unsigned int HeaderSize;
 	int Width;
 	int Height;
@@ -54,39 +55,43 @@ typedef struct {
 	unsigned int GammaBlue;
 } BITMAP_HEADER;
 
-typedef struct {
+typedef struct
+{
 	unsigned char Red;
 	unsigned char Green;
 	unsigned char Blue;
 	unsigned char Alpha;
 } RGBA;
 
-typedef struct {
+typedef struct
+{
 	unsigned char Blue;
 	unsigned char Green;
 	unsigned char Red;
 	unsigned char Alpha;
 } BGRA;
 
-typedef struct {
+typedef struct
+{
 	unsigned char Blue;
 	unsigned char Green;
 	unsigned char Red;
 } BGR;
 
-typedef struct {
-	unsigned short int Blue:5;
-	unsigned short int Green:5;
-	unsigned short int Red:5;
-	unsigned short int Reserved:1;
+typedef struct
+{
+	unsigned short int Blue : 5;
+	unsigned short int Green : 5;
+	unsigned short int Red : 5;
+	unsigned short int Reserved : 1;
 } BGR16;
 
 #if 0
 
-#define RIFF_SIGNATURE	0x46464952
-#define RIFF_TYPE		0x204c4150
-#define PAL_SIGNATURE	0x61746164
-#define PAL_UNKNOWN		0x01000300
+#define RIFF_SIGNATURE 0x46464952
+#define RIFF_TYPE 0x204c4150
+#define PAL_SIGNATURE 0x61746164
+#define PAL_UNKNOWN 0x01000300
 
 typedef struct {
 	unsigned int Signature;
@@ -99,7 +104,8 @@ typedef struct {
 
 #endif
 
-class CBitmap {
+class CBitmap
+{
 private:
 	BITMAP_FILEHEADER m_BitmapFileHeader;
 	BITMAP_HEADER m_BitmapHeader;
@@ -109,27 +115,32 @@ private:
 	unsigned int m_ColorTableSize;
 
 private:
+	unsigned int ShiftRightByMask(unsigned int Color, unsigned int Mask, unsigned int DistributeToBits = 8)
+	{
 
-	unsigned int ShiftRightByMask(unsigned int Color, unsigned int Mask, unsigned int DistributeToBits = 8) {
-		
-		if (Mask == 0) return 0;
+		if (Mask == 0)
+			return 0;
 
 		unsigned int ShiftCount = 0;
 		unsigned int Test = 0x00000001;
 
-		while (ShiftCount < 32) {
-			if (Mask & Test) {
+		while (ShiftCount < 32)
+		{
+			if (Mask & Test)
+			{
 				break;
 			}
 			Test <<= 1;
 			ShiftCount++;
 		}
-		
+
 		unsigned int BitCount = 32;
 		Test = 0x80000000;
 
-		while (BitCount) {
-			if ((Mask >> ShiftCount) & Test) {
+		while (BitCount)
+		{
+			if ((Mask >> ShiftCount) & Test)
+			{
 				break;
 			}
 			Test >>= 1;
@@ -138,99 +149,122 @@ private:
 
 		unsigned int BaseColor = (Color & Mask) >> ShiftCount;
 
-		if (DistributeToBits > BitCount) {
+		if (DistributeToBits > BitCount)
+		{
 			/* We have to fill lower bits */
 			unsigned int BitsToFill = DistributeToBits - BitCount;
-			while (BitsToFill--) {
+			while (BitsToFill--)
+			{
 				BaseColor <<= 1;
-				if (BaseColor & 1) {
+				if (BaseColor & 1)
+				{
 					BaseColor |= 1;
 				}
 			}
-		} else if (DistributeToBits < BitCount) {
+		}
+		else if (DistributeToBits < BitCount)
+		{
 			BaseColor >>= (BitCount - DistributeToBits);
 		}
 		return BaseColor;
 	}
 
 public:
-	
-	CBitmap() : m_BitmapData(0), m_BitmapSize(0), m_ColorTableSize(0), m_ColorTable(0) {
+	CBitmap() : m_BitmapData(0), m_BitmapSize(0), m_ColorTableSize(0), m_ColorTable(0)
+	{
 		Dispose();
 	}
-	
-	CBitmap(char* Filename) : m_BitmapData(0), m_BitmapSize(0), m_ColorTableSize(0), m_ColorTable(0) {
+
+	CBitmap(char *Filename) : m_BitmapData(0), m_BitmapSize(0), m_ColorTableSize(0), m_ColorTable(0)
+	{
 		Load(Filename);
 	}
-	
-	~CBitmap() {
+
+	~CBitmap()
+	{
 		Dispose();
 	}
-	
-	void Dispose() {
-		if (m_BitmapData) delete[] m_BitmapData;
-		if (m_ColorTable) delete[] m_ColorTable;
+
+	void Dispose()
+	{
+		if (m_BitmapData)
+			delete[] m_BitmapData;
+		if (m_ColorTable)
+			delete[] m_ColorTable;
 		m_ColorTableSize = 0;
 		m_BitmapData = 0;
 		m_ColorTable = 0;
 		memset(&m_BitmapFileHeader, 0, sizeof(m_BitmapFileHeader));
 		memset(&m_BitmapHeader, 0, sizeof(m_BitmapHeader));
 	}
-	
+
 	/* Load specified Bitmap and stores it as RGBA in an internal buffer */
-	
-	bool Load(char *Filename) {
+
+	bool Load(char *Filename)
+	{
 		FILE *file = fopen(Filename, "rb");
 
 		Dispose();
-		
-		if (file == 0) return false;
-		
+
+		if (file == 0)
+			return false;
+
 		fread(&m_BitmapFileHeader, BITMAP_FILEHEADER_SIZE, 1, file);
-		if (m_BitmapFileHeader.Signature != BITMAP_SIGNATURE) {
+		if (m_BitmapFileHeader.Signature != BITMAP_SIGNATURE)
+		{
 			return false;
 		}
 
 		fread(&m_BitmapHeader, sizeof(BITMAP_HEADER), 1, file);
-		
+
 		/* Load Color Table */
-		
+
 		fseek(file, BITMAP_FILEHEADER_SIZE + m_BitmapHeader.HeaderSize, SEEK_SET);
-		
-		if (m_BitmapHeader.BitCount == 1) {
+
+		if (m_BitmapHeader.BitCount == 1)
+		{
 			m_ColorTableSize = 2;
-		} else if (m_BitmapHeader.BitCount == 4) {
+		}
+		else if (m_BitmapHeader.BitCount == 4)
+		{
 			m_ColorTableSize = 16;
-		} else if (m_BitmapHeader.BitCount == 8) {
+		}
+		else if (m_BitmapHeader.BitCount == 8)
+		{
 			m_ColorTableSize = 256;
 		}
-		
+
 		m_ColorTable = new BGRA[m_ColorTableSize];
-		
+
 		fread(m_ColorTable, sizeof(BGRA), m_ColorTableSize, file);
 
-		/* ... Color Table for 16 or 32 Bit Images are not supported yet */	
-		
+		/* ... Color Table for 16 or 32 Bit Images are not supported yet */
+
 		m_BitmapSize = GetWidth() * GetHeight();
 		m_BitmapData = new RGBA[m_BitmapSize];
-		
+
 		unsigned int LineWidth = ((GetWidth() * GetBitCount() / 8) + 3) & ~3;
 		unsigned char *Line = new unsigned char[LineWidth];
-		
+
 		fseek(file, m_BitmapFileHeader.BitsOffset, SEEK_SET);
-		
+
 		int Index = 0;
-		
-		if (m_BitmapHeader.Compression == 0) {
-			for (int i = 0; i < GetHeight(); i++) {
+
+		if (m_BitmapHeader.Compression == 0)
+		{
+			for (int i = 0; i < GetHeight(); i++)
+			{
 				fread(Line, LineWidth, 1, file);
-				
+
 				unsigned char *LinePtr = Line;
-				
-				for (int j = 0; j < GetWidth(); j++) {
-					if (m_BitmapHeader.BitCount == 1) {
-						unsigned int Color = *((unsigned char*) LinePtr);
-						for (int k = 0; k < 8; k++) {
+
+				for (int j = 0; j < GetWidth(); j++)
+				{
+					if (m_BitmapHeader.BitCount == 1)
+					{
+						unsigned int Color = *((unsigned char *)LinePtr);
+						for (int k = 0; k < 8; k++)
+						{
 							m_BitmapData[Index].Red = m_ColorTable[Color & 0x80 ? 1 : 0].Red;
 							m_BitmapData[Index].Green = m_ColorTable[Color & 0x80 ? 1 : 0].Green;
 							m_BitmapData[Index].Blue = m_ColorTable[Color & 0x80 ? 1 : 0].Blue;
@@ -240,8 +274,10 @@ public:
 						}
 						LinePtr++;
 						j += 7;
-					} else if (m_BitmapHeader.BitCount == 4) {
-						unsigned int Color = *((unsigned char*) LinePtr);
+					}
+					else if (m_BitmapHeader.BitCount == 4)
+					{
+						unsigned int Color = *((unsigned char *)LinePtr);
 						m_BitmapData[Index].Red = m_ColorTable[(Color >> 4) & 0x0f].Red;
 						m_BitmapData[Index].Green = m_ColorTable[(Color >> 4) & 0x0f].Green;
 						m_BitmapData[Index].Blue = m_ColorTable[(Color >> 4) & 0x0f].Blue;
@@ -254,32 +290,40 @@ public:
 						Index++;
 						LinePtr++;
 						j++;
-					} else if (m_BitmapHeader.BitCount == 8) {
-						unsigned int Color = *((unsigned char*) LinePtr);
+					}
+					else if (m_BitmapHeader.BitCount == 8)
+					{
+						unsigned int Color = *((unsigned char *)LinePtr);
 						m_BitmapData[Index].Red = m_ColorTable[Color].Red;
 						m_BitmapData[Index].Green = m_ColorTable[Color].Green;
 						m_BitmapData[Index].Blue = m_ColorTable[Color].Blue;
 						m_BitmapData[Index].Alpha = m_ColorTable[Color].Alpha;
 						Index++;
 						LinePtr++;
-					} else if (m_BitmapHeader.BitCount == 16) {
-						unsigned int Color = *((unsigned short int*) LinePtr);
+					}
+					else if (m_BitmapHeader.BitCount == 16)
+					{
+						unsigned int Color = *((unsigned short int *)LinePtr);
 						m_BitmapData[Index].Red = ((Color >> 10) & 0x1f) << 3;
 						m_BitmapData[Index].Green = ((Color >> 5) & 0x1f) << 3;
 						m_BitmapData[Index].Blue = (Color & 0x1f) << 3;
 						m_BitmapData[Index].Alpha = 255;
 						Index++;
 						LinePtr += 2;
-					} else if (m_BitmapHeader.BitCount == 24) {
-						unsigned int Color = *((unsigned int*) LinePtr);
+					}
+					else if (m_BitmapHeader.BitCount == 24)
+					{
+						unsigned int Color = *((unsigned int *)LinePtr);
 						m_BitmapData[Index].Blue = Color & 0xff;
 						m_BitmapData[Index].Green = (Color >> 8) & 0xff;
 						m_BitmapData[Index].Red = (Color >> 16) & 0xff;
 						m_BitmapData[Index].Alpha = 255;
 						Index++;
 						LinePtr += 3;
-					} else if (m_BitmapHeader.BitCount == 32) {
-						unsigned int Color = *((unsigned int*) LinePtr);
+					}
+					else if (m_BitmapHeader.BitCount == 32)
+					{
+						unsigned int Color = *((unsigned int *)LinePtr);
 						m_BitmapData[Index].Blue = Color & 0xff;
 						m_BitmapData[Index].Green = (Color >> 8) & 0xff;
 						m_BitmapData[Index].Red = (Color >> 16) & 0xff;
@@ -289,42 +333,57 @@ public:
 					}
 				}
 			}
-		} else if (m_BitmapHeader.Compression == 1) { // RLE 8
+		}
+		else if (m_BitmapHeader.Compression == 1)
+		{ // RLE 8
 			unsigned char Count = 0;
 			unsigned char ColorIndex = 0;
 			int x = 0, y = 0;
 
-			while (!feof(file)) {
+			while (!feof(file))
+			{
 				fread(&Count, 1, 1, file);
 				fread(&ColorIndex, 1, 1, file);
 
-				if (Count > 0) {
+				if (Count > 0)
+				{
 					Index = x + y * GetWidth();
-					for (int k = 0; k < Count; k++) {
+					for (int k = 0; k < Count; k++)
+					{
 						m_BitmapData[Index + k].Red = m_ColorTable[ColorIndex].Red;
 						m_BitmapData[Index + k].Green = m_ColorTable[ColorIndex].Green;
 						m_BitmapData[Index + k].Blue = m_ColorTable[ColorIndex].Blue;
 						m_BitmapData[Index + k].Alpha = m_ColorTable[ColorIndex].Alpha;
 					}
 					x += Count;
-				} else if (Count == 0) {
+				}
+				else if (Count == 0)
+				{
 					int Flag = ColorIndex;
-					if (Flag == 0) {
+					if (Flag == 0)
+					{
 						x = 0;
 						y++;
-					} else if (Flag == 1) {
+					}
+					else if (Flag == 1)
+					{
 						break;
-					} else if (Flag == 2) {
+					}
+					else if (Flag == 2)
+					{
 						char rx = 0;
 						char ry = 0;
 						fread(&rx, 1, 1, file);
 						fread(&ry, 1, 1, file);
 						x += rx;
 						y += ry;
-					} else {
+					}
+					else
+					{
 						Count = Flag;
 						Index = x + y * GetWidth();
-						for (int k = 0; k < Count; k++) {
+						for (int k = 0; k < Count; k++)
+						{
 							fread(&ColorIndex, 1, 1, file);
 							m_BitmapData[Index + k].Red = m_ColorTable[ColorIndex].Red;
 							m_BitmapData[Index + k].Green = m_ColorTable[ColorIndex].Green;
@@ -332,30 +391,40 @@ public:
 							m_BitmapData[Index + k].Alpha = m_ColorTable[ColorIndex].Alpha;
 						}
 						x += Count;
-						if (ftell(file) & 1) fseek(file, 1, SEEK_CUR);
+						if (ftell(file) & 1)
+							fseek(file, 1, SEEK_CUR);
 					}
 				}
 			}
-		} else if (m_BitmapHeader.Compression == 2) { // RLE 4
+		}
+		else if (m_BitmapHeader.Compression == 2)
+		{	// RLE 4
 			/* RLE 4 is not supported */
-		} else if (m_BitmapHeader.Compression == 3) { // BITFIELDS
-			
+		}
+		else if (m_BitmapHeader.Compression == 3)
+		{ // BITFIELDS
+
 			/* We assumes that mask of each color component can be in any order */
 
-			for (int i = 0; i < GetHeight(); i++) {
+			for (int i = 0; i < GetHeight(); i++)
+			{
 				fread(Line, LineWidth, 1, file);
-				
+
 				unsigned char *LinePtr = Line;
-				
-				for (int j = 0; j < GetWidth(); j++) {
-					
+
+				for (int j = 0; j < GetWidth(); j++)
+				{
+
 					unsigned int Color = 0;
 
-					if (m_BitmapHeader.BitCount == 16) {
-						Color = *((unsigned short int*) LinePtr);
+					if (m_BitmapHeader.BitCount == 16)
+					{
+						Color = *((unsigned short int *)LinePtr);
 						LinePtr += 2;
-					} else if (m_BitmapHeader.BitCount == 32) {
-						Color = *((unsigned int*) LinePtr);
+					}
+					else if (m_BitmapHeader.BitCount == 32)
+					{
+						Color = *((unsigned int *)LinePtr);
 						LinePtr += 4;
 					}
 					m_BitmapData[Index].Red = ShiftRightByMask(Color, m_BitmapHeader.RedMask);
@@ -371,29 +440,34 @@ public:
 		fclose(file);
 		return true;
 	}
-	
-	bool Save(char* Filename, unsigned int BitCount = 32) {
+
+	bool Save(char *Filename, unsigned int BitCount = 32)
+	{
 		FILE *file = fopen(Filename, "wb");
 
-		if (file == 0) return false;
-		
+		if (file == 0)
+			return false;
+
 		BITMAP_FILEHEADER bfh = {0};
 		BITMAP_HEADER bh = {0};
 
 		bfh.Signature = BITMAP_SIGNATURE;
 		bfh.BitsOffset = sizeof(BITMAP_HEADER) + sizeof(BITMAP_FILEHEADER);
 		bfh.Size = (GetWidth() * GetHeight() * BitCount) / 8 + bfh.BitsOffset;
-	
+
 		bh.HeaderSize = sizeof(BITMAP_HEADER);
 		bh.BitCount = BitCount;
-		
-		if (BitCount == 32) {
+
+		if (BitCount == 32)
+		{
 			bh.Compression = 3; // BITFIELD
 			bh.AlphaMask = 0xff000000;
 			bh.BlueMask = 0x00ff0000;
 			bh.GreenMask = 0x0000ff00;
 			bh.RedMask = 0x000000ff;
-		} else {
+		}
+		else
+		{
 			bh.Compression = 0; // RGB
 		}
 
@@ -403,17 +477,21 @@ public:
 		bh.SizeImage = (GetWidth() * GetHeight() * BitCount) / 8;
 		bh.PelsPerMeterX = 3780;
 		bh.PelsPerMeterY = 3780;
-		if (BitCount == 32) {
+		if (BitCount == 32)
+		{
 			fwrite(&bfh, sizeof(BITMAP_FILEHEADER), 1, file);
 			fwrite(&bh, sizeof(BITMAP_HEADER), 1, file);
 			fwrite(m_BitmapData, bh.SizeImage, 1, file);
-		} else if (BitCount < 16) {
-			unsigned char* Bitmap = new unsigned char[bh.SizeImage];
-			
+		}
+		else if (BitCount < 16)
+		{
+			unsigned char *Bitmap = new unsigned char[bh.SizeImage];
+
 			BGRA *Palette = 0;
 			unsigned int PaletteSize = 0;
 
-			if (GetBitsWithPalette(Bitmap, bh.SizeImage, BitCount, Palette, PaletteSize)) {
+			if (GetBitsWithPalette(Bitmap, bh.SizeImage, BitCount, Palette, PaletteSize))
+			{
 				bfh.BitsOffset += PaletteSize * sizeof(BGRA);
 
 				fwrite(&bfh, sizeof(BITMAP_FILEHEADER), 1, file);
@@ -421,47 +499,58 @@ public:
 				fwrite(Palette, PaletteSize, sizeof(BGRA), file);
 				fwrite(Bitmap, bh.SizeImage, 1, file);
 			}
-			delete [] Bitmap;
-			delete [] Palette;
-		} else {
-			unsigned char* Bitmap = new unsigned char[bh.SizeImage];
+			delete[] Bitmap;
+			delete[] Palette;
+		}
+		else
+		{
+			unsigned char *Bitmap = new unsigned char[bh.SizeImage];
 
-			if (GetBits(Bitmap, bh.SizeImage, BitCount)) {
+			if (GetBits(Bitmap, bh.SizeImage, BitCount))
+			{
 				fwrite(&bfh, sizeof(BITMAP_FILEHEADER), 1, file);
 				fwrite(&bh, sizeof(BITMAP_HEADER), 1, file);
-				int l=GetWidth()*BitCount/8;
-				for (int i=0; i<GetHeight(); i++) {
-					fwrite(Bitmap+l*i, l, 1, file);
-					fwrite(&l, (4-l%4)%4, 1, file);
+				int l = GetWidth() * BitCount / 8;
+				for (int i = 0; i < GetHeight(); i++)
+				{
+					fwrite(Bitmap + l * i, l, 1, file);
+					fwrite(&l, (4 - l % 4) % 4, 1, file);
 				}
 			}
-			delete [] Bitmap;
+			delete[] Bitmap;
 		}
 
 		fclose(file);
 		return true;
 	}
 
-	unsigned int GetWidth() {
+	unsigned int GetWidth()
+	{
 		return m_BitmapHeader.Width < 0 ? -m_BitmapHeader.Width : m_BitmapHeader.Width;
 	}
-	
-	unsigned int GetHeight() {
+
+	unsigned int GetHeight()
+	{
 		return m_BitmapHeader.Height < 0 ? -m_BitmapHeader.Height : m_BitmapHeader.Height;
 	}
-	
-	unsigned int GetBitCount() {
+
+	unsigned int GetBitCount()
+	{
 		return m_BitmapHeader.BitCount;
 	}
-	
+
 	/* Copies internal RGBA buffer to user specified buffer */
-	
-	bool GetBits(void* Buffer, unsigned int &Size) {
+
+	bool GetBits(void *Buffer, unsigned int &Size)
+	{
 		bool Result = false;
-		if (Size == 0 || Buffer == 0) {
+		if (Size == 0 || Buffer == 0)
+		{
 			Size = m_BitmapSize * sizeof(RGBA);
 			Result = m_BitmapSize != 0;
-		} else {
+		}
+		else
+		{
 			memcpy(Buffer, m_BitmapData, Size);
 			Result = true;
 		}
@@ -469,78 +558,95 @@ public:
 	}
 
 	/* Returns internal RGBA buffer */
-	
-	void* GetBits() {
+
+	void *GetBits()
+	{
 		return m_BitmapData;
 	}
-	
+
 	/* Copies internal RGBA buffer to user specified buffer and convertes into destination bit format.
 	 * Supported Bit depths are: 16 (5-5-5), 24, 32
 	 */
 
-	bool GetBits(void* Buffer, unsigned int &Size, unsigned int BitCount) {
+	bool GetBits(void *Buffer, unsigned int &Size, unsigned int BitCount)
+	{
 		bool Result = false;
 
-		if (Size == 0 || Buffer == 0) {
+		if (Size == 0 || Buffer == 0)
+		{
 			Size = (m_BitmapSize * BitCount) / 8;
 			return true;
 		}
 
-		if (BitCount > 32) {
+		if (BitCount > 32)
+		{
 			return false;
 		}
-		
-		unsigned char* BufferPtr = (unsigned char*) Buffer;
 
-		for (int i = 0; i < m_BitmapSize; i++) {
-			if (BitCount == 16) {
-				((BGR16*) BufferPtr)->Blue = ShiftRightByMask(m_BitmapData[i].Blue, 0xff, 5);
-				((BGR16*) BufferPtr)->Green = ShiftRightByMask(m_BitmapData[i].Green, 0xff, 5);
-				((BGR16*) BufferPtr)->Red = ShiftRightByMask(m_BitmapData[i].Red, 0xff, 5);
+		unsigned char *BufferPtr = (unsigned char *)Buffer;
+
+		for (int i = 0; i < m_BitmapSize; i++)
+		{
+			if (BitCount == 16)
+			{
+				((BGR16 *)BufferPtr)->Blue = ShiftRightByMask(m_BitmapData[i].Blue, 0xff, 5);
+				((BGR16 *)BufferPtr)->Green = ShiftRightByMask(m_BitmapData[i].Green, 0xff, 5);
+				((BGR16 *)BufferPtr)->Red = ShiftRightByMask(m_BitmapData[i].Red, 0xff, 5);
 				BufferPtr += 2;
-			} else if (BitCount == 24) {
-				((BGR*) BufferPtr)->Blue = m_BitmapData[i].Blue;
-				((BGR*) BufferPtr)->Green = m_BitmapData[i].Green;
-				((BGR*) BufferPtr)->Red = m_BitmapData[i].Red;
+			}
+			else if (BitCount == 24)
+			{
+				((BGR *)BufferPtr)->Blue = m_BitmapData[i].Blue;
+				((BGR *)BufferPtr)->Green = m_BitmapData[i].Green;
+				((BGR *)BufferPtr)->Red = m_BitmapData[i].Red;
 				BufferPtr += 3;
-			} else if (BitCount == 32) {
-				((BGRA*) BufferPtr)->Blue = m_BitmapData[i].Blue;
-				((BGRA*) BufferPtr)->Green = m_BitmapData[i].Green;
-				((BGRA*) BufferPtr)->Red = m_BitmapData[i].Red;
-				((BGRA*) BufferPtr)->Alpha = m_BitmapData[i].Alpha;
+			}
+			else if (BitCount == 32)
+			{
+				((BGRA *)BufferPtr)->Blue = m_BitmapData[i].Blue;
+				((BGRA *)BufferPtr)->Green = m_BitmapData[i].Green;
+				((BGRA *)BufferPtr)->Red = m_BitmapData[i].Red;
+				((BGRA *)BufferPtr)->Alpha = m_BitmapData[i].Alpha;
 				BufferPtr += 4;
 			}
 		}
-		
+
 		Result = true;
 
 		return Result;
 	}
-	
+
 	/* See GetBits(). 
 	 * It creates a corresponding color table (palette) which have to be destroyed by the user after usage.
 	 * Supported Bit depths are: 4, 8
 	 * Todo: Optimize, use optimized palette, do ditehring
 	 */
 
-	bool GetBitsWithPalette(void* Buffer, unsigned int &Size, unsigned int BitCount, BGRA* &Palette, unsigned int &PaletteSize, bool OptimalPalette = false) {
+	bool GetBitsWithPalette(void *Buffer, unsigned int &Size, unsigned int BitCount, BGRA *&Palette, unsigned int &PaletteSize, bool OptimalPalette = false)
+	{
 		bool Result = false;
 
-		if (BitCount > 16) {
+		if (BitCount > 16)
+		{
 			return false;
 		}
 
-		if (Size == 0 || Buffer == 0) {
+		if (Size == 0 || Buffer == 0)
+		{
 			Size = (m_BitmapSize * BitCount) / 8;
 			return true;
 		}
-		
-		if (BitCount == 4) {
+
+		if (BitCount == 4)
+		{
 			PaletteSize = 16;
 			Palette = new BGRA[PaletteSize];
-			for (int r = 0; r < 4; r++) {
-				for (int g = 0; g < 2; g++) {
-					for (int b = 0; b < 2; b++) {
+			for (int r = 0; r < 4; r++)
+			{
+				for (int g = 0; g < 2; g++)
+				{
+					for (int b = 0; b < 2; b++)
+					{
 						Palette[r | g << 2 | b << 3].Red = (r << 6) | 0x35;
 						Palette[r | g << 2 | b << 3].Green = (g << 7) | 0x55;
 						Palette[r | g << 2 | b << 3].Blue = (b << 7) | 0x55;
@@ -548,12 +654,17 @@ public:
 					}
 				}
 			}
-		} else if (BitCount == 8) {
+		}
+		else if (BitCount == 8)
+		{
 			PaletteSize = 256;
 			Palette = new BGRA[PaletteSize];
-			for (int r = 0; r < 8; r++) {
-				for (int g = 0; g < 8; g++) {
-					for (int b = 0; b < 4; b++) {
+			for (int r = 0; r < 8; r++)
+			{
+				for (int g = 0; g < 8; g++)
+				{
+					for (int b = 0; b < 4; b++)
+					{
 						Palette[r | g << 3 | b << 6].Red = (r << 5) | 0x15;
 						Palette[r | g << 3 | b << 6].Green = (g << 5) | 0x15;
 						Palette[r | g << 3 | b << 6].Blue = (b << 6) | 0x35;
@@ -562,21 +673,25 @@ public:
 				}
 			}
 		}
-		
-		unsigned char* BufferPtr = (unsigned char*) Buffer;
-		
-		for (int i = 0; i < m_BitmapSize; i++) {
-			if (BitCount == 4) {
+
+		unsigned char *BufferPtr = (unsigned char *)Buffer;
+
+		for (int i = 0; i < m_BitmapSize; i++)
+		{
+			if (BitCount == 4)
+			{
 				*BufferPtr = (m_BitmapData[i].Red >> 6) | (m_BitmapData[i].Green >> 7) << 2 | (m_BitmapData[i].Blue >> 7) << 3;
 				i++;
 				*BufferPtr |= ((m_BitmapData[i].Red >> 6) | (m_BitmapData[i].Green >> 7) << 2 | (m_BitmapData[i].Blue >> 7) << 3) << 4;
 				BufferPtr++;
-			} else if (BitCount == 8) {
+			}
+			else if (BitCount == 8)
+			{
 				*BufferPtr = (m_BitmapData[i].Red >> 5) | (m_BitmapData[i].Green >> 5) << 3 | (m_BitmapData[i].Blue >> 5) << 6;
 				BufferPtr++;
 			}
 		}
-		
+
 		Result = true;
 
 		return Result;
@@ -584,47 +699,60 @@ public:
 
 	/* Set Bitmap Bits. Will be converted to RGBA internally */
 
-	void SetBits(void* Buffer, unsigned int Width, unsigned int Height, unsigned int RedMask, unsigned int GreenMask, unsigned int BlueMask, unsigned int AlphaMask = 0) {
-		unsigned char *BufferPtr = (unsigned char*) Buffer;
-		
+	void SetBits(void *Buffer, unsigned int Width, unsigned int Height, unsigned int RedMask, unsigned int GreenMask, unsigned int BlueMask, unsigned int AlphaMask = 0)
+	{
+		unsigned char *BufferPtr = (unsigned char *)Buffer;
+
 		Dispose();
 
 		m_BitmapHeader.Width = Width;
 		m_BitmapHeader.Height = Height;
 		m_BitmapHeader.BitCount = 32;
-		m_BitmapHeader.Compression = 3; 
+		m_BitmapHeader.Compression = 3;
 
 		m_BitmapSize = GetWidth() * GetHeight();
 		m_BitmapData = new RGBA[m_BitmapSize];
-		
+
 		/* Find BitCount by Mask, maximum is 32 Bit */
-		
+
 		unsigned int Test = 0x80000000;
 		unsigned int BitCount = 32;
-		
-		while (BitCount) {
-			if ((RedMask | GreenMask | BlueMask | AlphaMask) & Test) {
+
+		while (BitCount)
+		{
+			if ((RedMask | GreenMask | BlueMask | AlphaMask) & Test)
+			{
 				break;
 			}
 			Test >>= 1;
 			BitCount--;
 		}
 
-		for (int i = 0; i < m_BitmapSize; i++) {
+		for (int i = 0; i < m_BitmapSize; i++)
+		{
 			unsigned int Color = 0;
-			if (BitCount <= 8) {
-				Color = *((unsigned char*) BufferPtr);
+			if (BitCount <= 8)
+			{
+				Color = *((unsigned char *)BufferPtr);
 				BufferPtr += 1;
-			} else if (BitCount <= 16) {
-				Color = *((unsigned short int*) BufferPtr);
+			}
+			else if (BitCount <= 16)
+			{
+				Color = *((unsigned short int *)BufferPtr);
 				BufferPtr += 2;
-			} else if (BitCount <= 24) {
-				Color = *((unsigned int*) BufferPtr);
+			}
+			else if (BitCount <= 24)
+			{
+				Color = *((unsigned int *)BufferPtr);
 				BufferPtr += 3;
-			} else if (BitCount <= 32) {
-				Color = *((unsigned int*) BufferPtr);
+			}
+			else if (BitCount <= 32)
+			{
+				Color = *((unsigned int *)BufferPtr);
 				BufferPtr += 4;
-			} else {
+			}
+			else
+			{
 				/* unsupported */
 				BufferPtr += 1;
 			}
@@ -635,12 +763,13 @@ public:
 		}
 	}
 
-	void SetAlphaBits(unsigned char Alpha) {
-		for (int i = 0; i < m_BitmapSize; i++) {
+	void SetAlphaBits(unsigned char Alpha)
+	{
+		for (int i = 0; i < m_BitmapSize; i++)
+		{
 			m_BitmapData[i].Alpha = Alpha;
 		}
 	}
-	
 };
 
 #pragma pack(pop)
