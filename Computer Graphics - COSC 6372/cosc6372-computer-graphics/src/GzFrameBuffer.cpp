@@ -16,3 +16,16 @@ void GzFrameBuffer::setClearColor(const GzColor &color)
 void GzFrameBuffer::clear(GzFunctional buffer)
 {
 }
+
+GzImage GzFrameBuffer::toImage()
+{
+    return GzImage(width, height);
+}
+
+void GzFrameBuffer::setClearDepth(GzReal depth)
+{
+}
+
+void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status)
+{
+}
