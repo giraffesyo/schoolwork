@@ -17,7 +17,7 @@
 #pragma warning(disable : 4996)
 #pragma warning(disable : 4018)
 
-#define BITMAP_SIGNATURE 'MB'
+#define BITMAP_SIGNATURE (int)19778 // bitmap type
 
 #pragma pack(push, 1)
 
