@@ -25,6 +25,7 @@ private:
 	GzInt width;
 	GzInt height;
 	GzColor clearColor;
+	vector<GzColor> colorBuffer;
 };
 //----------------------------------------------------------------------------
 
