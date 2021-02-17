@@ -23,6 +23,13 @@ void GzFrameBuffer::clear(GzFunctional buffer)
 
 GzImage GzFrameBuffer::toImage()
 {
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image.set(i, j, colorBuffer[i][j]);
+        }
+    }
     return image; // retrun already created image
 }
 
@@ -43,6 +50,4 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
     if (!inBounds(v))
         return;
     colorBuffer[v.at(Y)][v.at(X)] = c; // set the color at the point in our framebuffer
-
-    image.set(v.at(X), v.at(Y), c);
 }
