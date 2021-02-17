@@ -24,9 +24,13 @@ private:
 	//Put any variables and private functions for your implementation here
 	GzInt width;
 	GzInt height;
+	GzBool resize();
 	GzColor clearColor;
 	vector<vector<GzColor> > colorBuffer;
 	GzImage image;
+
+	// Returns true if a point is within the bounds of the frame buffer
+	GzBool inBounds(GzVertex v);
 };
 //----------------------------------------------------------------------------
 
