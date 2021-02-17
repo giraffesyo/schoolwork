@@ -7,6 +7,7 @@ void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
     this->width = width;
     this->height = height;
     colorBuffer.reserve(height * width);
+    image = GzImage(width, height);
 }
 
 void GzFrameBuffer::setClearColor(const GzColor &color)
@@ -16,6 +17,7 @@ void GzFrameBuffer::setClearColor(const GzColor &color)
 
 void GzFrameBuffer::clear(GzFunctional buffer)
 {
+    image.clear(clearColor);
     for (int i = 0; i < height * width; i++)
     {
         colorBuffer.push_back(clearColor);
@@ -24,7 +26,7 @@ void GzFrameBuffer::clear(GzFunctional buffer)
 
 GzImage GzFrameBuffer::toImage()
 {
-    return GzImage(width, height);
+    return image;
 }
 
 void GzFrameBuffer::setClearDepth(GzReal depth)
