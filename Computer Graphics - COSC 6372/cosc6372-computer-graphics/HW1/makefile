@@ -20,10 +20,11 @@ $(BIN) : $(BUILD_DIR)/$(BIN)
 
 # Actual target of the binary - depends on all .o files.
 # Create build directories - same structure as sources.
+# Just link all the object files.
 $(BUILD_DIR)/$(BIN) : $(OBJ)
 	echo $(@D)
 	mkdir -p $(@D)  
-	$(CXX) $(CXX_FLAGS) $^ -o $@ # Just link all the object files.
+	$(CXX) $(CXX_FLAGS) $^ -o $@ 
 
 # Include all .d files
 -include $(DEP)
