@@ -25,9 +25,11 @@ To run the project, compile it first by navigating to the project directory and 
 make
 ```
 
-Afterwards, execute the following:
+This will generate a number of files inside of the `out` directory, as in the VS Code method above.
 
-```
+Execute the following to run the application:
+
+```bash
 ./out/hw
 ```
 
