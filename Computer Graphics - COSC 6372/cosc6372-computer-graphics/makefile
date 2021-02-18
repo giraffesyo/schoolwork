@@ -2,14 +2,15 @@ SRC_DIR = src
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=%.o)
 EXEC = hw
-COMPILER = g++
+CXX = g++
+CXXFLAGS = --std=c++17
 DELETE = rm
 
 $(EXEC) : $(OBJECTS)
-	$(COMPILER) $(OBJECTS) -o $(EXEC)
+	$(CXX) $(OBJECTS) -o $(EXEC)
 
 %.o : $(SRC_DIR)/%.cpp
-	$(COMPILER) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 .PHONY : all
 all : $(EXEC)
