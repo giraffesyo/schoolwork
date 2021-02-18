@@ -9,9 +9,13 @@ using namespace std;
 //============================================================================
 
 //Common data type------------------------------------------------------------
+// wrapper around int
 typedef int GzInt;
+// wrapper around bool
 typedef bool GzBool;
+// wrapper around double
 typedef double GzReal;
+// flag representing capabilities
 typedef unsigned int GzFunctional;
 typedef unsigned int GzPrimitiveType;
 //----------------------------------------------------------------------------
@@ -27,8 +31,11 @@ typedef unsigned int GzPrimitiveType;
 //----------------------------------------------------------------------------
 
 //3D coordinate data type-----------------------------------------------------
+// vector position X
 #define X 0
+// vector position Y
 #define Y 1
+// vector position Z
 #define Z 2
 
 struct GzVertex : public vector<GzReal>
@@ -44,9 +51,13 @@ struct GzVertex : public vector<GzReal>
 //----------------------------------------------------------------------------
 
 //Color data type-------------------------------------------------------------
+// vector position R
 #define R 0
+// vector position G
 #define G 1
+// vector position B
 #define B 2
+// vector position A
 #define A 3
 
 #include <iostream>
