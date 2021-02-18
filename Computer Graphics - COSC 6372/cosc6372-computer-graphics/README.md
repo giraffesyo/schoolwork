@@ -1,7 +1,7 @@
 # COSC6372 Computer Graphics
 
-School: University of Houston - Spring 2021
-Instructor: Dr. Zhigang Deng
+School: University of Houston - Spring 2021  
+Instructor: Dr. Zhigang Deng  
 Teaching Assistants: Qixin Deng, Kunpeng Zhang
 
 ## Course Synposis
