@@ -19,16 +19,21 @@ typedef bool GzBool;
 typedef double GzReal;
 // flag representing capabilities
 typedef unsigned int GzFunctional;
+// Type of input, e.g. GZ_POINTS
 typedef unsigned int GzPrimitiveType;
 //----------------------------------------------------------------------------
 
 //Funtional constants---------------------------------------------------------
+// Used to enable or disable depth test
 #define GZ_DEPTH_TEST 0x00000001
+// If set, working with the color buffer
 #define GZ_COLOR_BUFFER 0x00000002
+// If set, working with the depth buffer
 #define GZ_DEPTH_BUFFER 0x00000004
 //----------------------------------------------------------------------------
 
 //Primitive types-------------------------------------------------------------
+// type of input we are dealing with
 #define GZ_POINTS 0
 //----------------------------------------------------------------------------
 
@@ -40,6 +45,7 @@ typedef unsigned int GzPrimitiveType;
 // vector position Z
 #define Z 2
 
+// A point with X, Y, Z values
 struct GzVertex : public vector<GzReal>
 {
 	GzVertex() : vector<GzReal>(3, 0) {}
@@ -62,6 +68,7 @@ struct GzVertex : public vector<GzReal>
 // vector position A
 #define A 3
 
+// A color with R, G, B, A values
 struct GzColor : public vector<GzReal>
 {
 	GzColor() : vector<GzReal>(4, 0) { at(A) = 1; }

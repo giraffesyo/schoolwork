@@ -42,11 +42,10 @@ int main()
 	draw();
 	gz.toImage().save("NoDepthBuf.bmp");
 
-	gz.clearColor(GzColor(1, 1, 1));			 //Background color: White
+	gz.clearColor(GzColor(1, 1, 1));			 //Background colo r: White
 	gz.enable(GZ_DEPTH_TEST);					 //Use depth test
 	gz.clearDepth(-20);							 //Default depth: -20
 	gz.clear(GZ_COLOR_BUFFER | GZ_DEPTH_BUFFER); //Clear frame buffer and depth buffer
-	// Clear depth buffer with default depth
 	draw();
 	gz.toImage().save("WithDepthBuf.bmp");
 
