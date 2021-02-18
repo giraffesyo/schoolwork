@@ -9,6 +9,8 @@ Since I used Visual Studio Code to develop this assignment, I've generated and m
 
 When you run this way, object files with the extension `.o` will be generated in an `out` directory. This folder and these files are not under source control.
 
+**IMPORTANT**: For this to work, you must have opened the `HW1` workspace in VS Code. You can do this from the command line by running `code .` from within the `HW1` directory or you can choose `File` > `Open Workspace` and choose the [workspace.code-workspace](workspace.code-workspace) file.
+
 ## Running from the command line
 
 Alternatively to VS Code, you may run the application by compiling it and running the executable.
