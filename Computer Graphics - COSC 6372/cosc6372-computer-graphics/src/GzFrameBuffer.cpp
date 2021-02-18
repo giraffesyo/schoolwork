@@ -6,19 +6,23 @@ void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
 {
     this->width = width;
     this->height = height;
-    colorBuffer.resize(height); // reserve rows
+    pixelBuffer.resize(height); // reserve rows
     image = GzImage(width, height);
 }
 
 void GzFrameBuffer::setClearColor(const GzColor &color)
 {
-    clearColor = color; // set the background color we will use
+    clearColor = color;
+}
+void GzFrameBuffer::setClearDepth(GzReal depth)
+{
+    clearDepth = depth;
 }
 
 void GzFrameBuffer::clear(GzFunctional buffer)
 {
     image.clear(clearColor); // set the background color for the image
-    fill(colorBuffer.begin(), colorBuffer.end(), vector<GzColor>(width, clearColor));
+    fill(pixelBuffer.begin(), pixelBuffer.end(), vector<GzFramePixel>(width, GzFramePixel(clearColor, clearDepth)));
 }
 
 GzImage GzFrameBuffer::toImage()
@@ -27,14 +31,10 @@ GzImage GzFrameBuffer::toImage()
     {
         for (int j = 0; j < width; j++)
         {
-            image.set(i, j, colorBuffer[i][j]);
+            image.set(i, j, pixelBuffer[i][j].getColor());
         }
     }
-    return image; // retrun already created image
-}
-
-void GzFrameBuffer::setClearDepth(GzReal depth)
-{
+    return image; // return already created image
 }
 
 GzBool GzFrameBuffer::inBounds(GzVertex v)
@@ -44,10 +44,9 @@ GzBool GzFrameBuffer::inBounds(GzVertex v)
 
 void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status)
 {
-
     // ignore status for now
     // do nothing if out of framebuffer bounds
     if (!inBounds(v))
         return;
-    colorBuffer[v.at(Y)][v.at(X)] = c; // set the color at the point in our framebuffer
+    pixelBuffer[v.at(Y)][v.at(X)] = GzFramePixel(c, 0); // set the color at the point in our framebuffer, ignoring depth
 }
