@@ -16,5 +16,5 @@ Author: Michael McQuade
 
 ## Attributions
 
-The glass shattering sound is a free sound from the [GDC yearly giveaway pack](https://sonniss.com/gameaudiogdc).
+The glass shattering sound is a free sound from the [GDC yearly giveaway pack](https://sonniss.com/gameaudiogdc).  
 Aang 3D model found online, was prerigged, the waving animation was made by me in Maya 3D
