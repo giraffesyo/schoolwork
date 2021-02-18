@@ -63,15 +63,17 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
     // https://learnopengl.com/Advanced-OpenGL/Depth-testing
     if (status & GZ_DEPTH_TEST) // if we should test for depth
     {
+        // Note that this is opposite of OpenGL's `GL_LESS`
+        // default here is like their `GL_GREATER`
         if (depthBuffer[x][y] < z)
-        {
-            depthBuffer[x][y] = z;
-            colorBuffer[x][y] = c;
-        }
-    }
-    else // we don't consider depth at all
-    {
 
-        colorBuffer[x][y] = c; // set the color at the point in our framebuffer
+            depthBuffer[x][y] = z;
+        colorBuffer[x][y] = c;
     }
+}
+else // we don't consider depth at all
+{
+
+    colorBuffer[x][y] = c; // set the color at the point in our framebuffer
+}
 }
