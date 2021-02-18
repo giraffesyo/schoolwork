@@ -8,7 +8,7 @@
 class GzFrameBuffer
 {
 public:
-	//The common interface
+	// sizes the frame buffer, should be called before other methods
 	void initFrameSize(GzInt width, GzInt height);
 	// Creates a GzImage from the frame buffer
 	GzImage toImage();
@@ -22,7 +22,6 @@ public:
 	void drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status);
 
 private:
-	//Put any variables and private functions for your implementation here
 	// width of the frame buffer
 	GzInt width;
 	// height of the frame buffer
