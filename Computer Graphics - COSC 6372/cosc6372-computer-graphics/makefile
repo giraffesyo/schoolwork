@@ -19,9 +19,10 @@ DEP = $(OBJ:%.o=%.d)
 $(BIN) : $(BUILD_DIR)/$(BIN)
 
 # Actual target of the binary - depends on all .o files.
+# Create build directories - same structure as sources.
 $(BUILD_DIR)/$(BIN) : $(OBJ)
 	echo $(@D)
-	mkdir -p $(@D)  # Create build directories - same structure as sources.
+	mkdir -p $(@D)  
 	$(CXX) $(CXX_FLAGS) $^ -o $@ # Just link all the object files.
 
 # Include all .d files
