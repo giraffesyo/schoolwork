@@ -17,4 +17,4 @@ all : $(EXEC)
 
 .PHONY : clean
 clean :
-	-$(DELETE) $(OBJECTS) core
+	-$(DELETE) $(OBJECTS)
