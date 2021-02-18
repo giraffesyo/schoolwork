@@ -6,8 +6,8 @@ void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
 {
     this->width = width;
     this->height = height;
-    colorBuffer.resize(height); // reserve rows
-    depthBuffer.resize(height);
+    colorBuffer.resize(width); // reserve cols
+    depthBuffer.resize(width);
     image = GzImage(width, height);
 }
 
@@ -24,11 +24,11 @@ void GzFrameBuffer::clear(GzFunctional buffer)
 {
     if (buffer & GZ_COLOR_BUFFER)
     {
-        fill(colorBuffer.begin(), colorBuffer.end(), vector<GzColor>(width, clearColor));
+        fill(colorBuffer.begin(), colorBuffer.end(), vector<GzColor>(height, clearColor));
     }
     if (buffer & GZ_DEPTH_BUFFER)
     {
-        fill(depthBuffer.begin(), depthBuffer.end(), vector<GzReal>(width, clearDepth));
+        fill(depthBuffer.begin(), depthBuffer.end(), vector<GzReal>(height, clearDepth));
     }
 }
 
@@ -36,9 +36,9 @@ GzImage GzFrameBuffer::toImage()
 {
     image.clear(clearColor); // set the background color for the image
 
-    for (int i = 0; i < height; i++)
+    for (int i = 0; i < width; i++)
     {
-        for (int j = 0; j < width; j++)
+        for (int j = 0; j < height; j++)
         {
             image.set(i, j, colorBuffer[i][j]);
         }
@@ -63,15 +63,15 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
     // https://learnopengl.com/Advanced-OpenGL/Depth-testing
     if (status & GZ_DEPTH_TEST) // if we should test for depth
     {
-        if (depthBuffer[y][x] < z)
+        if (depthBuffer[x][y] < z)
         {
-            depthBuffer[y][x] = z;
-            colorBuffer[y][x] = c;
+            depthBuffer[x][y] = z;
+            colorBuffer[x][y] = c;
         }
     }
     else // we don't consider depth at all
     {
 
-        colorBuffer[y][x] = c; // set the color at the point in our framebuffer
+        colorBuffer[x][y] = c; // set the color at the point in our framebuffer
     }
 }
