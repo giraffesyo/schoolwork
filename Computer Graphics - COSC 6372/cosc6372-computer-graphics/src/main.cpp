@@ -38,17 +38,17 @@ int main()
 
 	gz.clearColor(GzColor(0, 0, 0)); //Background color: Black
 	gz.clear(GZ_COLOR_BUFFER);		 //Clear frame buffer with background color
-	// gz.disable(GZ_DEPTH_TEST);			//No depth test
+	gz.disable(GZ_DEPTH_TEST);		 //No depth test
 	draw();
 	gz.toImage().save("NoDepthBuf.bmp");
 
-	// gz.clearColor(GzColor(1, 1, 1));	//Background color: White
-	// gz.enable(GZ_DEPTH_TEST);			//Use depth test
-	// gz.clearDepth(-20);					//Default depth: -20
-	// gz.clear(GZ_COLOR_BUFFER | GZ_DEPTH_BUFFER);	//Clear frame buffer with background color
-	//Clear depth buffer with default depth
-	// draw();
-	// gz.toImage().save("WithDepthBuf.bmp");
+	gz.clearColor(GzColor(1, 1, 1));			 //Background color: White
+	gz.enable(GZ_DEPTH_TEST);					 //Use depth test
+	gz.clearDepth(-20);							 //Default depth: -20
+	gz.clear(GZ_COLOR_BUFFER | GZ_DEPTH_BUFFER); //Clear frame buffer and depth buffer
+	// Clear depth buffer with default depth
+	draw();
+	gz.toImage().save("WithDepthBuf.bmp");
 
 	return 0;
 }

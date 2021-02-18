@@ -3,7 +3,6 @@
 
 #include "GzCommon.h"
 #include "GzImage.h"
-#include "GzFramePixel.h"
 
 //Frame buffer with Z-buffer -------------------------------------------------
 class GzFrameBuffer
@@ -32,8 +31,10 @@ private:
 	GzColor clearColor;
 	// the depth to use when clearing
 	GzReal clearDepth;
-	// vector storing the each pixel or point in the frame
-	vector<vector<GzFramePixel>> pixelBuffer;
+	// vector storing the color of each point in the frame
+	vector<vector<GzColor>> colorBuffer;
+	// vector storing the depth of each point in the frame
+	vector<vector<GzReal>> depthBuffer;
 	// stores the image for outputting to bitmap, must be generated with toImage method
 	GzImage image;
 	// Returns true if a point is within the bounds of the frame buffer
