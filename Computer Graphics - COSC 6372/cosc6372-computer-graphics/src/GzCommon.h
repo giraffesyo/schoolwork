@@ -2,6 +2,8 @@
 #define __GZ_COMMON_H_
 
 #include <vector>
+#include <iostream>
+
 using namespace std;
 
 //============================================================================
@@ -59,9 +61,6 @@ struct GzVertex : public vector<GzReal>
 #define B 2
 // vector position A
 #define A 3
-
-#include <iostream>
-using namespace std;
 
 struct GzColor : public vector<GzReal>
 {
