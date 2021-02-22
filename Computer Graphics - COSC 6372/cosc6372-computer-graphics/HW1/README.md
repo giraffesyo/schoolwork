@@ -1,4 +1,4 @@
-# Assignment 1
+# Assignment 1 - Drawing rectangles
 
 Michael McQuade  
 2046739
