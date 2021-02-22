@@ -3,17 +3,9 @@
 Michael McQuade  
 2046739
 
-## Running with Visual Studio Code
-
-Since I used Visual Studio Code to develop this assignment, I've generated and modified a [tasks.json](.vscode/tasks.json) file and a [launch.json](.vscode/launch.json) file. These files enable running the project by opening [main.cpp](src/main.cpp) and pressing <kbd>ctrl</kbd> + <kbd>F5</kbd> or going to `Run` and choosing `Run without debugging`.
-
-When you run this way, object files with the extension `.o` will be generated in an `out` directory. This folder and these files are not under source control.
-
-**IMPORTANT**: For this to work, you must have opened the `HW1` workspace in VS Code. You can do this from the command line by running `code .` from within the `HW1` directory or you can choose `File` > `Open Workspace` and choose the [workspace.code-workspace](workspace.code-workspace) file.
-
 ## Running from the command line
 
-Alternatively to VS Code, you may run the application by compiling it and running the executable.
+You may run the application by compiling it and running the executable.
 
 This project was tested on Mac OS Big Sur 11.2 (20D64) and compiled successfully with the following:
 
@@ -36,3 +28,11 @@ Execute the following to run the application:
 ```
 
 Nothing will be written to standard out. Instead, two files will be generated: `NoDepthBuf.bmp` and `WithDepthBuf.bmp`.
+
+## Running with Visual Studio Code
+
+Alternatively to using Make, you can run it with VS Code. Since I used Visual Studio Code to develop this assignment, I've generated and modified a [tasks.json](.vscode/tasks.json) file and a [launch.json](.vscode/launch.json) file. These files enable running the project by opening [main.cpp](src/main.cpp) and pressing <kbd>ctrl</kbd> + <kbd>F5</kbd> or going to `Run` and choosing `Run without debugging`.
+
+When you run this way, object files with the extension `.o` will be generated in an `out` directory. This folder and these files are not under source control, so you must create the out directory first.
+
+**IMPORTANT**: For this to work, you must have opened the `HW1` workspace in VS Code. You can do this from the command line by running `code .` from within the `HW1` directory or you can choose `File` > `Open Workspace` and choose the [workspace.code-workspace](workspace.code-workspace) file.
