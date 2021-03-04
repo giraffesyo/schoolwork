@@ -2,6 +2,7 @@
     "files.associations": {
         "vector": "cpp",
         "algorithm": "cpp",
-        "exception": "cpp"
+        "exception": "cpp",
+        "queue": "cpp"
     }
 }

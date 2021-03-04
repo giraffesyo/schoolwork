@@ -90,7 +90,13 @@ void Gz::end()
 	{
 		//Put your triangle drawing implementation here:
 		//   - Pop 3 vertices in the vertexQueue
+		GzVertex vA = vertexQueue.front();
+		GzVertex vB = vertexQueue.front();
+		GzVertex vC = vertexQueue.front();
 		//   - Pop 3 colors in the colorQueue
+		GzColor cA = colorQueue.front();
+		GzColor cB = colorQueue.front();
+		GzColor cC = colorQueue.front();
 		//   - Call the draw triangle function
 		//     (you may put this function in GzFrameBuffer)
 	}
