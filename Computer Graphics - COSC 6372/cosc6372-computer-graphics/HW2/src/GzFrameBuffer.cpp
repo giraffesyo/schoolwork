@@ -92,8 +92,8 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzColor colors[3], c
             if (triangle.containsPoint(p))
             {
                 // FIXME: what do we do with Z
-                cout << "drawing";
-                drawPoint(p, colors[2], status);
+                // cout << "drawing";
+                drawPoint(p, colors[0], status);
             }
         }
     }

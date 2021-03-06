@@ -88,25 +88,30 @@ void Gz::end()
 	break;
 	case GZ_TRIANGLES:
 	{
-		//Put your triangle drawing implementation here:
-		//   - Pop 3 vertices in the vertexQueue
-		GzVertex vA = vertexQueue.front();
-		vertexQueue.pop();
-		GzVertex vB = vertexQueue.front();
-		vertexQueue.pop();
-		GzVertex vC = vertexQueue.front();
-		vertexQueue.pop();
-		GzTriangle tri = GzTriangle(vA, vB, vC);
+		int iter = 0;
+		while (vertexQueue.size() >= 3 && iter < 25)
+		{
+			//   - Pop 3 vertices in the vertexQueue
+			GzVertex vA = vertexQueue.front();
+			vertexQueue.pop();
+			GzVertex vB = vertexQueue.front();
+			vertexQueue.pop();
+			GzVertex vC = vertexQueue.front();
+			vertexQueue.pop();
+			GzTriangle tri = GzTriangle(vA, vB, vC);
 
-		//   - Pop 3 colors in the colorQueue
-		GzColor cA = colorQueue.front();
-		GzColor cB = colorQueue.front();
-		GzColor cC = colorQueue.front();
-		GzColor colors[] = {cA, cB, cC};
-		//   - Call the draw triangle function
-		//     (you may put this function in GzFrameBuffer)
-		frameBuffer.drawTriangle(tri, colors, status);
+			//   - Pop 3 colors in the colorQueue
+			GzColor cA = colorQueue.front();
+			GzColor cB = colorQueue.front();
+			GzColor cC = colorQueue.front();
+			GzColor colors[] = {cA, cB, cC};
+			//   - Call the draw triangle function
+			//     (you may put this function in GzFrameBuffer)
+			frameBuffer.drawTriangle(tri, colors, status);
+			iter++;
+		}
 	}
+	break;
 	}
 }
 //============================================================================
