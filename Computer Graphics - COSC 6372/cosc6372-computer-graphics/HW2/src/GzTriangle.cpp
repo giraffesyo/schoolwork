@@ -3,6 +3,10 @@
 GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s)
 {
     vertices = {p, q, s};
+    sort(vertices.begin(), vertices.end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(Y) < b.at(Y); });
+    topVertex = vertices[0];
+    rowMin = vertices[0][Y];
+    rowMax = vertices[2][Y];
 }
 
 GzVertex GzTriangle::barycentric(const GzVertex p)

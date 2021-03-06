@@ -4,10 +4,6 @@
 #include <vector>
 using namespace std;
 
-//============================================================================
-//Declarations in Assignment #1
-//============================================================================
-
 //Common data type------------------------------------------------------------
 typedef int GzInt;
 typedef bool GzBool;
@@ -24,6 +20,7 @@ typedef unsigned int GzPrimitiveType;
 
 //Primitive types-------------------------------------------------------------
 #define GZ_POINTS 0
+#define GZ_TRIANGLES 1
 //----------------------------------------------------------------------------
 
 //3D coordinate data type-----------------------------------------------------
@@ -31,23 +28,24 @@ typedef unsigned int GzPrimitiveType;
 #define Y 1
 #define Z 2
 
-struct GzVertex : public vector<GzReal>
+class GzVertex : public vector<GzReal>
 {
+public:
 	GzVertex operator-(const GzVertex &v) const
 	{
 		GzVertex vertex;
-		vertex.at(X) = this->at(X) - v.at(X);
-		vertex.at(Y) = this->at(Y) - v.at(Y);
-		vertex.at(Z) = this->at(Z) - v.at(Z);
+		vertex[X] = at(X) - v[X];
+		vertex[Y] = at(Y) - v[Y];
+		vertex[Z] = at(Z) - v[Z];
 		return vertex;
 	}
 
 	GzVertex operator+(const GzVertex &v) const
 	{
 		GzVertex vertex;
-		vertex.at(X) = this->at(X) + v.at(X);
-		vertex.at(Y) = this->at(Y) + v.at(Y);
-		vertex.at(Z) = this->at(Z) + v.at(Z);
+		vertex.at(X) = at(X) + v[X];
+		vertex.at(Y) = at(Y) + v[Y];
+		vertex.at(Z) = at(Z) + v[Z];
 		return vertex;
 	}
 
@@ -55,9 +53,9 @@ struct GzVertex : public vector<GzReal>
 	GzVertex cross(const GzVertex &P, const GzVertex &Q)
 	{
 		GzVertex CrossProduct;
-		CrossProduct.at(X) = P.at(Y) * Q.at(Z) - P.at(Z) * Q.at(Y);
-		CrossProduct.at(Y) = -(P.at(X) * Q.at(Z) - P.at(Z) * Q.at(X));
-		CrossProduct.at(Z) = P.at(X) * Q.at(Y) - P.at(Y) * Q.at(X);
+		CrossProduct[X] = P[Y] * Q[Z] - P[Z] * Q[Y];
+		CrossProduct[Y] = -(P[X] * Q[Z] - P[Z] * Q[X]);
+		CrossProduct[Z] = P[X] * Q[Y] - P[Y] * Q[X];
 		return CrossProduct;
 	}
 
@@ -65,7 +63,7 @@ struct GzVertex : public vector<GzReal>
 	// https://en.wikipedia.org/wiki/Dot_product
 	GzReal dot(const GzVertex &Q)
 	{
-		return this->at(X) * Q.at(X) + this->at(Y) * Q.at(Y) + this->at(Z) * Q.at(Z);
+		return at(X) * Q[X] + at(Y) * Q[Y] + at(Z) * Q[Z];
 	}
 
 	GzVertex() : vector<GzReal>(3, 0) {}
@@ -106,21 +104,5 @@ struct GzColor : public vector<GzReal>
 	}
 };
 //----------------------------------------------------------------------------
-
-//============================================================================
-//End of Declarations in Assignment #1
-//============================================================================
-
-//============================================================================
-//Declarations in Assignment #2
-//============================================================================
-
-//Primitive types-------------------------------------------------------------
-#define GZ_TRIANGLES 1
-//----------------------------------------------------------------------------
-
-//============================================================================
-//End of Declarations in Assignment #2
-//============================================================================
 
 #endif

@@ -86,7 +86,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzColor colors[3], c
 
     for (int i = 0; i < width; i++)
     {
-        for (int j = 0; j < height; j++)
+        for (int j = triangle.rowMin; j < triangle.rowMax; j++)
         {
             GzVertex p = GzVertex(i, j, 0);
             if (triangle.containsPoint(p))
