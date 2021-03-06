@@ -1,7 +1,7 @@
 # References https://stackoverflow.com/a/30142139/5007662
 CXX = g++
 # CXX_FLAGS = -Wfatal-errors -Wall -Wextra -Wpedantic -Wconversion -Wshadow --std=c++17
-CXX_FLAGS = --std=c++17
+CXX_FLAGS = --std=c++2a
 # Final binary
 BIN = hw
 # Put all auto generated stuff to this build dir.

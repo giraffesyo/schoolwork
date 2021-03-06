@@ -6,7 +6,7 @@
       "command": "/usr/bin/g++",
       "args": [
         "--std",
-        "c++17",
+        "c++2a",
         "-I",
         "${fileDirname}",
         "-g",

@@ -11,7 +11,7 @@ This project was tested on Mac OS Big Sur 11.2 (20D64) and compiled successfully
 
 - g++ using Apple clang version 12.0.0 (clang-1200.0.32.29)
 - GNU Make 3.81.
-- C++17
+- C++20
 
 In order to run the project, you must compile it first by navigating to the project directory and running:
 
