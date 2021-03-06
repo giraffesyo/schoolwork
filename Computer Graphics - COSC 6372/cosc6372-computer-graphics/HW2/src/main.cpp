@@ -35,7 +35,7 @@ int main()
 
 	fi.close();
 
-	gz.toImage().save("TeaPot.bmp");
+	gz.toImage().save("output.bmp");
 
 	return 0;
 }

@@ -4,6 +4,7 @@
 #include "GzCommon.h"
 #include "GzImage.h"
 #include "GzFrameBuffer.h"
+#include "GzTriangle.h"
 #include <queue>
 using namespace std;
 

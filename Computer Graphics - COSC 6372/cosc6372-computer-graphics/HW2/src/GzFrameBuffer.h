@@ -3,6 +3,7 @@
 
 #include "GzCommon.h"
 #include "GzImage.h"
+#include "GzTriangle.h"
 
 //Frame buffer with Z-buffer -------------------------------------------------
 class GzFrameBuffer
@@ -20,6 +21,8 @@ public:
 	void setClearDepth(GzReal depth);
 	// attempts to add a point or pixel to the frame buffer
 	void drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status);
+	// attempts to add a triangle to the frame buffer
+	void drawTriangle(const GzTriangle triangle, const GzColor colors[3], const GzFunctional status);
 
 private:
 	// width of the frame buffer
@@ -38,6 +41,8 @@ private:
 	GzImage image;
 	// Returns true if a point is within the bounds of the frame buffer
 	GzBool inBounds(GzVertex v);
+
+	// void drawLine(const GzVertex &p, const GzVertex &q, GzColor);
 };
 //----------------------------------------------------------------------------
 

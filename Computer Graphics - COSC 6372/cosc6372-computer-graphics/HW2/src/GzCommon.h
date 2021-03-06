@@ -33,6 +33,41 @@ typedef unsigned int GzPrimitiveType;
 
 struct GzVertex : public vector<GzReal>
 {
+	GzVertex operator-(const GzVertex &v) const
+	{
+		GzVertex vertex;
+		vertex.at(X) = this->at(X) - v.at(X);
+		vertex.at(Y) = this->at(Y) - v.at(Y);
+		vertex.at(Z) = this->at(Z) - v.at(Z);
+		return vertex;
+	}
+
+	GzVertex operator+(const GzVertex &v) const
+	{
+		GzVertex vertex;
+		vertex.at(X) = this->at(X) + v.at(X);
+		vertex.at(Y) = this->at(Y) + v.at(Y);
+		vertex.at(Z) = this->at(Z) + v.at(Z);
+		return vertex;
+	}
+
+	// reference algorithm for cross product @ https://www.tutorialspoint.com/cplusplus-program-to-compute-cross-product-of-two-vectors
+	GzVertex cross(const GzVertex &P, const GzVertex &Q)
+	{
+		GzVertex CrossProduct;
+		CrossProduct.at(X) = P.at(Y) * Q.at(Z) - P.at(Z) * Q.at(Y);
+		CrossProduct.at(Y) = -(P.at(X) * Q.at(Z) - P.at(Z) * Q.at(X));
+		CrossProduct.at(Z) = P.at(X) * Q.at(Y) - P.at(Y) * Q.at(X);
+		return CrossProduct;
+	}
+
+	// Multiplies each component and then sums all of the results
+	// https://en.wikipedia.org/wiki/Dot_product
+	GzReal dot(const GzVertex &Q)
+	{
+		return this->at(X) * Q.at(X) + this->at(Y) * Q.at(Y) + this->at(Z) * Q.at(Z);
+	}
+
 	GzVertex() : vector<GzReal>(3, 0) {}
 	GzVertex(GzReal x, GzReal y, GzReal z) : vector<GzReal>(3, 0)
 	{
