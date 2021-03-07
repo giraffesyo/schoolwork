@@ -15,6 +15,8 @@ public:
     GzVertex topVertex;
     int rowMin;
     int rowMax;
+    int colMin;
+    int colMax;
 
 private:
 };

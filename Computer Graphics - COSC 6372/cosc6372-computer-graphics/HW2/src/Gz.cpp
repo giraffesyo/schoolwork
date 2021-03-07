@@ -91,18 +91,17 @@ void Gz::end()
 		int iter = 0;
 		int size = vertexQueue.size() / 3;
 		vector<GzTriangle> triangles = vector<GzTriangle>();
-		while (vertexQueue.size() >= 3 && iter < 25)
+
+		while (vertexQueue.size() >= 3)
 		{
 
 			//   - Pop 3 vertices in the vertexQueue
-			const GzVertex vA = vertexQueue.front();
+			GzVertex vA = vertexQueue.front();
 			vertexQueue.pop();
-			const GzVertex vB = vertexQueue.front();
+			GzVertex vB = vertexQueue.front();
 			vertexQueue.pop();
-			const GzVertex vC = vertexQueue.front();
+			GzVertex vC = vertexQueue.front();
 			vertexQueue.pop();
-			GzTriangle tri = GzTriangle(vA, vB, vC);
-			triangles.push_back(tri);
 
 			//   - Pop 3 colors in the colorQueue
 			const GzColor cA = colorQueue.front();
@@ -111,14 +110,24 @@ void Gz::end()
 			colorQueue.pop();
 			const GzColor cC = colorQueue.front();
 			colorQueue.pop();
-			GzColor colors[] = {cA, cB, cC};
+
+			vA.color = cA;
+			vB.color = cB;
+			vC.color = cC;
+
+			GzTriangle tri = GzTriangle(vA, vB, vC);
+			triangles.push_back(tri);
 			//   - Call the draw triangle function
 			//     (you may put this function in GzFrameBuffer)
-			frameBuffer.drawTriangle(tri, colors, status);
+			// frameBuffer.drawTriangle(tri, colors, status);
 			iter++;
 		}
 		// sort the triangles so that the highest Y values come first
-		// sort(triangles.begin(), triangles.end(), [](const GzTriangle &a, const GzTriangle &b) -> bool { return a.topVertex.at(Y) < b.topVertex.at(Y); });
+		sort(triangles.begin(), triangles.end(), [](const GzTriangle &a, const GzTriangle &b) -> bool { return a.rowMin < b.rowMin; });
+		for (int i = 0; i < triangles.size() - 1; i++)
+		{
+			frameBuffer.drawTriangle(triangles[i], status);
+		}
 	}
 	break;
 	}

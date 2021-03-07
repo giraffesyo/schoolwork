@@ -7,6 +7,13 @@ GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s)
     topVertex = vertices[0];
     rowMin = vertices[0][Y];
     rowMax = vertices[2][Y];
+    sort(vertices.begin(), vertices.end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
+    colMin = vertices[0][X];
+    colMax = vertices[2][X];
+    if (rowMax > 500)
+    {
+        cout << "this one";
+    }
 }
 
 GzVertex GzTriangle::barycentric(const GzVertex p)

@@ -77,23 +77,29 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
     }
 }
 
-void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzColor colors[3], const GzFunctional status)
+void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
 {
 
-    const GzColor pColor = colors[0];
-    const GzColor qColor = colors[1];
-    const GzColor sColor = colors[2];
+    if (triangle.rowMax < 0)
+        return;
 
-    for (int i = 0; i < width; i++)
+    for (int i = triangle.colMin < 0 ? 0 : triangle.colMin; i < triangle.colMax; i++)
     {
-        for (int j = triangle.rowMin; j < triangle.rowMax; j++)
+        if (i > width)
+            break;
+
+        for (int j = triangle.rowMin < 0 ? 0 : triangle.rowMin; j < triangle.rowMax; j++)
         {
+            if (j > height)
+                break;
             GzVertex p = GzVertex(i, j, 0);
             if (triangle.containsPoint(p))
             {
+                //FIXME: interpolate color?
+                p.color = triangle.vertices[1].color;
                 // FIXME: what do we do with Z
-                // cout << "drawing";
-                drawPoint(p, colors[0], status);
+                p[Z] = triangle.vertices[1][Z];
+                drawPoint(p, p.color, status);
             }
         }
     }

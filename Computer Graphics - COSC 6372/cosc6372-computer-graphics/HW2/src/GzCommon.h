@@ -28,9 +28,38 @@ typedef unsigned int GzPrimitiveType;
 #define Y 1
 #define Z 2
 
-class GzVertex : public vector<GzReal>
+//Color data type-------------------------------------------------------------
+#define R 0
+#define G 1
+#define B 2
+#define A 3
+
+#include <iostream>
+using namespace std;
+
+struct GzColor : public vector<GzReal>
 {
-public:
+	GzColor() : vector<GzReal>(4, 0) { at(A) = 1; }
+	GzColor(GzReal r, GzReal g, GzReal b) : vector<GzReal>(4, 0)
+	{
+		at(R) = r;
+		at(G) = g;
+		at(B) = b;
+		at(A) = 1;
+	}
+	GzColor(GzReal r, GzReal g, GzReal b, GzReal a) : vector<GzReal>(4, 0)
+	{
+		at(R) = r;
+		at(G) = g;
+		at(B) = b;
+		at(A) = a;
+	}
+};
+//----------------------------------------------------------------------------
+
+struct GzVertex : public vector<GzReal>
+{
+	GzColor color;
 	GzVertex operator-(const GzVertex &v) const
 	{
 		GzVertex vertex;
@@ -72,35 +101,6 @@ public:
 		at(X) = x;
 		at(Y) = y;
 		at(Z) = z;
-	}
-};
-//----------------------------------------------------------------------------
-
-//Color data type-------------------------------------------------------------
-#define R 0
-#define G 1
-#define B 2
-#define A 3
-
-#include <iostream>
-using namespace std;
-
-struct GzColor : public vector<GzReal>
-{
-	GzColor() : vector<GzReal>(4, 0) { at(A) = 1; }
-	GzColor(GzReal r, GzReal g, GzReal b) : vector<GzReal>(4, 0)
-	{
-		at(R) = r;
-		at(G) = g;
-		at(B) = b;
-		at(A) = 1;
-	}
-	GzColor(GzReal r, GzReal g, GzReal b, GzReal a) : vector<GzReal>(4, 0)
-	{
-		at(R) = r;
-		at(G) = g;
-		at(B) = b;
-		at(A) = a;
 	}
 };
 //----------------------------------------------------------------------------
