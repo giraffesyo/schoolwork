@@ -4,7 +4,8 @@
         "algorithm": "cpp",
         "exception": "cpp",
         "queue": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iostream": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++20"
 }

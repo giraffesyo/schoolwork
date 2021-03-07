@@ -77,11 +77,26 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
     }
 }
 
+void GzFrameBuffer::drawLine(int x0, int y0, int x1, int y1, GzColor color)
+{
+    for (float t = 0.; t < 1.; t += .01)
+    {
+        int x = x0 + (x1 - x0) * t;
+        int y = y0 + (y1 - y0) * t;
+        drawPoint(GzVertex(x, y, 0), color, ~GZ_DEPTH_TEST);
+    }
+}
+
 void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
 {
 
     if (triangle.rowMax < 0)
         return;
+
+    if (triangle.vertices[0][Z] > 1000)
+    {
+        cout << "fuck";
+    }
 
     for (int i = triangle.colMin < 0 ? 0 : triangle.colMin; i < triangle.colMax; i++)
     {
@@ -90,8 +105,8 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
 
         for (int j = triangle.rowMin < 0 ? 0 : triangle.rowMin; j < triangle.rowMax; j++)
         {
-            if (j > height)
-                break;
+            // if (j > height)
+            //     break;
             GzVertex p = GzVertex(i, j, 0);
             if (triangle.containsPoint(p))
             {

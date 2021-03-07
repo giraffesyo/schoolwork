@@ -23,6 +23,7 @@ public:
 	void drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status);
 	// attempts to add a triangle to the frame buffer
 	void drawTriangle(const GzTriangle triangle, const GzFunctional status);
+	void drawLine(int x0, int y0, int x1, int y1, GzColor color);
 
 private:
 	// width of the frame buffer

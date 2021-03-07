@@ -88,7 +88,7 @@ void Gz::end()
 	break;
 	case GZ_TRIANGLES:
 	{
-		int iter = 0;
+		// int iter = 0;
 		int size = vertexQueue.size() / 3;
 		vector<GzTriangle> triangles = vector<GzTriangle>();
 
@@ -120,7 +120,7 @@ void Gz::end()
 			//   - Call the draw triangle function
 			//     (you may put this function in GzFrameBuffer)
 			// frameBuffer.drawTriangle(tri, colors, status);
-			iter++;
+			// iter++;
 		}
 		// sort the triangles so that the highest Y values come first
 		sort(triangles.begin(), triangles.end(), [](const GzTriangle &a, const GzTriangle &b) -> bool { return a.rowMin < b.rowMin; });
@@ -128,6 +128,7 @@ void Gz::end()
 		{
 			frameBuffer.drawTriangle(triangles[i], status);
 		}
+		frameBuffer.drawLine(0, 0, 10, 10, GzColor(1, 0, 0));
 	}
 	break;
 	}
