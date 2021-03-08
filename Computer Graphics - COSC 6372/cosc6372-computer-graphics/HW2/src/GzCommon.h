@@ -40,6 +40,39 @@ using namespace std;
 class GzColor : public vector<GzReal>
 {
 public:
+	GzColor operator/(const double d) const
+	{
+		GzColor color;
+		if (d <= 0.)
+			return *this;
+		color.at(R) = at(R) / d;
+		color.at(G) = at(G) / d;
+		color.at(B) = at(B) / d;
+		color.at(A) = at(A); // dont modify opacity here
+		return color;
+	}
+
+	GzColor operator*(const double d) const
+	{
+		if (d <= 0.)
+			return *this;
+		GzColor color;
+		color.at(R) = at(R) * d;
+		color.at(G) = at(G) * d;
+		color.at(B) = at(B) * d;
+		color.at(A) = at(A); // dont modify opacity here
+		return color;
+	}
+
+	GzColor operator+(const GzColor &c) const
+	{
+		GzColor color;
+		color.at(R) = at(R) + c.at(R);
+		color.at(G) = at(G) + c.at(G);
+		color.at(B) = at(B) + c.at(B);
+		color.at(A) = at(A); // TODO: dont add opacity here
+		return color;
+	}
 	GzColor() : vector<GzReal>(4, 0) { at(A) = 1; }
 	GzColor(GzReal r, GzReal g, GzReal b) : vector<GzReal>(4, 0)
 	{

@@ -14,28 +14,33 @@ GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s) : v
     sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
     colMin = at(0)[X];
     colMax = at(2)[X];
-    if (rowMax > 500)
+}
+
+// Caclulate bounds of triangle
+void GzTriangle::CalculateBounds(const GzReal clampW, const GzReal clampH)
+{
+    GzVertex clamp(clampW, clampH, numeric_limits<float>::max());
+    for (int i = 0; i < 3; i++)
     {
-        cout << "this one";
+        for (int j = 0; j < 2; j++)
+        {
+            MinBounds[j] = max(0., min(MinBounds[j], at(i)[j]));
+            MaxBounds[j] = min(clamp[j], max(MaxBounds[j], at(i)[j]));
+        }
     }
 }
 
 GzVertex GzTriangle::barycentric(const GzVertex p)
 {
+    // get easier names for the three points of the triangle
     const GzVertex a = at(X);
     const GzVertex b = at(Y);
     const GzVertex c = at(Z);
-    // GzVertex v0 = b - a;
-    // GzVertex v1 = c - a;
-    // GzVertex v2 = p - a;
-
+    // calculate barycentric coordinates using cross product, z as common divisor
     GzVertex u = GzVertex(c[X] - a[X], b[X] - a[X], a[X] - p[X]).cross(GzVertex(c[Y] - a[Y], b[Y] - a[Y], a[Y] - p[Y]));
     GzVertex BarycentricCoords(1.f - (u[X] + u[Y]) / u[Z], u[Y] / u[Z], u[X] / u[Z]);
-    return BarycentricCoords;
-}
+    // https://codeplea.com/triangular-interpolation, weighted average formulas for calculating colors come from barycentric coordinates
+    BarycentricCoords.color = (a.color * BarycentricCoords[0] + b.color * BarycentricCoords[1] + c.color * BarycentricCoords[2]) / (BarycentricCoords[0] + BarycentricCoords[1] + BarycentricCoords[2]);
 
-bool GzTriangle::containsPoint(const GzVertex p)
-{
-    GzVertex barycentric = this->barycentric(p);
-    return barycentric.at(X) >= 0 && barycentric.at(Y) >= 0 && barycentric.at(Z) >= 0;
+    return BarycentricCoords;
 }

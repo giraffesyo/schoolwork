@@ -9,6 +9,7 @@ class GzTriangle : public vector<GzVertex>
 {
 public:
     GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s);
+    void CalculateBounds(const GzReal clampW, const GzReal clampH);
     GzVertex barycentric(const GzVertex p);
     bool containsPoint(const GzVertex p);
     GzVertex topVertex;
@@ -16,6 +17,8 @@ public:
     int rowMax;
     int colMin;
     int colMax;
+    GzVertex MaxBounds = GzVertex(-numeric_limits<double>::max(), -numeric_limits<double>::max(), -numeric_limits<double>::max());
+    GzVertex MinBounds = GzVertex(numeric_limits<double>::max(), numeric_limits<double>::max(), numeric_limits<double>::max());
 
 private:
 };
