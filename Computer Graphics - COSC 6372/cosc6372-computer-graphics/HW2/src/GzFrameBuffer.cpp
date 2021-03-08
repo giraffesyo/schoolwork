@@ -121,28 +121,34 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
     if (triangle.rowMax < 0)
         return;
 
-    GzColor color = GzColor(1, 0, 0, 1);
+    GzColor color(1, 0, 0, 1);
 
-    GzVertex bboxmin(width - 1, height - 1, 0);
-    GzVertex bboxmax(0, 0, 0);
+    float maxF = numeric_limits<float>::max();
+    GzVertex minBounds(maxF, maxF, 0);
+    GzVertex maxBounds(-maxF, -maxF, 0);
     GzVertex clamp(width - 1, height - 1, 0);
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 2; j++)
         {
-            bboxmin[j] = max(0., min(bboxmin[j], triangle[i][j]));
-            bboxmax[j] = min(clamp[j], max(bboxmax[j], triangle[i][j]));
+            minBounds[j] = max(0., min(minBounds[j], triangle[i][j]));
+            maxBounds[j] = min(clamp[j], max(maxBounds[j], triangle[i][j]));
         }
     }
     GzVertex P;
-    for (P[X] = bboxmin[X]; P[X] <= bboxmax[X]; P[X]++)
+    for (P[X] = minBounds[X]; P[X] <= maxBounds[X]; P[X]++)
     {
-        for (P[Y] = bboxmin[Y]; P[Y] <= bboxmax[Y]; P[Y]++)
+        for (P[Y] = minBounds[Y]; P[Y] <= maxBounds[Y]; P[Y]++)
         {
             GzVertex bc_screen = triangle.barycentric(P);
             if (bc_screen[X] < 0 || bc_screen[Y] < 0 || bc_screen[Z] < 0)
                 continue;
-            drawPoint(GzVertex(P[X], P[Y], 0), triangle[0].color, ~GZ_DEPTH_TEST);
+            P[Z] = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                P[Z] += triangle[i][Z] * bc_screen[i];
+            }
+            drawPoint(GzVertex(P[X], P[Y], P[Z]), triangle[0].color, status);
         }
     }
 }

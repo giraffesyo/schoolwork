@@ -93,9 +93,9 @@ void Gz::end()
 			GzVertex vC = vertexQueue.front();
 			vertexQueue.pop();
 
-			vA[Z] = 0.;
-			vB[Z] = 0.;
-			vC[Z] = 0.;
+			// vA[Z] = 0.;
+			// vB[Z] = 0.;
+			// vC[Z] = 0.;
 			//   - Pop 3 colors in the colorQueue
 			const GzColor cA = colorQueue.front();
 			colorQueue.pop();

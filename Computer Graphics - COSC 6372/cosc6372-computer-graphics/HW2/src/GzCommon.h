@@ -93,12 +93,12 @@ struct GzVertex : public vector<GzReal>
 	}
 
 	// reference algorithm for cross product @ https://www.tutorialspoint.com/cplusplus-program-to-compute-cross-product-of-two-vectors
-	GzVertex cross(const GzVertex &P, const GzVertex &Q)
+	GzVertex cross(const GzVertex &Q)
 	{
 		GzVertex CrossProduct;
-		CrossProduct[X] = P[Y] * Q[Z] - P[Z] * Q[Y];
-		CrossProduct[Y] = -(P[X] * Q[Z] - P[Z] * Q[X]);
-		CrossProduct[Z] = P[X] * Q[Y] - P[Y] * Q[X];
+		CrossProduct[X] = at(Y) * Q[Z] - at(Z) * Q[Y];
+		CrossProduct[Y] = -(at(X) * Q[Z] - at(Z) * Q[X]);
+		CrossProduct[Z] = at(X) * Q[Y] - at(Y) * Q[X];
 		return CrossProduct;
 	}
 
