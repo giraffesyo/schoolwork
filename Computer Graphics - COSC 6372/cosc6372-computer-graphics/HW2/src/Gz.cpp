@@ -86,12 +86,16 @@ void Gz::end()
 
 			//   - Pop 3 vertices in the vertexQueue
 			GzVertex vA = vertexQueue.front();
+
 			vertexQueue.pop();
 			GzVertex vB = vertexQueue.front();
 			vertexQueue.pop();
 			GzVertex vC = vertexQueue.front();
 			vertexQueue.pop();
 
+			vA[Z] = 0.;
+			vB[Z] = 0.;
+			vC[Z] = 0.;
 			//   - Pop 3 colors in the colorQueue
 			const GzColor cA = colorQueue.front();
 			colorQueue.pop();
@@ -116,7 +120,6 @@ void Gz::end()
 		{
 			frameBuffer.drawTriangle(triangles[i], status);
 		}
-		frameBuffer.drawLine(0, 0, 10, 10, GzColor(1, 0, 0));
 	}
 	break;
 	}
