@@ -72,7 +72,6 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
     }
     else // we don't consider depth at all
     {
-
         colorBuffer[x][y] = c; // set the color at the point in our framebuffer
     }
 }
@@ -96,7 +95,8 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
             // if this point is not in the triangle, we won't draw it
             // when using barycentric coordinates, range is from (0,1)
             // so any coordinate less than 0 is not inside the triangle
-            if (barycentric[X] < 0 || barycentric[Y] < 0 || barycentric[Z] < 0)
+            float cutoff = 0;
+            if (barycentric[X] < cutoff || barycentric[Y] < cutoff || barycentric[Z] < cutoff)
                 continue;
             for (int i = 0; i < 3; i++)
             {
