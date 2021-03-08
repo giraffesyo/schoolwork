@@ -142,7 +142,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
             GzVertex bc_screen = triangle.barycentric(P);
             if (bc_screen[X] < 0 || bc_screen[Y] < 0 || bc_screen[Z] < 0)
                 continue;
-            drawPoint(GzVertex(P[X], P[Y], 0), color, ~GZ_DEPTH_TEST);
+            drawPoint(GzVertex(P[X], P[Y], 0), triangle[0].color, ~GZ_DEPTH_TEST);
         }
     }
 }
