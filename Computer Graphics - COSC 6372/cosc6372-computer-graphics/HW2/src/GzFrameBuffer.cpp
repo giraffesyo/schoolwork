@@ -76,46 +76,105 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
         colorBuffer[x][y] = c; // set the color at the point in our framebuffer
     }
 }
-
+// references line drawing from https://github.com/ssloy/tinyrenderer/wiki/Lesson-1-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 void GzFrameBuffer::drawLine(int x0, int y0, int x1, int y1, GzColor color)
 {
-    for (float t = 0.; t < 1.; t += .01)
+    bool steep = false;
+    if (std::abs(x0 - x1) < std::abs(y0 - y1))
     {
-        int x = x0 + (x1 - x0) * t;
-        int y = y0 + (y1 - y0) * t;
-        drawPoint(GzVertex(x, y, 0), color, ~GZ_DEPTH_TEST);
+        std::swap(x0, y0);
+        std::swap(x1, y1);
+        steep = true;
+    }
+    if (x0 > x1)
+    {
+        std::swap(x0, x1);
+        std::swap(y0, y1);
+    }
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int derror2 = std::abs(dy) * 2;
+    int error2 = 0;
+    int y = y0;
+    for (int x = x0; x <= x1; x++)
+    {
+        if (steep)
+        {
+            drawPoint(GzVertex(x, y, 0), color, ~GZ_DEPTH_TEST);
+        }
+        else
+        {
+            drawPoint(GzVertex(x, y, 0), color, ~GZ_DEPTH_TEST);
+        }
+        error2 += derror2;
+        if (error2 > dx)
+        {
+            y += (y1 > y0 ? 1 : -1);
+            error2 -= dx * 2;
+        }
     }
 }
 
 void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
 {
-
+    // if this triangle is completely off screen, don't do anything
     if (triangle.rowMax < 0)
         return;
 
-    if (triangle.vertices[0][Z] > 1000)
+    if (triangle[0][Z] > 1000)
     {
         cout << "fuck";
     }
+    GzVertex p = triangle[0]; // t0
+    GzVertex q = triangle[1]; // t1
+    GzVertex s = triangle[2]; // t2
+    // sort the vertices
+    if (p[Y] > q[Y])
+        std::swap(p, q);
+    if (p[Y] > s[Y])
+        std::swap(p, s);
+    if (q[Y] > s[Y])
+        std::swap(q, s);
+    GzColor red = GzColor(1, 0, 0, 1);
+    GzColor green = GzColor(0, 1, 0, 1);
 
-    for (int i = triangle.colMin < 0 ? 0 : triangle.colMin; i < triangle.colMax; i++)
+    int total_height = s[Y] - p[Y];
+    for (int y = p[Y]; y <= q[Y]; y++)
     {
-        if (i > width)
-            break;
-
-        for (int j = triangle.rowMin < 0 ? 0 : triangle.rowMin; j < triangle.rowMax; j++)
+        int segment_height = q[Y] - p[Y] + 1;
+        float alpha = (float)(y - p[Y]) / total_height == 0 ? 0.01f : total_height;
+        float beta = (float)(y - p[Y]) / segment_height == 0 ? 0.01f : segment_height; // be careful with divisions by zero
+        GzVertex a = p + (s - p) * alpha;
+        GzVertex b = p + (q - p) * beta;
+        if (a[X] > b[X])
+            swap(a, b);
+        for (int j = a[X]; j <= b[X]; j++)
         {
-            // if (j > height)
-            //     break;
-            GzVertex p = GzVertex(i, j, 0);
-            if (triangle.containsPoint(p))
-            {
-                //FIXME: interpolate color?
-                p.color = triangle.vertices[1].color;
-                // FIXME: what do we do with Z
-                p[Z] = triangle.vertices[1][Z];
-                drawPoint(p, p.color, status);
-            }
+            // image.set(j, y, color); // attention, due to int casts t0.y+i != A.y
+            drawPoint(GzVertex(j, y, 0), red, ~GZ_DEPTH_TEST);
+        }
+        // drawPoint(GzVertex(a[X], y, 0), red, ~GZ_DEPTH_TEST);
+        // drawPoint(GzVertex(b[X], y, 0), green, ~GZ_DEPTH_TEST);
+
+        // draw PQ
+        // drawLine(triangle[0][X], triangle[0][Y], triangle[1][X], triangle[1][Y], red);
+        // // draw PS
+        // drawLine(triangle[0][X], triangle[0][Y], triangle[2][X], triangle[2][Y], green);
+        // // draw QS
+        // drawLine(triangle[1][X], triangle[1][Y], triangle[2][X], triangle[2][Y], red);
+    }
+    for (int y = q[Y]; y <= s[Y]; y++)
+    {
+        int segment_height = s[Y] - q[Y] + 1;
+        float alpha = (float)(y - p[Y]) / total_height == 0 ? 0.01f : total_height;
+        float beta = (float)(y - q[Y]) / segment_height == 0 ? 0.01f : segment_height; // be careful with divisions by zero
+        GzVertex a = p + (s - p) * alpha;
+        GzVertex b = q + (s - q) * beta;
+        if (a[X] > b[X])
+            std::swap(a, b);
+        for (int j = a[X]; j <= b[X]; j++)
+        {
+            drawPoint(GzVertex(j, y, 0), green, ~GZ_DEPTH_TEST); // attention, due to int casts t0.y+i != A.y
         }
     }
 }

@@ -10,10 +10,6 @@ using namespace std;
 
 class Gz
 {
-
-	//============================================================================
-	//Declarations in Assignment #1
-	//============================================================================
 public:
 	void initFrameSize(GzInt width, GzInt height); //Initialize
 	GzImage toImage();							   //Convert the current rendering result to image
@@ -38,9 +34,6 @@ private:
 	queue<GzColor> colorQueue;		  //Store colors in queue for rendering
 	GzPrimitiveType currentPrimitive; //The current primitive, set by Gz::begin()
 	GzFunctional status;			  //Current capabilities
-									  //============================================================================
-									  //End of Declarations in Assignment #1
-									  //============================================================================
 };
 
 #endif

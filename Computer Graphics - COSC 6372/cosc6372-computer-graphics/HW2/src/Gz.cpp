@@ -1,8 +1,5 @@
 #include "Gz.h"
 
-//============================================================================
-//Implementations in Assignment #1
-//============================================================================
 void Gz::initFrameSize(GzInt width, GzInt height)
 {
 	frameBuffer.initFrameSize(width, height);
@@ -60,18 +57,11 @@ void Gz::addColor(const GzColor &c)
 {
 	colorQueue.push(c);
 }
-//============================================================================
-//End of Implementations in Assignment #1
-//============================================================================
-
-//============================================================================
-//Implementations in Assignment #2
-//============================================================================
 void Gz::end()
 {
-	//In our implementation, all rendering is done when Gz::end() is called.
-	//Depends on selected primitive, different number of vetices, colors, ect.
-	//are pop out of the queue.
+	// In our implementation, all rendering is done when Gz::end() is called.
+	// Depends on selected primitive, different number of vetices, colors, etc.
+	// are popped out of the queue.
 	switch (currentPrimitive)
 	{
 	case GZ_POINTS:
@@ -88,7 +78,6 @@ void Gz::end()
 	break;
 	case GZ_TRIANGLES:
 	{
-		// int iter = 0;
 		int size = vertexQueue.size() / 3;
 		vector<GzTriangle> triangles = vector<GzTriangle>();
 
@@ -120,7 +109,6 @@ void Gz::end()
 			//   - Call the draw triangle function
 			//     (you may put this function in GzFrameBuffer)
 			// frameBuffer.drawTriangle(tri, colors, status);
-			// iter++;
 		}
 		// sort the triangles so that the highest Y values come first
 		sort(triangles.begin(), triangles.end(), [](const GzTriangle &a, const GzTriangle &b) -> bool { return a.rowMin < b.rowMin; });
@@ -133,6 +121,3 @@ void Gz::end()
 	break;
 	}
 }
-//============================================================================
-//End of Implementations in Assignment #2
-//============================================================================

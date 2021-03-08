@@ -5,13 +5,12 @@
 using namespace std;
 
 // Triangle data structure
-class GzTriangle
+class GzTriangle : public vector<GzVertex>
 {
 public:
     GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s);
     GzVertex barycentric(const GzVertex p);
     bool containsPoint(const GzVertex p);
-    vector<GzVertex> vertices;
     GzVertex topVertex;
     int rowMin;
     int rowMax;

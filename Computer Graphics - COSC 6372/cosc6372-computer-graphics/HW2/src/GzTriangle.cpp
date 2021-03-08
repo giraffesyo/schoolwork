@@ -1,15 +1,19 @@
 #include "GzTriangle.h"
 
-GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s)
+GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s) : vector<GzVertex>(3)
 {
-    vertices = {p, q, s};
-    sort(vertices.begin(), vertices.end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(Y) < b.at(Y); });
-    topVertex = vertices[0];
-    rowMin = vertices[0][Y];
-    rowMax = vertices[2][Y];
-    sort(vertices.begin(), vertices.end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
-    colMin = vertices[0][X];
-    colMax = vertices[2][X];
+    at(X) = p;
+    at(Y) = q;
+    at(Z) = s;
+    // Sort by highest y (lowest value but closest to top)
+    sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(Y) < b.at(Y); });
+    // the first vertex is now the one with highest Y
+    topVertex = at(0);
+    rowMin = at(0)[Y];
+    rowMax = at(2)[Y];
+    sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
+    colMin = at(0)[X];
+    colMax = at(2)[X];
     if (rowMax > 500)
     {
         cout << "this one";
@@ -19,9 +23,9 @@ GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s)
 GzVertex GzTriangle::barycentric(const GzVertex p)
 {
     GzVertex BarycentricCoords;
-    const GzVertex a = vertices.at(X);
-    const GzVertex b = vertices.at(Y);
-    const GzVertex c = vertices.at(Z);
+    const GzVertex a = at(X);
+    const GzVertex b = at(Y);
+    const GzVertex c = at(Z);
     GzVertex v0 = b - a;
     GzVertex v1 = c - a;
     GzVertex v2 = p - a;

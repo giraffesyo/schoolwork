@@ -37,8 +37,9 @@ typedef unsigned int GzPrimitiveType;
 #include <iostream>
 using namespace std;
 
-struct GzColor : public vector<GzReal>
+class GzColor : public vector<GzReal>
 {
+public:
 	GzColor() : vector<GzReal>(4, 0) { at(A) = 1; }
 	GzColor(GzReal r, GzReal g, GzReal b) : vector<GzReal>(4, 0)
 	{
@@ -55,6 +56,7 @@ struct GzColor : public vector<GzReal>
 		at(A) = a;
 	}
 };
+
 //----------------------------------------------------------------------------
 
 struct GzVertex : public vector<GzReal>
@@ -63,6 +65,7 @@ struct GzVertex : public vector<GzReal>
 	GzVertex operator-(const GzVertex &v) const
 	{
 		GzVertex vertex;
+		vertex.color = color;
 		vertex[X] = at(X) - v[X];
 		vertex[Y] = at(Y) - v[Y];
 		vertex[Z] = at(Z) - v[Z];
@@ -72,9 +75,20 @@ struct GzVertex : public vector<GzReal>
 	GzVertex operator+(const GzVertex &v) const
 	{
 		GzVertex vertex;
+		vertex.color = color;
 		vertex.at(X) = at(X) + v[X];
 		vertex.at(Y) = at(Y) + v[Y];
 		vertex.at(Z) = at(Z) + v[Z];
+		return vertex;
+	}
+
+	GzVertex operator*(const float f) const
+	{
+		GzVertex vertex;
+		vertex.color = color;
+		vertex.at(X) = at(X) * f;
+		vertex.at(Y) = at(Y) * f;
+		vertex.at(Z) = at(Z) * f;
 		return vertex;
 	}
 

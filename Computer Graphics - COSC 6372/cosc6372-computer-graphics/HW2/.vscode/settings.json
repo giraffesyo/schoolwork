@@ -5,7 +5,9 @@
         "exception": "cpp",
         "queue": "cpp",
         "cmath": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "iterator": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++20"
 }
