@@ -95,7 +95,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle triangle, const GzFunctional status)
             // if this point is not in the triangle, we won't draw it
             // when using barycentric coordinates, range is from (0,1)
             // so any coordinate less than 0 is not inside the triangle
-            float cutoff = 0;
+            float cutoff = 0.00001;
             if (barycentric[X] < cutoff || barycentric[Y] < cutoff || barycentric[Z] < cutoff)
                 continue;
             for (int i = 0; i < 3; i++)
