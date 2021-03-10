@@ -29,7 +29,7 @@ After compiling successfully, execute the following to run the application:
 ./out/hw
 ```
 
-Nothing will be written to standard out. TODO: Write here what the output looks like
+Nothing will be written to standard out. It's important that you run the command from the `HW2` directory, as that is where the input file is located.
 
 ## Running with Visual Studio Code
 
