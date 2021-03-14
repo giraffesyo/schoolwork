@@ -28,10 +28,6 @@ Login will be supported in a trusted manner, that is, users will be asked for th
 
 We will attempt to use a cloud provider for the speech recognition capabilities.
 
-## Dependencies for compiling locally:
-
-1. Azure Speech SDK for Unity: https://aka.ms/csspeech/unitypackage
-
 ## Contributors
 
 <table>
