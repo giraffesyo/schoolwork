@@ -5,7 +5,6 @@
 #include "GzImage.h"
 #include "GzFrameBuffer.h"
 #include "GzMatrix.h" //For assignment #3
-#include "GzTriangle.h"
 #include <queue>
 using namespace std;
 

@@ -3,7 +3,6 @@
 
 #include "GzCommon.h"
 #include "GzImage.h"
-#include "GzTriangle.h"
 
 //Frame buffer with Z-buffer -------------------------------------------------
 class GzFrameBuffer
@@ -26,16 +25,10 @@ public:
 	void drawLine(int x0, int y0, int x1, int y1, GzColor color);
 
 private:
-	// width of the frame buffer
-	GzInt width;
-	// height of the frame buffer
-	GzInt height;
 	// color to use when clearing, background color of frame buffer
 	GzColor clearColor;
 	// the depth to use when clearing
 	GzReal clearDepth;
-	// vector storing the color of each point in the frame
-	vector<vector<GzColor>> colorBuffer;
 	// vector storing the depth of each point in the frame
 	vector<vector<GzReal>> depthBuffer;
 	// stores the image for outputting to bitmap, must be generated with toImage method

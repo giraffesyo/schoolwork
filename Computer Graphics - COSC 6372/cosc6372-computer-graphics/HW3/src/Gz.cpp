@@ -79,7 +79,12 @@ void Gz::end()
 	{
 		while ((vertexQueue.size() >= 1) && (colorQueue.size() >= 1))
 		{
-				}
+			GzVertex v = vertexQueue.front();
+			vertexQueue.pop();
+			GzColor c = colorQueue.front();
+			colorQueue.pop();
+			frameBuffer.drawPoint(v, c, status);
+		}
 	}
 	break;
 	case GZ_TRIANGLES:
@@ -89,6 +94,22 @@ void Gz::end()
 		//   - Extract 3 colors in the colorQueue
 		//   - Call the draw triangle function
 		//     (you may put this function in GzFrameBuffer)
+		int size = vertexQueue.size() / 3;
+		while (vertexQueue.size() >= 3)
+		{
+			vector<GzVertex> vertices = vector<GzVertex>(3);
+			vector<GzColor> colors = vector<GzColor>(3);
+
+			for (int i = 0; i < 3; i++)
+			{
+				vertices[i] = vertexQueue.front();
+				vertices[i].color = colorQueue.front();
+				colors[i] = colorQueue.front();
+				vertexQueue.pop();
+				colorQueue.pop();
+			}
+			frameBuffer.drawTriangle(vertices, colors, status);
+		}
 	}
 	}
 }

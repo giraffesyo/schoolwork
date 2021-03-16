@@ -1,78 +1,55 @@
 #include "GzFrameBuffer.h"
-#include <cmath>
 
+//Put your implementation here------------------------------------------------
+#include <climits>
 void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
 {
-    this->width = width;
-    this->height = height;
-    colorBuffer.resize(width); // reserve cols
-    depthBuffer.resize(width);
-    image = GzImage(width, height);
+    image.resize(width, height);
+    depthBuffer = vector<vector<GzReal>>(width, vector<GzReal>(height, clearDepth));
+}
+
+GzImage GzFrameBuffer::toImage()
+{
+    return image;
+}
+
+void GzFrameBuffer::clear(GzFunctional buffer)
+{
+    if (buffer & GZ_COLOR_BUFFER)
+        image.clear(clearColor);
+    if (buffer & GZ_DEPTH_BUFFER)
+        for (GzInt x = 0; x != depthBuffer.size(); x++)
+            fill(depthBuffer[x].begin(), depthBuffer[x].end(), clearDepth);
 }
 
 void GzFrameBuffer::setClearColor(const GzColor &color)
 {
     clearColor = color;
 }
+
 void GzFrameBuffer::setClearDepth(GzReal depth)
 {
     clearDepth = depth;
 }
 
-void GzFrameBuffer::clear(GzFunctional buffer)
-{
-    if (buffer & GZ_COLOR_BUFFER)
-    {
-        fill(colorBuffer.begin(), colorBuffer.end(), vector<GzColor>(height, clearColor));
-    }
-    if (buffer & GZ_DEPTH_BUFFER)
-    {
-        fill(depthBuffer.begin(), depthBuffer.end(), vector<GzReal>(height, clearDepth));
-    }
-}
-
-GzImage GzFrameBuffer::toImage()
-{
-    image.clear(clearColor); // set the background color for the image
-
-    for (int i = 0; i < width; i++)
-    {
-        for (int j = 0; j < height; j++)
-        {
-            image.set(i, j, colorBuffer[i][j]);
-        }
-    }
-    return image; // return already created image
-}
-
-GzBool GzFrameBuffer::inBounds(GzVertex v)
-{
-    return v.at(X) >= 0 && v.at(Y) >= 0 && v.at(X) < width && v.at(Y) < height;
-}
-
 void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status)
 {
-    const GzInt x = v[X];
-    const GzInt y = v[Y];
-    const GzInt z = v[Z];
-    // do nothing if out of framebuffer bounds
-    if (!inBounds(v))
+    GzInt x = (GzInt)v[X];
+    GzInt y = image.sizeH() - (GzInt)v[Y] - 1;
+    if ((x < 0) || (y < 0) || (x >= image.sizeW()) || (y >= image.sizeH()))
         return;
-    // Good resource for explaining depth test:
-    // https://learnopengl.com/Advanced-OpenGL/Depth-testing
-    if (status & GZ_DEPTH_TEST) // if we should test for depth
+    if (status & GZ_DEPTH_TEST)
     {
-        // Note that this is opposite of OpenGL's `GL_LESS`
-        // default here is like their `GL_GREATER`
-        if (depthBuffer[x][y] < z)
+        if (v[Z] >= depthBuffer[x][y])
         {
-            depthBuffer[x][y] = z;
-            colorBuffer[x][y] = c;
+            image.set(x, y, c);
+            depthBuffer[x][y] = v[Z];
         }
     }
-    else // we don't consider depth at all
+    else
     {
-        colorBuffer[x][y] = c; // set the color at the point in our framebuffer
+        image.set(x, y, c);
+        depthBuffer[x][y] = v[Z];
     }
 }
 
