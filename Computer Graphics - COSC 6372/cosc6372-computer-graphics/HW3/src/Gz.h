@@ -4,6 +4,7 @@
 #include "GzCommon.h"
 #include "GzImage.h"
 #include "GzFrameBuffer.h"
+#include "GzMatrix.h" //For assignment #3
 #include "GzTriangle.h"
 #include <queue>
 using namespace std;
@@ -34,6 +35,38 @@ private:
 	queue<GzColor> colorQueue;		  //Store colors in queue for rendering
 	GzPrimitiveType currentPrimitive; //The current primitive, set by Gz::begin()
 	GzFunctional status;			  //Current capabilities
+
+	//============================================================================
+	//Declarations in Assignment #3
+	//============================================================================
+public:
+	void viewport(GzInt x, GzInt y); //Set the viewport center at (x, y)
+
+	//Transformations---------------------------------------------------------
+	void lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
+				GzReal centerX, GzReal centerY, GzReal centerZ,
+				GzReal upX, GzReal upY, GzReal upZ);		 //Define viewing transformation
+	void translate(GzReal x, GzReal y, GzReal z);			 //Multiply transMatrix by a translation matrix
+	void rotate(GzReal angle, GzReal x, GzReal y, GzReal z); //Multiply transMatrix by a rotation matrix
+	void scale(GzReal x, GzReal y, GzReal z);				 //Multiply transMatrix by a scaling matrix
+	void multMatrix(GzMatrix mat);							 //Multiply transMatrix by the matrix mat
+	//End of Transformations--------------------------------------------------
+
+	//Projections-------------------------------------------------------------
+	void perspective(GzReal fovy, GzReal aspect,
+					 GzReal zNear, GzReal zFar); //Set up a perspective projection matrix
+	void orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top,
+					  GzReal nearVal, GzReal farVal); //Set up a orthographic projection matrix
+													  //End of Projections------------------------------------------------------
+
+private:
+	GzMatrix transMatrix;		 //The transformation matrix
+	GzMatrix prjMatrix;			 //The projection matrix
+	GzReal xViewport, yViewport; //The center of the viewport
+	GzReal wViewport, hViewport; //Size of the viewport
+								 //============================================================================
+								 //End of Declarations in Assignment #3
+								 //============================================================================
 };
 
 #endif
