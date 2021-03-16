@@ -79,43 +79,19 @@ void Gz::end()
 	{
 		while ((vertexQueue.size() >= 1) && (colorQueue.size() >= 1))
 		{
-			// GzVertex v = vertexQueue.front();
-			// vertexQueue.pop();
-			// GzColor c = colorQueue.front();
-			// colorQueue.pop();
-			// frameBuffer.drawPoint(v, c, status);
-		}
+				}
 	}
 	break;
 	case GZ_TRIANGLES:
 	{
-		// int size = vertexQueue.size() / 3;
-		// vector<GzTriangle> triangles = vector<GzTriangle>();
-
-		// while (vertexQueue.size() >= 3)
-		// {
-		// 	GzVertex vertices[3];
-		// 	for (int i = 0; i < 3; i++)
-		// 	{
-		// 		vertices[i] = vertexQueue.front();
-		// 		vertices[i].color = colorQueue.front();
-
-		// 		vertexQueue.pop();
-		// 		colorQueue.pop();
-		// 	}
-		// 	triangles.push_back(GzTriangle(vertices[0], vertices[1], vertices[2]));
-		// }
-		// // sort the triangles so that the highest Y values come first
-		// sort(triangles.begin(), triangles.end(), [](const GzTriangle &a, const GzTriangle &b) -> bool { return a.rowMin < b.rowMin; });
-		// for (int i = 0; i < triangles.size() - 1; i++)
-		// {
-		// 	frameBuffer.drawTriangle(triangles[i], status);
-		// }
+		//Put your triangle drawing implementation here:
+		//   - Extract 3 vertices in the vertexQueue
+		//   - Extract 3 colors in the colorQueue
+		//   - Call the draw triangle function
+		//     (you may put this function in GzFrameBuffer)
 	}
-	break;
 	}
 }
-
 void Gz::viewport(GzInt x, GzInt y)
 {
 	//This function only updates xViewport and yViewport.

@@ -22,7 +22,7 @@ public:
 	// attempts to add a point or pixel to the frame buffer
 	void drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status);
 	// attempts to add a triangle to the frame buffer
-	void drawTriangle(const GzTriangle triangle, const GzFunctional status);
+	void drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunctional status);
 	void drawLine(int x0, int y0, int x1, int y1, GzColor color);
 
 private:
@@ -42,8 +42,9 @@ private:
 	GzImage image;
 	// Returns true if a point is within the bounds of the frame buffer
 	GzBool inBounds(GzVertex v);
-
-	// void drawLine(const GzVertex &p, const GzVertex &q, GzColor);
+	void realInterpolate(GzReal key1, GzReal val1, GzReal key2, GzReal val2, GzReal key, GzReal &val);
+	void colorInterpolate(GzReal key1, GzColor &val1, GzReal key2, GzColor &val2, GzReal key, GzColor &val);
+	void drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status);
 };
 //----------------------------------------------------------------------------
 
