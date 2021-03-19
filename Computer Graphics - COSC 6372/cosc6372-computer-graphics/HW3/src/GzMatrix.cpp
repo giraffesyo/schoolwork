@@ -7,6 +7,7 @@
 //Class represents for matrices-----------------------------------------------
 GzVertex GzMatrix::toVertex()
 {
+    // we can only call this function if the matrix is of the shape 4x1
     assert((nRow() == 4) && (nCol() == 1));
     //You need to complete this function to use the Matrix to represents
     //vertices with homogeneous coordinate.
@@ -14,6 +15,11 @@ GzVertex GzMatrix::toVertex()
     //See http://en.wikipedia.org/wiki/Homogeneous_coordinates#Use_in_computer_graphics
     //    http://en.wikipedia.org/wiki/Transformation_matrix
     //Or google: "homogeneous coordinates"
+    GzReal w = at(W)[0];
+    GzReal x = at(X)[0] / w;
+    GzReal y = at(Y)[0] / w;
+    GzReal z = at(Z)[0] / w;
+    return GzVertex(x, y, z);
 }
 
 void GzMatrix::fromVertex(const GzVertex &v)
@@ -24,6 +30,17 @@ void GzMatrix::fromVertex(const GzVertex &v)
     //See http://en.wikipedia.org/wiki/Homogeneous_coordinates#Use_in_computer_graphics
     //    http://en.wikipedia.org/wiki/Transformation_matrix
     //Or google: "homogeneous coordinates"
+    // ensure that we have 4 rows and 1 column
+    resize(4, 1);
+    int i = 0;
+    // convert vertex into matrix, putting each value into first column of each row
+    for (auto &row : *this)
+    {
+        row[0] = v[i];
+        i++;
+    }
+    // set value of fourth row to 1
+    this->at(W)[0] = 1;
 }
 
 void GzMatrix::resize(GzInt _nRow, GzInt _nCol)

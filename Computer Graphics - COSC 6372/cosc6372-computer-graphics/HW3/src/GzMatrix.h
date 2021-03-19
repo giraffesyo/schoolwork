@@ -13,7 +13,7 @@ using namespace std;
 class GzMatrix : public vector<vector<GzReal>>
 {
 public:
-    //Note: Since this calss inherits std::vector, copy constructor and
+    //Note: Since this class inherits std::vector, copy constructor and
     //      operator = are not required to define. However, you should define
     //      them in general case.
     void resize(GzInt _nRow, GzInt _nCol); //Resize to _nRow by _nCol

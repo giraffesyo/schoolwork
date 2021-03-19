@@ -27,6 +27,7 @@ typedef unsigned int GzPrimitiveType;
 #define X 0
 #define Y 1
 #define Z 2
+#define W 3
 
 //Color data type-------------------------------------------------------------
 #define R 0
