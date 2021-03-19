@@ -129,6 +129,24 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ, GzReal centerX, GzReal ce
 	//Define viewing transformation
 	//See http://www.opengl.org/sdk/docs/man/xhtml/gluLookAt.xml
 	//Or google: gluLookAt
+	GzVertex eye = GzVertex(eyeX, eyeY, eyeZ).normalize();
+	GzVertex center = GzVertex(centerX, centerY, centerZ).normalize();
+	GzVertex up = GzVertex(upX, upY, upZ).normalize();
+
+	GzVertex z = (eye - center);
+	GzVertex x = up.cross(z);
+	GzVertex y = z.cross(x);
+
+	GzMatrix minv = Identity(4);
+	transMatrix = Identity(4);
+	for (int i = 0; i < 3; i++)
+	{
+		minv[0][i] = x[i];
+		minv[1][i] = y[i];
+		minv[2][i] = z[i];
+		transMatrix[i][3] = -center[i];
+	}
+	prjMatrix = minv * transMatrix;
 }
 
 void Gz::translate(GzReal x, GzReal y, GzReal z)
