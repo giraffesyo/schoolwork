@@ -59,7 +59,6 @@ void Gz::addColor(const GzColor &c)
 void Gz::initFrameSize(GzInt width, GzInt height)
 {
 	frameBuffer.initFrameSize(width, height);
-	Viewport = CreateViewportMatrix(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
 	// Set initial projection and transformation matrices
 	prjMatrix = Identity(4);
 	transMatrix = Identity(4);
@@ -106,6 +105,9 @@ void Gz::end()
 		//   - Extract 3 colors in the colorQueue
 		//   - Call the draw triangle function
 		//     (you may put this function in GzFrameBuffer)
+		GzInt width = frameBuffer.width;
+		GzInt height = frameBuffer.height;
+		Viewport = CreateViewportMatrix(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
 
 		// divide the input size intoo groups of 3 because we're dealing with stacks of 3 vertices and 3 colors to create a triangle
 		const int sides = 3;
@@ -205,8 +207,17 @@ void Gz::multMatrix(GzMatrix &M)
 void Gz::perspective(GzReal fovy, GzReal aspect, GzReal zNear, GzReal zFar)
 {
 	//Set up a perspective projection matrix
-	//See http://www.opengl.org/sdk/docs/man/xhtml/gluPerspective.xml
-	//Or google: gluPerspective
+	// Following implentation from :
+	// https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluPerspective.xml
+
+	GzReal f = cos(fovy / 2.f) / sin(fovy / 2.f);
+	GzMatrix m;
+	m.resize(4, 4);
+	m[0] = {f / aspect, 0, 0, 0};
+	m[1] = {0, f, 0, 0};
+	m[2] = {0, 0, (zFar + zNear) / (zNear - zFar), (2 * zFar * zNear) / (zNear - zFar)};
+	m[3] = {0, 0, -1, 0};
+	transMatrix = transMatrix * m;
 }
 
 void Gz::orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top, GzReal nearVal, GzReal farVal)

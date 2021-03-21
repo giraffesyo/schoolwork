@@ -23,12 +23,17 @@ public:
 	// attempts to add a triangle to the frame buffer
 	void drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunctional status);
 	void drawLine(int x0, int y0, int x1, int y1, GzColor color);
+	// width of framebuffer
+	GzInt width;
+	// height of framebuffer
+	GzInt height;
+	// the depth to use when clearing
+	GzReal clearDepth;
 
 private:
 	// color to use when clearing, background color of frame buffer
 	GzColor clearColor;
-	// the depth to use when clearing
-	GzReal clearDepth;
+
 	// vector storing the depth of each point in the frame
 	vector<vector<GzReal>> depthBuffer;
 	// stores the image for outputting to bitmap, must be generated with toImage method

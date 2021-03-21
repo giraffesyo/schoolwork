@@ -6,6 +6,9 @@ void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
 {
     image.resize(width, height);
     depthBuffer = vector<vector<GzReal>>(width, vector<GzReal>(height, clearDepth));
+    this->width = width;
+    this->height = height;
+    
 }
 
 GzImage GzFrameBuffer::toImage()
