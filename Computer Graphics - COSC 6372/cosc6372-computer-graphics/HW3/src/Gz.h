@@ -56,16 +56,17 @@ public:
 					 GzReal zNear, GzReal zFar); //Set up a perspective projection matrix
 	void orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top,
 					  GzReal nearVal, GzReal farVal); //Set up a orthographic projection matrix
-													  //End of Projections------------------------------------------------------
+	void affineTransform(GzVertex &dCoord);
+	//End of Projections------------------------------------------------------
 
 private:
-	GzMatrix transMatrix;		 //The transformation matrix
-	GzMatrix prjMatrix;			 //The projection matrix
-	GzReal xViewport, yViewport; //The center of the viewport
-	GzReal wViewport, hViewport; //Size of the viewport
-								 //============================================================================
-								 //End of Declarations in Assignment #3
-								 //============================================================================
+	GzMatrix transMatrix; //The transformation matrix
+	GzMatrix prjMatrix;	  //The projection matrix
+	GzMatrix Viewport;
+	GzMatrix CreateViewportMatrix(int x, int y, int w, int h);
+	//============================================================================
+	//End of Declarations in Assignment #3
+	//============================================================================
 };
 
 #endif

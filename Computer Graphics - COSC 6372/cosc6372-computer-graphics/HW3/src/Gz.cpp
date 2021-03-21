@@ -58,15 +58,24 @@ void Gz::addColor(const GzColor &c)
 
 void Gz::initFrameSize(GzInt width, GzInt height)
 {
-	//This function need to be updated since we have introduced the viewport.
-	//The viewport size is set to the size of the frame buffer.
-	wViewport = (GzReal)width;
-	hViewport = (GzReal)height;
 	frameBuffer.initFrameSize(width, height);
-	viewport(0, 0); //Default center of the viewport
+	Viewport = CreateViewportMatrix(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
 	// Set initial projection and transformation matrices
 	prjMatrix = Identity(4);
 	transMatrix = Identity(4);
+}
+
+GzMatrix Gz::CreateViewportMatrix(int x, int y, int w, int h)
+{
+	GzMatrix m = Identity(4);
+	m[X][W] = x + w / 2.f;
+	m[Y][W] = y + h / 2.f;
+	m[Z][W] = 255 / 2.f;
+
+	m[X][X] = w / 2.f;
+	m[Y][Y] = h / 2.f;
+	m[Z][Z] = 255 / 2.f;
+	return m;
 }
 
 void Gz::end()
@@ -116,12 +125,9 @@ void Gz::end()
 				// get matrix from vertex
 				M.fromVertex(vertex);
 				// Transform matrix by multiplying projection and transformation matrices with current matrix
-				M = prjMatrix * transMatrix * M;
-
 				// store vertex and color in vector representing this triangle
-				vertices[i] = M.toVertex();
+				vertices[i] = (Viewport * prjMatrix * transMatrix * M).toVertex();
 				colors[i] = color;
-
 				// remove the vertex and color from the queue
 				vertexQueue.pop();
 				colorQueue.pop();
@@ -137,16 +143,6 @@ void Gz::end()
 	break;
 	}
 }
-void Gz::viewport(GzInt x, GzInt y)
-{
-	//This function only updates xViewport and yViewport.
-	//Viewport calculation will be done in different function, e.g. Gz::end().
-	//See http://www.opengl.org/sdk/docs/man/xhtml/glViewport.xml
-	//Or google: glViewport
-	xViewport = x;
-	yViewport = y;
-}
-
 //Transformations-------------------------------------------------------------
 void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 				GzReal centerX, GzReal centerY, GzReal centerZ,
@@ -171,7 +167,7 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 	M.at(1) = {u[0], u[1], u[2], 0};
 	M.at(2) = {-f[0], -f[1], -f[2], 0};
 	M.at(3) = {0, 0, 0, 1};
-	}
+}
 
 void Gz::translate(GzReal x, GzReal y, GzReal z)
 {
@@ -197,11 +193,10 @@ void Gz::scale(GzReal x, GzReal y, GzReal z)
 	//Or google: glScale
 }
 
-// Multiplies the current matrix with thhe one specified and replaces current matrix with product
 // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glMultMatrix.xml
 void Gz::multMatrix(GzMatrix &M)
 {
-	//Multiply transMatrix by the matrix mat
+	// Multiplies the current matrix with the one specified and replaces current matrix with product
 	transMatrix = M * transMatrix;
 }
 //End of Transformations------------------------------------------------------
@@ -229,7 +224,6 @@ void Gz::orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top, GzRe
 	M.at(2) = {0, 0, -2 / (farVal - nearVal), t[Z]};
 	M.at(3) = {0, 0, 0, t[W]};
 	multMatrix(M);
-}
 }
 //End of Projections----------------------------------------------------------
 

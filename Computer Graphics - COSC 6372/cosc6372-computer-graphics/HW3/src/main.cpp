@@ -55,13 +55,13 @@ int main()
 					1, 10); //zNear and zFar
 	draw("TeaPot1.bmp");
 
-	// gz.lookAt(0, 10, 0,		//Eye position
-	// 		  0, 0, 0,		//Look at
-	// 		  1, 0, 2);		//Up vector
-	// gz.orthographic(-4, 4,	//Left and Right
-	// 				-3, 3,	//Bottom and Top
-	// 				1, 10); //zNear and zFar
-	// draw("TeaPot2.bmp");
+	gz.lookAt(0, 10, 0,		//Eye position
+			  0, 0, 0,		//Look at
+			  1, 0, 2);		//Up vector
+	gz.orthographic(-4, 4,	//Left and Right
+					-3, 3,	//Bottom and Top
+					1, 10); //zNear and zFar
+	draw("TeaPot2.bmp");
 
 	// gz.lookAt(10, 10, 10,	//Eye position
 	// 		  0, 0, 0,		//Look at
