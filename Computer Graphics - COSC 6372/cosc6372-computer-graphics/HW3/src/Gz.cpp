@@ -64,6 +64,9 @@ void Gz::initFrameSize(GzInt width, GzInt height)
 	hViewport = (GzReal)height;
 	frameBuffer.initFrameSize(width, height);
 	viewport(0, 0); //Default center of the viewport
+	// Set initial projection and transformation matrices
+	prjMatrix = Identity(4);
+	transMatrix = Identity(4);
 }
 
 void Gz::end()
@@ -151,9 +154,6 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 {
 	//Define viewing transformation
 	//Or google: gluLookAt
-	prjMatrix = Identity(4);
-	transMatrix = Identity(4);
-
 	// Following implementaiton at: https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml
 	GzVertex UP = GzVertex(upX, upY, upZ);
 	GzVertex eye = GzVertex(eyeX, eyeY, eyeZ);
@@ -197,11 +197,12 @@ void Gz::scale(GzReal x, GzReal y, GzReal z)
 	//Or google: glScale
 }
 
-//This function was updated on September 26, 2010
-void Gz::multMatrix(GzMatrix mat)
+// Multiplies the current matrix with thhe one specified and replaces current matrix with product
+// https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glMultMatrix.xml
+void Gz::multMatrix(GzMatrix &M)
 {
 	//Multiply transMatrix by the matrix mat
-	transMatrix = mat * transMatrix;
+	transMatrix = M * transMatrix;
 }
 //End of Transformations------------------------------------------------------
 
@@ -216,8 +217,19 @@ void Gz::perspective(GzReal fovy, GzReal aspect, GzReal zNear, GzReal zFar)
 void Gz::orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top, GzReal nearVal, GzReal farVal)
 {
 	//Set up a orthographic projection matrix
-	//See http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml
 	//Or google: glOrtho
+
+	// Following implementation at https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
+	vector<GzReal> t = {-((right + left) / (right - left)), -((top + bottom) / (top - bottom)), -((farVal + nearVal) / (farVal - nearVal)), 1};
+
+	GzMatrix M;
+	M.resize(4, 4);
+	M.at(0) = {2 / (right - left), 0, 0, t[X]};
+	M.at(1) = {0, 2 / (top - bottom), 0, t[Y]};
+	M.at(2) = {0, 0, -2 / (farVal - nearVal), t[Z]};
+	M.at(3) = {0, 0, 0, t[W]};
+	multMatrix(M);
+}
 }
 //End of Projections----------------------------------------------------------
 

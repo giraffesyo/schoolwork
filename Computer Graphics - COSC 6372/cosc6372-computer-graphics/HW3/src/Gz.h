@@ -48,7 +48,7 @@ public:
 	void translate(GzReal x, GzReal y, GzReal z);			 //Multiply transMatrix by a translation matrix
 	void rotate(GzReal angle, GzReal x, GzReal y, GzReal z); //Multiply transMatrix by a rotation matrix
 	void scale(GzReal x, GzReal y, GzReal z);				 //Multiply transMatrix by a scaling matrix
-	void multMatrix(GzMatrix mat);							 //Multiply transMatrix by the matrix mat
+	void multMatrix(GzMatrix &M);							 //Multiply transMatrix by the matrix mat
 	//End of Transformations--------------------------------------------------
 
 	//Projections-------------------------------------------------------------
