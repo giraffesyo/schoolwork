@@ -94,23 +94,44 @@ void Gz::end()
 		//   - Extract 3 colors in the colorQueue
 		//   - Call the draw triangle function
 		//     (you may put this function in GzFrameBuffer)
-		int size = vertexQueue.size() / 3;
-		while (vertexQueue.size() >= 3)
-		{
-			vector<GzVertex> vertices = vector<GzVertex>(3);
-			vector<GzColor> colors = vector<GzColor>(3);
 
-			for (int i = 0; i < 3; i++)
+		// divide the input size intoo groups of 3 because we're dealing with stacks of 3 vertices and 3 colors to create a triangle
+		const int sides = 3;
+		// continue until we're out of triangles
+		while (colorQueue.size() >= sides && vertexQueue.size() >= sides)
+		{
+			vector<GzColor> colors = vector<GzColor>(3);
+			vector<GzVertex> vertices = vector<GzVertex>(3);
+			GzMatrix M;
+			// loop over each triangle
+			for (int i = 0; i < sides; i++)
 			{
-				vertices[i] = vertexQueue.front();
-				vertices[i].color = colorQueue.front();
-				colors[i] = colorQueue.front();
+				// Grab the first color and vertex from queue
+				GzColor color = colorQueue.front();
+				GzVertex vertex = vertexQueue.front();
+
+				// get matrix from vertex
+				M.fromVertex(vertex);
+				// Transform matrix by multiplying projection and transformation matrices with current matrix
+				M = prjMatrix * transMatrix * M;
+
+				// store vertex and color in vector representing this triangle
+				vertices[i] = M.toVertex();
+				colors[i] = color;
+
+				// remove the vertex and color from the queue
 				vertexQueue.pop();
 				colorQueue.pop();
 			}
+
+			// draw thhe triangle
 			frameBuffer.drawTriangle(vertices, colors, status);
+			// Reset vertices and colors vectors
+			vertices.clear();
+			colors.clear();
 		}
 	}
+	break;
 	}
 }
 void Gz::viewport(GzInt x, GzInt y)
@@ -124,30 +145,33 @@ void Gz::viewport(GzInt x, GzInt y)
 }
 
 //Transformations-------------------------------------------------------------
-void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ, GzReal centerX, GzReal centerY, GzReal centerZ, GzReal upX, GzReal upY, GzReal upZ)
+void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
+				GzReal centerX, GzReal centerY, GzReal centerZ,
+				GzReal upX, GzReal upY, GzReal upZ)
 {
 	//Define viewing transformation
-	//See http://www.opengl.org/sdk/docs/man/xhtml/gluLookAt.xml
 	//Or google: gluLookAt
-	GzVertex eye = GzVertex(eyeX, eyeY, eyeZ).normalize();
-	GzVertex center = GzVertex(centerX, centerY, centerZ).normalize();
-	GzVertex up = GzVertex(upX, upY, upZ).normalize();
-
-	GzVertex z = (eye - center);
-	GzVertex x = up.cross(z);
-	GzVertex y = z.cross(x);
-
-	GzMatrix minv = Identity(4);
+	prjMatrix = Identity(4);
 	transMatrix = Identity(4);
-	for (int i = 0; i < 3; i++)
-	{
-		minv[0][i] = x[i];
-		minv[1][i] = y[i];
-		minv[2][i] = z[i];
-		transMatrix[i][3] = -center[i];
+
+	// Following implementaiton at: https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml
+	GzVertex UP = GzVertex(upX, upY, upZ);
+	GzVertex eye = GzVertex(eyeX, eyeY, eyeZ);
+	GzVertex center = GzVertex(centerX, centerY, centerZ);
+	GzVertex F = GzVertex(centerX - eyeX, centerY - eyeY, centerZ - eyeZ);
+	// normalized F and UP
+	GzVertex f = F.normalize();
+	GzVertex up = UP.normalize();
+	GzVertex s = f.cross(up);
+	GzVertex u = s.normalize().cross(f);
+
+	GzMatrix M = GzMatrix();
+	M.resize(4, 4);
+	M.at(0) = {s[0], s[1], s[2], 0};
+	M.at(1) = {u[0], u[1], u[2], 0};
+	M.at(2) = {-f[0], -f[1], -f[2], 0};
+	M.at(3) = {0, 0, 0, 1};
 	}
-	prjMatrix = minv * transMatrix;
-}
 
 void Gz::translate(GzReal x, GzReal y, GzReal z)
 {
