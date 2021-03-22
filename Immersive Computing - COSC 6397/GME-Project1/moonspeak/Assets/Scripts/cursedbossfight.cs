@@ -14,19 +14,17 @@ public class cursedbossfight : MonoBehaviour
     float throwCountdown = 0;
     float throwTimer = 3;
     public List<string> bodypartAlive;
-    private List<GameObject> bodyParts;
+    public List<GameObject> bodyParts;
     bool gameRunning = true;
     public string currentName;
     public GameObject currentFood;
-    private List<GameObject> reviewObjectList;
+    public List<GameObject> reviewObjectList;
     public List<GameObject> buttonTexts;
     public List<string> objectNames;
     public GameObject WinScreen;
     void Start()
     {
         cam = Camera.main;
-        bodyParts = RemoteAssetLoader.Instance.GetAssets(AssetLabels.BossProjectiles);
-        reviewObjectList = RemoteAssetLoader.Instance.GetAssets(AssetLabels.LearningObjects);
         NextReviewQuestion();
     }
 

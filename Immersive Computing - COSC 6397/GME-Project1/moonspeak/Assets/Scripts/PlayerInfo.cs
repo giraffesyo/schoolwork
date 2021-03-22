@@ -9,7 +9,7 @@ public class PlayerInfo : MonoBehaviour
 
     public static PlayerInfo playerInfo;
     public string username;
-    async void Awake()
+    void Awake()
     {
         Debug.Log("hi");
         playerInfo = this;
@@ -17,13 +17,11 @@ public class PlayerInfo : MonoBehaviour
         DontDestroyOnLoad(this);
         username = PlayerPrefs.GetString("username");
 
-        await RemoteAssetLoader.Instance.LoadAllAssets();
-        
         // if we're on the splash screen, move to the right scene based on if we're logged in
         if (SceneManager.GetActiveScene().name == "Splash")
         {
             // TODO: We can put our team logo on this and load the new scene after 1-2 seconds
-            
+
             if (string.IsNullOrWhiteSpace(username))
             {
                 // no player found, send to login
