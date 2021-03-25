@@ -13,7 +13,7 @@ public enum ReviewModes
 public class ReviewManager : MonoBehaviour
 {
 
-    public List<GameObject> objects;
+    private List<GameObject> objects;
     public List<string> objectNames;
     public List<TextMeshProUGUI> buttonTexts;
     public int index = 0;
@@ -34,10 +34,10 @@ public class ReviewManager : MonoBehaviour
     private List<GameObject> reivewQueue;
 
 
-
     void Start()
     {
         // ReviewButtons.SetActive(false);
+        objects = RemoteAssetLoader.Instance.GetAssets(AssetLabels.LearningObjects);
         maxIndex = objects.Count;
         reivewQueue = new List<GameObject>(objects);
         NextReviewQuestion();
