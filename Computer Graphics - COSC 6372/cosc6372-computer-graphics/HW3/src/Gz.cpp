@@ -201,6 +201,26 @@ void Gz::rotate(GzReal angle, GzReal x, GzReal y, GzReal z)
 	//See http://www.opengl.org/sdk/docs/man/xhtml/glRotate.xml
 	//    http://en.wikipedia.org/wiki/Rotation_(geometry)
 	//Or google: glRotate
+
+	GzReal l = GzVertex(x, y, z).length();
+	x = x / l;
+	y = y / l;
+	z = z / l;
+	GzReal angleRadians = angle * M_PI / 180.;
+	GzReal s = sin(angleRadians);
+	GzReal c = cos(angleRadians);
+
+	GzMatrix m = Zeros(4);
+	m[0] = {x * x + (1 - c) + c,
+			x * y * (1 - c) - z * s,
+			x * z * (1 - c) + y * s};
+	m[1] = {y * x * (1 - c) + z * s,
+			y * y * (1 - c) + c,
+			y * z * (1 - c) - x * s};
+	m[2] = {x * z * (1 - c) - y * s,
+			y * z * (1 - c) * x * s,
+			z * z * (1 - c) + c};
+	m[3] = {0, 0, 0, 1};
 }
 
 void Gz::scale(GzReal x, GzReal y, GzReal z)
