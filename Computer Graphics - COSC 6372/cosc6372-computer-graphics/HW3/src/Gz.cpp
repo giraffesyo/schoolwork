@@ -64,18 +64,18 @@ void Gz::initFrameSize(GzInt width, GzInt height)
 	transMatrix = Identity(4);
 }
 
-GzMatrix Gz::CreateViewportMatrix(int x, int y, int w, int h)
-{
-	GzMatrix m = Identity(4);
-	m[X][W] = x + w / 2.f;
-	m[Y][W] = y + h / 2.f;
-	m[Z][W] = 255 / 2.f;
+// GzMatrix Gz::CreateViewportMatrix(int x, int y, int w, int h)
+// {
+// 	GzMatrix m = Identity(4);
+// 	m[X][W] = x + w / 2.f;
+// 	m[Y][W] = y + h / 2.f;
+// 	m[Z][W] = 255 / 2.f;
 
-	m[X][X] = w / 2.f;
-	m[Y][Y] = h / 2.f;
-	m[Z][Z] = 255 / 2.f;
-	return m;
-}
+// 	m[X][X] = w / 2.f;
+// 	m[Y][Y] = h / 2.f;
+// 	m[Z][Z] = 255 / 2.f;
+// 	return m;
+// }
 
 void Gz::end()
 {
@@ -107,7 +107,7 @@ void Gz::end()
 		//     (you may put this function in GzFrameBuffer)
 		GzInt width = frameBuffer.width;
 		GzInt height = frameBuffer.height;
-		Viewport = CreateViewportMatrix(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
+		// Viewport = CreateViewportMatrix(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
 
 		// divide the input size intoo groups of 3 because we're dealing with stacks of 3 vertices and 3 colors to create a triangle
 		const int sides = 3;
@@ -127,8 +127,15 @@ void Gz::end()
 				// get matrix from vertex
 				M.fromVertex(vertex);
 				// Transform matrix by multiplying projection and transformation matrices with current matrix
+
+				M = prjMatrix * transMatrix * M;
+				// apply transformations for viewport
+				GzVertex transformedVector = M.toVertex();
+				transformedVector[X] = (transformedVector[X] + 1) * frameBuffer.width / 2;
+				transformedVector[Y] = (transformedVector[Y] + 1) * frameBuffer.height / 2;
 				// store vertex and color in vector representing this triangle
-				vertices[i] = (Viewport * prjMatrix * transMatrix * M).toVertex();
+
+				vertices[i] = transformedVector;
 				colors[i] = color;
 				// remove the vertex and color from the queue
 				vertexQueue.pop();
@@ -171,6 +178,7 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 	M.at(3) = {0, 0, 0, 1};
 
 	transMatrix = M;
+	// translate(-eyeX, -eyeY, -eyeZ);
 }
 
 void Gz::translate(GzReal x, GzReal y, GzReal z)
@@ -179,6 +187,12 @@ void Gz::translate(GzReal x, GzReal y, GzReal z)
 	//See http://www.opengl.org/sdk/docs/man/xhtml/glTranslate.xml
 	//    http://en.wikipedia.org/wiki/Translation_(geometry)
 	//Or google: glTranslate
+	GzMatrix M = Identity(4);
+	M[X][3] = x;
+	M[Y][3] = y;
+	M[Z][3] = z;
+
+	multMatrix(M);
 }
 
 void Gz::rotate(GzReal angle, GzReal x, GzReal y, GzReal z)
