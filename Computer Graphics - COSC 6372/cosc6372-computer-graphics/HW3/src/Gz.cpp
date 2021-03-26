@@ -249,13 +249,10 @@ void Gz::orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top, GzRe
 	// Following implementation at https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
 	vector<GzReal> t = {-((right + left) / (right - left)), -((top + bottom) / (top - bottom)), -((farVal + nearVal) / (farVal - nearVal)), 1};
 
-	GzMatrix M;
-	M.resize(4, 4);
-	M.at(0) = {2 / (right - left), 0, 0, t[X]};
-	M.at(1) = {0, 2 / (top - bottom), 0, t[Y]};
-	M.at(2) = {0, 0, -2 / (farVal - nearVal), t[Z]};
-	M.at(3) = {0, 0, 0, t[W]};
-	multMatrix(M);
+	prjMatrix = Identity(4);
+	prjMatrix.at(0) = {2 / (right - left), 0, 0, t[X]};
+	prjMatrix.at(1) = {0, 2 / (top - bottom), 0, t[Y]};
+	prjMatrix.at(2) = {0, 0, 2 / (farVal - nearVal), t[Z]};
 }
 //End of Projections----------------------------------------------------------
 
