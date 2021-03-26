@@ -169,6 +169,8 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 	M.at(1) = {u[0], u[1], u[2], 0};
 	M.at(2) = {-f[0], -f[1], -f[2], 0};
 	M.at(3) = {0, 0, 0, 1};
+
+	transMatrix = M;
 }
 
 void Gz::translate(GzReal x, GzReal y, GzReal z)
