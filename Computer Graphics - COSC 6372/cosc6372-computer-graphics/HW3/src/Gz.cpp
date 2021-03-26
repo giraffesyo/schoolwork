@@ -178,7 +178,7 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 	M.at(3) = {0, 0, 0, 1};
 
 	transMatrix = M;
-	// translate(-eyeX, -eyeY, -eyeZ);
+	translate(-eyeX, -eyeY, -eyeZ);
 }
 
 void Gz::translate(GzReal x, GzReal y, GzReal z)
@@ -231,14 +231,14 @@ void Gz::perspective(GzReal fovy, GzReal aspect, GzReal zNear, GzReal zFar)
 	// Following implentation from :
 	// https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluPerspective.xml
 
-	GzReal f = cos(fovy / 2.f) / sin(fovy / 2.f);
-	GzMatrix m;
-	m.resize(4, 4);
-	m[0] = {f / aspect, 0, 0, 0};
-	m[1] = {0, f, 0, 0};
-	m[2] = {0, 0, (zFar + zNear) / (zNear - zFar), (2 * zFar * zNear) / (zNear - zFar)};
-	m[3] = {0, 0, -1, 0};
-	transMatrix = transMatrix * m;
+	GzReal f = cos(fovy * M_PI / 360.) / sin(fovy * M_PI / 360.);
+	// GzReal f = 1 / tan(fovy * M_PI / 360.);
+
+	prjMatrix = Zeros(4);
+	prjMatrix[0][0] = f / aspect;
+	prjMatrix[1][1] = f;
+	prjMatrix[2] = {0, 0, -(zFar + zNear) / (zNear - zFar), (-2 * zFar * zNear) / (zNear - zFar)};
+	prjMatrix[3][2] = -1;
 }
 
 void Gz::orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top, GzReal nearVal, GzReal farVal)
