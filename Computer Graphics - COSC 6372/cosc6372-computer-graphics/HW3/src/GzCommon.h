@@ -151,7 +151,7 @@ struct GzVertex : public vector<GzReal>
 		at(Z) = z;
 	}
 
-	GzReal norm() const
+	GzReal length() const
 	{
 		GzReal x = at(X);
 		GzReal y = at(Y);
@@ -161,7 +161,7 @@ struct GzVertex : public vector<GzReal>
 	}
 	GzVertex normalize(GzReal l = 1)
 	{
-		*this = (*this) * (l / norm());
+		*this = (*this) * (l / length());
 		return *this;
 	}
 };

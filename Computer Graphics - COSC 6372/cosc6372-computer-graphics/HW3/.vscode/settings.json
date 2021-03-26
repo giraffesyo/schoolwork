@@ -1,20 +1,20 @@
 {
-    "files.associations": {
-        "vector": "cpp",
-        "algorithm": "cpp",
-        "exception": "cpp",
-        "queue": "cpp",
-        "cmath": "cpp",
-        "iostream": "cpp",
-        "iosfwd": "cpp",
-        "iterator": "cpp",
-        "array": "cpp",
-        "deque": "cpp",
-        "string": "cpp",
-        "string_view": "cpp",
-        "unordered_map": "cpp",
-        "ios": "cpp",
-        "limits": "cpp"
-    },
-    "C_Cpp.default.cppStandard": "c++20"
+  "files.associations": {
+    "vector": "cpp",
+    "algorithm": "cpp",
+    "exception": "cpp",
+    "queue": "cpp",
+    "cmath": "cpp",
+    "iostream": "cpp",
+    "iosfwd": "cpp",
+    "iterator": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "unordered_map": "cpp",
+    "ios": "cpp",
+    "limits": "cpp"
+  },
+  "C_Cpp.default.cppStandard": "c++20"
 }
