@@ -209,6 +209,11 @@ void Gz::scale(GzReal x, GzReal y, GzReal z)
 	//See http://www.opengl.org/sdk/docs/man/xhtml/glScale.xml
 	//    http://en.wikipedia.org/wiki/
 	//Or google: glScale
+	GzMatrix m = Identity(4);
+	m[0][0] = x;
+	m[1][1] = y;
+	m[2][2] = z;
+	multMatrix(m);
 }
 
 // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glMultMatrix.xml
