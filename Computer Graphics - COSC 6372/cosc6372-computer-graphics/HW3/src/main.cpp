@@ -90,12 +90,13 @@ int main()
 	gz.translate(0, -1, 0);
 	draw("TeaPot5.bmp");
 
-	gz.lookAt(3, 3, 3,	//Eye position
-			  0, 0, 0,	//Look at
-			  0, 1, 0); //Up vector
-	// gz.perspective(70,			  //Fovy
-	// 			   (GzReal)4 / 3, //Aspect
-	// 			   1, 10);		  //zNear and zFar
+	gz.lookAt(3, 3, 3,			  //Eye position
+			  0, 0, 0,			  //Look at
+			  0, 1, 0);			  //Up vector
+	gz.perspective(70,			  //Fovy
+				   (GzReal)4 / 3, //Aspect
+				   1, 10);		  //zNear and zFar
+	// gz.scale(-100, -100, -100);
 	// gz.rotate(45, 1, 0, 0);
 	// gz.translate(0, -1, 0);
 	draw("TeaPot6.bmp");

@@ -160,24 +160,18 @@ void Gz::lookAt(GzReal eyeX, GzReal eyeY, GzReal eyeZ,
 	//Define viewing transformation
 	//Or google: gluLookAt
 	// Following implementaiton at: https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml
-	GzVertex UP = GzVertex(upX, upY, upZ);
-	GzVertex eye = GzVertex(eyeX, eyeY, eyeZ);
-	GzVertex center = GzVertex(centerX, centerY, centerZ);
-	GzVertex F = GzVertex(centerX - eyeX, centerY - eyeY, centerZ - eyeZ);
-	// normalized F and UP
-	GzVertex f = F.normalize();
-	GzVertex up = UP.normalize();
+	// normalize up
+	GzVertex up = GzVertex(upX, upY, upZ).normalize();
+	//calculate and normalize f
+	GzVertex f = GzVertex(centerX - eyeX, centerY - eyeY, centerZ - eyeZ).normalize();
 	GzVertex s = f.cross(up);
-	GzVertex u = s.normalize().cross(f);
+	GzVertex u = s.cross(f);
 
-	GzMatrix M = GzMatrix();
-	M.resize(4, 4);
-	M.at(0) = {s[0], s[1], s[2], 0};
-	M.at(1) = {u[0], u[1], u[2], 0};
-	M.at(2) = {-f[0], -f[1], -f[2], 0};
-	M.at(3) = {0, 0, 0, 1};
+	transMatrix = Identity(4);
+	transMatrix[0] = {s[0], s[1], s[2], 0};
+	transMatrix[1] = {u[0], u[1], u[2], 0};
+	transMatrix[2] = {-f[0], -f[1], -f[2], 0};
 
-	transMatrix = M;
 	translate(-eyeX, -eyeY, -eyeZ);
 }
 
@@ -240,7 +234,7 @@ void Gz::scale(GzReal x, GzReal y, GzReal z)
 void Gz::multMatrix(GzMatrix &M)
 {
 	// Multiplies the current matrix with the one specified and replaces current matrix with product
-	transMatrix = M * transMatrix;
+	transMatrix = transMatrix * M;
 }
 //End of Transformations------------------------------------------------------
 
@@ -267,12 +261,18 @@ void Gz::orthographic(GzReal left, GzReal right, GzReal bottom, GzReal top, GzRe
 	//Or google: glOrtho
 
 	// Following implementation at https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
-	vector<GzReal> t = {-((right + left) / (right - left)), -((top + bottom) / (top - bottom)), -((farVal + nearVal) / (farVal - nearVal)), 1};
+	GzReal width = right - left;
+	GzReal height = top - bottom;
+	GzReal depth = farVal - nearVal;
+
+	vector<GzReal> t = {-(right + left) / (width),
+						-(top + bottom) / (height),
+						(farVal + nearVal) / (depth), 1};
 
 	prjMatrix = Identity(4);
-	prjMatrix.at(0) = {2 / (right - left), 0, 0, t[X]};
-	prjMatrix.at(1) = {0, 2 / (top - bottom), 0, t[Y]};
-	prjMatrix.at(2) = {0, 0, 2 / (farVal - nearVal), t[Z]};
+	prjMatrix[0] = {2 / (width), 0, 0, t[X]};
+	prjMatrix[1] = {0, 2 / (height), 0, t[Y]};
+	prjMatrix[2] = {0, 0, 2 / (depth), t[Z]};
 }
 //End of Projections----------------------------------------------------------
 

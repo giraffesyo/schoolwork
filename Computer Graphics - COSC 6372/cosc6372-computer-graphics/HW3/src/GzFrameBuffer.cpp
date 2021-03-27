@@ -8,7 +8,6 @@ void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
     depthBuffer = vector<vector<GzReal>>(width, vector<GzReal>(height, clearDepth));
     this->width = width;
     this->height = height;
-    
 }
 
 GzImage GzFrameBuffer::toImage()
