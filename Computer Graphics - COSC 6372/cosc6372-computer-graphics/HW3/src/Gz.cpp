@@ -205,16 +205,21 @@ void Gz::rotate(GzReal angle, GzReal x, GzReal y, GzReal z)
 	GzReal c = cos(angleRadians);
 
 	GzMatrix m = Zeros(4);
-	m[0] = {x * x + (1 - c) + c,
+	m[0] = {x * x * (1 - c) + c,
 			x * y * (1 - c) - z * s,
-			x * z * (1 - c) + y * s};
+			x * z * (1 - c) + y * s,
+			0};
 	m[1] = {y * x * (1 - c) + z * s,
 			y * y * (1 - c) + c,
-			y * z * (1 - c) - x * s};
+			y * z * (1 - c) - x * s,
+			0};
 	m[2] = {x * z * (1 - c) - y * s,
 			y * z * (1 - c) * x * s,
-			z * z * (1 - c) + c};
+			z * z * (1 - c) + c,
+			0};
 	m[3] = {0, 0, 0, 1};
+
+	multMatrix(m);
 }
 
 void Gz::scale(GzReal x, GzReal y, GzReal z)
