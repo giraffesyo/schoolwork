@@ -214,7 +214,7 @@ void Gz::rotate(GzReal angle, GzReal x, GzReal y, GzReal z)
 			y * z * (1 - c) - x * s,
 			0};
 	m[2] = {x * z * (1 - c) - y * s,
-			y * z * (1 - c) * x * s,
+			y * z * (1 - c) + x * s,
 			z * z * (1 - c) + c,
 			0};
 	m[3] = {0, 0, 0, 1};
