@@ -1,4 +1,4 @@
-# Assignment 3 - Transofmration and Projection
+# Assignment 3 - Transformation and Projection
 
 Michael McQuade  
 2046739
