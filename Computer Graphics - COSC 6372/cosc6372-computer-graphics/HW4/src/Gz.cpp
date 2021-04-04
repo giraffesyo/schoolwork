@@ -266,15 +266,33 @@ void Gz::end()
 	//Note that if GZ_LIGHTING is turned off, we just need to use the old drawing functions from HW3.
 	if (get(GZ_LIGHTING))
 	{
-		// frameBuffer.loadLightTrans(transMatrix);
-		// switch (currentPrimitive) {
-		// 	case GZ_POINTS: {
-		// 	//Put your points shading code here. You might copy and modify the source in assignment 2.
-		// 	} break;
-		// 	case GZ_TRIANGLES: {
-		// 	//Put your triangles shading code here. You might copy and modify the source in assignment 2.
-		// 	} break;
-		// }
+		frameBuffer.loadLightTrans(transMatrix);
+		switch (currentPrimitive)
+		{
+		case GZ_POINTS:
+		{
+			//Put your points shading code here. You might copy and modify the source in assignment 2.
+		}
+		break;
+		case GZ_TRIANGLES:
+		{
+			//Put your triangles shading code here. You might copy and modify the source in assignment 2.
+			while ((vertexQueue.size() >= 3) && (colorQueue.size() >= 3))
+			{
+				vector<GzVertex> v(3);
+				vector<GzColor> c(3);
+				for (int i = 0; i < 3; i++)
+				{
+					v[i] = transAll(vertexQueue.front());
+					vertexQueue.pop();
+					c[i] = colorQueue.front();
+					colorQueue.pop();
+				}
+				frameBuffer.drawTriangle(v, c, status);
+			}
+		}
+		break;
+		}
 	}
 	else
 	{

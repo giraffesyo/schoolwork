@@ -42,7 +42,7 @@ int main()
 	gz.clearColor(GzColor(0, 0, 0)); //Background color: Black
 	gz.enable(GZ_DEPTH_TEST);		 //Use depth test
 	gz.clearDepth(-100);			 //Default depth: -100
-	// gz.enable(GZ_LIGHTING);
+	gz.enable(GZ_LIGHTING);
 
 	// gz.addLight(GzVector(0, -1, 0), GzColor(1, 0.1, 0.1));	//Red light direction (0, -1, 0)
 	// gz.addLight(GzVector(-1, 0, 0), GzColor(0.1, 1, 0.1));	//Green light direction (-1, 0, 0)
