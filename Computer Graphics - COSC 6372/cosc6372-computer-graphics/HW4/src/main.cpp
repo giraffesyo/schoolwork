@@ -49,7 +49,7 @@ int main()
 	// gz.addLight(GzVector(0, 0, -1), GzColor(0.1, 0.1, 1));	//Blue light direction (0, 0, -1)
 	// gz.material(0.1, 0.3, 0.6, 3);		//Ambient, diffuse, specular, spec power
 
-	// gz.shadeModel(GZ_GOURAUD);
+	gz.shadeModel(GZ_GOURAUD);
 
 	gz.lookAt(10, 10, 10,	   //Eye position
 			  0, 0, 0,		   //Look at

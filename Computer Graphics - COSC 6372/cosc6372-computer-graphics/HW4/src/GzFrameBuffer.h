@@ -54,6 +54,7 @@ public:
 																  //	_kS: The specular coefficients
 																  //	_s: The spec power
 	void loadLightTrans(GzMatrix &transMatrix);
+	void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status);
 
 private:
 	GzInt curShadeModel;

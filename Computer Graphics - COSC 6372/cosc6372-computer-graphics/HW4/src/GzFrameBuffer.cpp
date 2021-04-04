@@ -114,6 +114,19 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunc
 	}
 }
 
+void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status)
+{
+	// only support two shaders at the moment
+	assert(curShadeModel == GZ_GOURAUD || curShadeModel == GZ_PHONG);
+	// handle different shaders
+	if (curShadeModel == GZ_GOURAUD)
+	{
+	}
+	else if (curShadeModel == GZ_PHONG)
+	{
+	}
+}
+
 void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status)
 {
 	if ((y < 0) || (y >= image.sizeH()))

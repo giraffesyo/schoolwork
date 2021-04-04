@@ -281,14 +281,17 @@ void Gz::end()
 			{
 				vector<GzVertex> v(3);
 				vector<GzColor> c(3);
+				vector<GzVector> n(3);
 				for (int i = 0; i < 3; i++)
 				{
 					v[i] = transAll(vertexQueue.front());
 					vertexQueue.pop();
 					c[i] = colorQueue.front();
 					colorQueue.pop();
+					n[i] = normalQueue.front();
+					normalQueue.pop();
 				}
-				frameBuffer.drawTriangle(v, c, status);
+				frameBuffer.drawTriangle(v, c, n, status);
 			}
 		}
 		break;
