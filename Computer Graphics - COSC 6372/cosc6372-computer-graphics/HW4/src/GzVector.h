@@ -10,23 +10,25 @@ using namespace std;
 //============================================================================
 
 //3D vector data type---------------------------------------------------------
-struct GzVector:public vector<GzReal> {
+struct GzVector : public vector<GzReal>
+{
 	GzVector();
 	GzVector(GzReal x, GzReal y, GzReal z);
 	GzReal length();
 	void normalize();
 };
+
 //----------------------------------------------------------------------------
 
 //Vector operators------------------------------------------------------------
-GzVector operator + (const GzVector& a, const GzVector& b);
-GzVector operator - (const GzVector& a, const GzVector& b);
-GzReal dotProduct(const GzVector& a, const GzVector& b);
-GzVector crossProduct(const GzVector& a, const GzVector& b);
+GzVector operator+(const GzVector &a, const GzVector &b);
+GzVector operator-(const GzVector &a, const GzVector &b);
+GzReal dotProduct(const GzVector &a, const GzVector &b);
+GzVector crossProduct(const GzVector &a, const GzVector &b);
 
-GzVector operator * (GzReal a, const GzVector& b);
-GzVector operator * (const GzVector& a, GzReal b);
-GzVector operator / (const GzVector& a, GzReal b);
+GzVector operator*(GzReal a, const GzVector &b);
+GzVector operator*(const GzVector &a, GzReal b);
+GzVector operator/(const GzVector &a, GzReal b);
 //----------------------------------------------------------------------------
 
 //============================================================================

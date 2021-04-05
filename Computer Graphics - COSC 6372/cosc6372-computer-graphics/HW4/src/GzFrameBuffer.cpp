@@ -1,5 +1,5 @@
 #include "GzFrameBuffer.h"
-
+#include "GzTriangle.h"
 //Put your implementation here------------------------------------------------
 #include <climits>
 void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
@@ -121,6 +121,15 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector
 	// handle different shaders
 	if (curShadeModel == GZ_GOURAUD)
 	{
+		GzTriangle triangle = GzTriangle(v[0], v[1], v[2]);
+
+		vector<GzColor> c = vector<GzColor>(3);
+		for (int i = 0; i < 3; i++)
+		{
+			// n[i] * Lights[0].direction;
+			// c[i] = v[i]
+		}
+		drawTriangle(v, c, status);
 	}
 	else if (curShadeModel == GZ_PHONG)
 	{
