@@ -123,7 +123,6 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector
 	{
 		GzTriangle triangle = GzTriangle(v[0], v[1], v[2]);
 
-		vector<GzColor> c = vector<GzColor>(3);
 		for (int i = 0; i < 3; i++)
 		{
 			// n[i] * Lights[0].direction;
