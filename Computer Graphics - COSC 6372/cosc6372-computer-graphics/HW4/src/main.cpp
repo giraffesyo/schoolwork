@@ -44,10 +44,10 @@ int main()
 	gz.clearDepth(-100);			 //Default depth: -100
 	gz.enable(GZ_LIGHTING);
 
-	// gz.addLight(GzVector(0, -1, 0), GzColor(1, 0.1, 0.1));	//Red light direction (0, -1, 0)
-	// gz.addLight(GzVector(-1, 0, 0), GzColor(0.1, 1, 0.1));	//Green light direction (-1, 0, 0)
-	// gz.addLight(GzVector(0, 0, -1), GzColor(0.1, 0.1, 1));	//Blue light direction (0, 0, -1)
-	// gz.material(0.1, 0.3, 0.6, 3);		//Ambient, diffuse, specular, spec power
+	gz.addLight(GzVector(0, -1, 0), GzColor(1, 0.1, 0.1)); //Red light direction (0, -1, 0)
+	gz.addLight(GzVector(-1, 0, 0), GzColor(0.1, 1, 0.1)); //Green light direction (-1, 0, 0)
+	gz.addLight(GzVector(0, 0, -1), GzColor(0.1, 0.1, 1)); //Blue light direction (0, 0, -1)
+	gz.material(0.1, 0.3, 0.6, 3);						   //Ambient, diffuse, specular, spec power
 
 	gz.shadeModel(GZ_GOURAUD);
 
