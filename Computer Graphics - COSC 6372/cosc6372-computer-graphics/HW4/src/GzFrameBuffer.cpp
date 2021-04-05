@@ -122,13 +122,23 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector
 	if (curShadeModel == GZ_GOURAUD)
 	{
 		GzTriangle triangle = GzTriangle(v[0], v[1], v[2]);
-
-		for (int i = 0; i < 3; i++)
+		vector<GzColor> colors(3);
+		for (int i = 0; i < Lights.size(); i++)
 		{
+			colors[i] = GzColor();
+			for (int j = 0; j <= 3; j++)
+			{
+				// Apply ambient color
+				colors[i][j] = c[i][j] * kA;
+			}
+
 			// n[i] * Lights[0].direction;
 			// c[i] = v[i]
+			// c[0][i] = c[0][i] * Lights[i].color;
+			// c[1][i] = c[1][i] * Lights[i].color;
+			// c[2][i] = c[2][i] * Lights[i].color;
 		}
-		drawTriangle(v, c, status);
+		drawTriangle(v, colors, status);
 	}
 	else if (curShadeModel == GZ_PHONG)
 	{
