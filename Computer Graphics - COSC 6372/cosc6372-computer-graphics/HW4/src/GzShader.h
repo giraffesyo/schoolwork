@@ -14,19 +14,4 @@ public:
 private:
 };
 
-// class GzShader
-// {
-//     virtual ~GzShader();
-//     virtual GzVector verteex(int iface, int nthvert) = 0;
-//     virtual bool fragment(GzVector barycentric, GzColor &color) = 0;
-// };
-
-// class GzGouraudShader : public GzShader
-// {
-// public:
-//     GzVector intesnity;
-//     virtual GzVector vertex(int iface, int nthvert);
-//     virtual bool fragment(GzVector barycentric, GzColor &color);
-// };
-
 #endif
