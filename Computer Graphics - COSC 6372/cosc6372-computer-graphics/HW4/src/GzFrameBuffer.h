@@ -57,6 +57,7 @@ public:
 	void loadLightTrans(GzMatrix &transMatrix);
 	void drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status);
 	vector<GzLight> Lights;
+	vector<GzLight> transformedLights;
 
 private:
 	GzInt curShadeModel;

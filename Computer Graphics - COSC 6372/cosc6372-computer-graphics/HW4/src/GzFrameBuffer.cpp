@@ -123,20 +123,27 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector
 	{
 		GzTriangle triangle = GzTriangle(v[0], v[1], v[2]);
 		vector<GzColor> colors(3);
-		for (int i = 0; i < Lights.size(); i++)
+		// Apply ambient color
+		for (int i = 0; i < colors.size(); i++)
 		{
 			colors[i] = GzColor();
-			for (int j = 0; j <= 3; j++)
+
+			for (int j = 0; j < colors[i].size(); j++)
 			{
-				// Apply ambient color
 				colors[i][j] = c[i][j] * kA;
 			}
+		}
 
-			// n[i] * Lights[0].direction;
-			// c[i] = v[i]
-			// c[0][i] = c[0][i] * Lights[i].color;
-			// c[1][i] = c[1][i] * Lights[i].color;
-			// c[2][i] = c[2][i] * Lights[i].color;
+		for (int i = 0; i < Lights.size(); i++)
+		{
+			GzVector L = -(transformedLights[i].direction);
+			for (int j = 0; j < colors.size(); j++)
+			{
+				//Apply diffuse lighting
+				GzReal diffuse = transformedLights[i].color[j] * kD * dotProduct(n[i], L);
+
+				colors[i][j] = colors[i][j] + diffuse;
+			}
 		}
 		drawTriangle(v, colors, status);
 	}
@@ -216,8 +223,20 @@ void GzFrameBuffer::material(GzReal _kA, GzReal _kD, GzReal _kS, GzReal _s)
 void GzFrameBuffer::addLight(const GzVector &v, const GzColor &c)
 {
 	Lights.push_back(GzLight(v, c));
+	transformedLights.push_back(GzLight(v, c));
 }
 
 void GzFrameBuffer::loadLightTrans(GzMatrix &transMatrix)
 {
+	// copy lights and transform them
+	for (int i = 0; i < Lights.size(); i++)
+	{
+		GzMatrix inverseTrans = transMatrix.transpose();
+		GzVector dir = Lights[i].direction;
+		transformedLights[i].direction = {
+			inverseTrans[0][0] * dir[0] + inverseTrans[0][1] * dir[1] + inverseTrans[0][2] * dir[2],
+			inverseTrans[1][0] * dir[0] + inverseTrans[1][1] * dir[1] + inverseTrans[1][2] * dir[2],
+			inverseTrans[2][0] * dir[0] + inverseTrans[2][1] * dir[1] + inverseTrans[2][2] * dir[2],
+		};
+	}
 }

@@ -16,6 +16,14 @@ struct GzVector : public vector<GzReal>
 	GzVector(GzReal x, GzReal y, GzReal z);
 	GzReal length();
 	void normalize();
+	GzVector operator-()
+	{
+		GzVector v = GzVector();
+		v[0] = -(this->at(0));
+		v[1] = -(this->at(1));
+		v[2] = -(this->at(2));
+		return v;
+	}
 };
 
 //----------------------------------------------------------------------------
