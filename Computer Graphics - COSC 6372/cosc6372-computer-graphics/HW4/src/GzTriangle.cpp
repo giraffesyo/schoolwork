@@ -1,10 +1,19 @@
 #include "GzTriangle.h"
 
-GzTriangle::GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s) : vector<GzVertex>(3)
+GzTriangle::GzTriangle(const vector<GzVertex> points, const vector<GzColor> colors, const vector<GzVector> normals) : vector<GzVertex>(3)
 {
-    at(X) = p;
-    at(Y) = q;
-    at(Z) = s;
+    at(X) = points[0];
+    at(Y) = points[1];
+    at(Z) = points[2];
+    p = points[0];
+    q = points[1];
+    s = points[2];
+    // p.normal = &normals[0];
+    // q.normal = &normals[1];
+    // s.normal = &normals[2];
+    p.color = colors[0];
+    q.color = colors[1];
+    s.color = colors[2];
     // Sort by highest y (lowest value but closest to top)
     sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(Y) < b.at(Y); });
     // the first vertex is now the one with highest Y

@@ -121,7 +121,7 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector
 	// handle different shaders
 	if (curShadeModel == GZ_GOURAUD)
 	{
-		GzTriangle triangle = GzTriangle(v[0], v[1], v[2]);
+		GzTriangle triangle = GzTriangle(v, c, n);
 		vector<GzColor> colors(3);
 		// Apply ambient color
 		for (int i = 0; i < colors.size(); i++)

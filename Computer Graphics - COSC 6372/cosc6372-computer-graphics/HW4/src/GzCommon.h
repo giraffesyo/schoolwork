@@ -2,6 +2,7 @@
 #define __GZ_COMMON_H_
 
 #include <vector>
+
 using namespace std;
 
 //============================================================================
@@ -93,6 +94,7 @@ public:
 struct GzVertex : public vector<GzReal>
 {
 	GzColor color;
+	// GzVector normal;
 	GzVertex operator-(const GzVertex &v) const
 	{
 		GzVertex vertex;

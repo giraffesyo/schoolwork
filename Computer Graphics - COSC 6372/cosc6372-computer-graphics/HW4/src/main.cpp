@@ -60,16 +60,16 @@ int main()
 	gz.translate(0, -1, 0);
 	draw("GouraudTeaPot1.bmp");
 
-	// gz.lookAt(	3, 3, 3,	//Eye position
-	// 			0, 0, 0,	//Look at
-	// 			0, 1, 0);	//Up vector
-	// gz.perspective(	50,				//Fovy
-	// 				(GzReal)4/3,	//Aspect
-	// 				1, 10);			//zNear and zFar
-	// gz.rotate(45, 1, 0, 0);
-	// gz.translate(0, -1, 0);
+	gz.lookAt(3, 3, 3,			  //Eye position
+			  0, 0, 0,			  //Look at
+			  0, 1, 0);			  //Up vector
+	gz.perspective(50,			  //Fovy
+				   (GzReal)4 / 3, //Aspect
+				   1, 10);		  //zNear and zFar
+	gz.rotate(45, 1, 0, 0);
+	gz.translate(0, -1, 0);
 
-	// draw("GouraudTeaPot2.bmp");
+	draw("GouraudTeaPot2.bmp");
 
 	// gz.shadeModel(GZ_PHONG);
 

@@ -3,13 +3,14 @@
 #define __GZ_TRIANGLE_H_
 
 #include "GzCommon.h"
+#include "GzVector.h"
 using namespace std;
 
 // Triangle data structure
 class GzTriangle : public vector<GzVertex>
 {
 public:
-    GzTriangle(const GzVertex p, const GzVertex q, const GzVertex s);
+    GzTriangle(const vector<GzVertex> points, const vector<GzColor> colors, const vector<GzVector> normals);
     void CalculateBounds(const GzReal clampW, const GzReal clampH);
     GzVertex barycentric(const GzVertex p);
     bool containsPoint(const GzVertex p);
@@ -20,6 +21,11 @@ public:
     int colMax;
     GzVertex MaxBounds = GzVertex(-numeric_limits<double>::max(), -numeric_limits<double>::max(), -numeric_limits<double>::max());
     GzVertex MinBounds = GzVertex(numeric_limits<double>::max(), numeric_limits<double>::max(), numeric_limits<double>::max());
+    GzVertex p;
+    GzVertex q;
+    GzVertex s;
+    vector<GzVertex> colors;
+    vector<GzVertex> normals;
 
 private:
 };
