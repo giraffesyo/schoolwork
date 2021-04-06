@@ -2,6 +2,7 @@
 #include "GzTriangle.h"
 //Put your implementation here------------------------------------------------
 #include <climits>
+#include <iostream>
 void GzFrameBuffer::initFrameSize(GzInt width, GzInt height)
 {
 	image.resize(width, height);
@@ -123,15 +124,15 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 	{
 		vector<GzColor> colors(3);
 		// Apply ambient color
-		for (int i = 0; i < colors.size(); i++)
-		{
-			colors[i] = GzColor();
+		// for (int i = 0; i < colors.size(); i++)
+		// {
+		// 	colors[i] = GzColor();
 
-			for (int j = 0; j < colors[i].size(); j++)
-			{
-				colors[i][j] = tri.colors[i][j] * kA;
-			}
-		}
+		// 	for (int j = 0; j < colors[i].size(); j++)
+		// 	{
+		// 		colors[i][j] = tri.colors[i][j] * kA;
+		// 	}
+		// }
 
 		for (int i = 0; i < Lights.size(); i++)
 		{
@@ -140,15 +141,18 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 			lightDir.normalize();
 			GzVector r = (n * (n * lightDir * 2.f) - lightDir);
 			r.normalize();
-			lightDir = -lightDir;
+			// lightDir = -lightDir;
+
+			GzReal diffuse = kD * dotProduct(tri.normals[i], r);
+			GzReal specular = kS * pow(max(float(r.at(Z)), 0.f), s);
 			for (int j = 0; j < colors.size(); j++)
 			{
-				//Apply diffuse lighting
-				GzReal diffuse = transformedLights[i].color[j] * kD * dotProduct(tri.normals[i], lightDir);
-				GzReal specular = transformedLights[i].color[j] * kS * pow(max(float(r.at(Z)), 0.f), s);
-				colors[i][j] = colors[i][j] + diffuse + specular;
+				GzReal color = colors[i][j];
+				colors[i][j] = clamp(kA + color * (diffuse + specular), 0.0, 1.0);
 			}
+			cout << colors[0][0];
 		}
+
 		drawTriangle(tri, colors, status);
 	}
 	else if (curShadeModel == GZ_PHONG)
