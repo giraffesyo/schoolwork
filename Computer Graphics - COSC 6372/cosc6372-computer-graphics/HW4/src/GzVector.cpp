@@ -43,6 +43,17 @@ double dotProduct(GzVector &a, GzVector &b)
 	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
+GzVector operator*(const GzVector &a, const GzVector &b)
+{
+	assert(a.size() == b.size());
+	GzVector res = GzVector(a);
+	for (int i = 0; i < a.size(); i++)
+	{
+		res[i] *= b[i];
+	}
+	return res;
+}
+
 GzVector crossProduct(const GzVector &a, const GzVector &b)
 {
 	GzVector res;

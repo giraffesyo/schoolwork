@@ -135,14 +135,18 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 
 		for (int i = 0; i < Lights.size(); i++)
 		{
+			GzVector n = tri.normals[i];
 			GzVector lightDir = transformedLights[i].direction;
 			lightDir.normalize();
-			// lightDir = -lightDir;
+			GzVector r = (n * (n * lightDir * 2.f) - lightDir);
+			r.normalize();
+			lightDir = -lightDir;
 			for (int j = 0; j < colors.size(); j++)
 			{
 				//Apply diffuse lighting
 				GzReal diffuse = transformedLights[i].color[j] * kD * dotProduct(tri.normals[i], lightDir);
-				colors[i][j] = colors[i][j] + diffuse;
+				GzReal specular = transformedLights[i].color[j] * kS * pow(max(float(r.at(Z)), 0.f), s);
+				colors[i][j] = colors[i][j] + diffuse + specular;
 			}
 		}
 		drawTriangle(tri, colors, status);
