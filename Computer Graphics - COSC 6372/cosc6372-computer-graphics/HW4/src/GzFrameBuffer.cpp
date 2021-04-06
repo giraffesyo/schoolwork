@@ -114,14 +114,13 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunc
 	}
 }
 
-void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status)
+void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 {
 	// only support two shaders at the moment
 	assert(curShadeModel == GZ_GOURAUD || curShadeModel == GZ_PHONG);
 	// handle different shaders
 	if (curShadeModel == GZ_GOURAUD)
 	{
-		GzTriangle triangle = GzTriangle(v, c, n);
 		vector<GzColor> colors(3);
 		// Apply ambient color
 		for (int i = 0; i < colors.size(); i++)
@@ -130,22 +129,23 @@ void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector
 
 			for (int j = 0; j < colors[i].size(); j++)
 			{
-				colors[i][j] = c[i][j] * kA;
+				colors[i][j] = tri.colors[i][j] * kA;
 			}
 		}
 
 		for (int i = 0; i < Lights.size(); i++)
 		{
-			GzVector L = -(transformedLights[i].direction);
+			GzVector lightDir = transformedLights[i].direction;
+			lightDir.normalize();
+			// lightDir = -lightDir;
 			for (int j = 0; j < colors.size(); j++)
 			{
 				//Apply diffuse lighting
-				GzReal diffuse = transformedLights[i].color[j] * kD * dotProduct(n[i], L);
-
+				GzReal diffuse = transformedLights[i].color[j] * kD * dotProduct(tri.normals[i], lightDir);
 				colors[i][j] = colors[i][j] + diffuse;
 			}
 		}
-		drawTriangle(v, colors, status);
+		drawTriangle(tri, colors, status);
 	}
 	else if (curShadeModel == GZ_PHONG)
 	{

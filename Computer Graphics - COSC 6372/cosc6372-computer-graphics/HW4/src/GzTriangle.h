@@ -15,6 +15,7 @@ public:
     GzVertex barycentric(const GzVertex p);
     bool containsPoint(const GzVertex p);
     GzVertex topVertex;
+
     int rowMin;
     int rowMax;
     int colMin;
@@ -24,8 +25,8 @@ public:
     GzVertex p;
     GzVertex q;
     GzVertex s;
-    vector<GzVertex> colors;
-    vector<GzVertex> normals;
+    vector<GzColor> colors;
+    vector<GzVector> normals;
 
 private:
 };

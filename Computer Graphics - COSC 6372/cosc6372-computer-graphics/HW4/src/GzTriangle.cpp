@@ -23,6 +23,8 @@ GzTriangle::GzTriangle(const vector<GzVertex> points, const vector<GzColor> colo
     sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
     colMin = at(0)[X];
     colMax = at(2)[X];
+    this->colors = colors;
+    this->normals = normals;
 }
 
 // Caclulate bounds of triangle

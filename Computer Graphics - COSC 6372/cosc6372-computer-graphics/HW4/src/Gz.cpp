@@ -291,7 +291,7 @@ void Gz::end()
 					n[i] = normalQueue.front();
 					normalQueue.pop();
 				}
-				frameBuffer.drawTriangle(v, c, n, status);
+				frameBuffer.drawTriangle(GzTriangle(v, c, n), status);
 			}
 		}
 		break;

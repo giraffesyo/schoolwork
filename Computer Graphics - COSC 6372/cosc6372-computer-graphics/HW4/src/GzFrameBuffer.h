@@ -8,6 +8,8 @@
 #include <vector>
 #include <cmath>
 #include "GzShader.h"
+#include "GzTriangle.h"
+
 using namespace std;
 
 //Frame buffer with Z-buffer -------------------------------------------------
@@ -55,7 +57,7 @@ public:
 																  //	_kS: The specular coefficients
 																  //	_s: The spec power
 	void loadLightTrans(GzMatrix &transMatrix);
-	void drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status);
+	void drawTriangle(GzTriangle tri, GzFunctional status);
 	vector<GzLight> Lights;
 	vector<GzLight> transformedLights;
 
