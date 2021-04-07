@@ -151,21 +151,21 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 				{
 					xMin = x;
 					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMin);
-					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
 					if (curShadeModel == GZ_PHONG)
 					{
 						normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
 					}
+					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
 				}
 				if (x > xMax)
 				{
 					xMax = x;
 					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMax);
-					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
 					if (curShadeModel == GZ_PHONG)
 					{
 						normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
 					}
+					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
 				}
 			}
 		}
@@ -244,6 +244,7 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 		GzVector n;
 		y = image.sizeH() - y - 1;
 		int w = image.sizeW();
+
 		if (status & GZ_DEPTH_TEST)
 		{
 			for (int x = max(0, (GzInt)floor(xMin)); x <= min(w - 1, (GzInt)floor(xMax)); x++)
@@ -252,6 +253,14 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 				if (z >= depthBuffer[x][y])
 				{
 					colorInterpolate(xMin, cMin, xMax, cMax, x, c);
+
+					if (status & GZ_LIGHTING)
+					{
+						normalInterpolate(xMin, nMin, xMax, nMax, x, n);
+						c = shade(c, n);
+					}
+					GzColor t;
+					colorInterpolate(xMin, t, xMax, cMax, x, c);
 					if (status & GZ_LIGHTING)
 					{
 						normalInterpolate(xMin, nMin, xMax, nMax, x, n);
@@ -268,11 +277,13 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 			{
 				realInterpolate(xMin, zMin, xMax, zMax, x, z);
 				colorInterpolate(xMin, cMin, xMax, cMax, x, c);
+
 				if (status & GZ_LIGHTING)
 				{
 					normalInterpolate(xMin, nMin, xMax, nMax, x, n);
 					c = shade(c, n);
 				}
+				colorInterpolate(xMin, cMin, xMax, cMax, x, c);
 
 				image.set(x, y, c);
 				depthBuffer[x][y] = z;
