@@ -264,72 +264,43 @@ void Gz::end()
 	//Again this function need to be updated if the GZ_LIGHTING is turned on.
 	//Remember to pop normal vectors from normalQueue.
 	//Note that if GZ_LIGHTING is turned off, we just need to use the old drawing functions from HW3.
-	if (get(GZ_LIGHTING))
+
+	frameBuffer.loadLightTrans(transMatrix);
+	switch (currentPrimitive)
 	{
-		frameBuffer.loadLightTrans(transMatrix);
-		switch (currentPrimitive)
+	case GZ_POINTS:
+	{
+		while ((vertexQueue.size() >= 1) && (colorQueue.size() >= 1))
 		{
-		case GZ_POINTS:
-		{
-			//Put your points shading code here. You might copy and modify the source in assignment 2.
-		}
-		break;
-		case GZ_TRIANGLES:
-		{
-			//Put your triangles shading code here. You might copy and modify the source in assignment 2.
-			while ((vertexQueue.size() >= 3) && (colorQueue.size() >= 3))
-			{
-				vector<GzVertex> v(3);
-				vector<GzColor> c(3);
-				vector<GzVector> n(3);
-				for (int i = 0; i < 3; i++)
-				{
-					v[i] = transAll(vertexQueue.front());
-					vertexQueue.pop();
-					c[i] = colorQueue.front();
-					colorQueue.pop();
-					n[i] = normalQueue.front();
-					normalQueue.pop();
-				}
-				frameBuffer.drawTriangle(GzTriangle(v, c, n), status);
-			}
-		}
-		break;
+			GzVertex v = transAll(vertexQueue.front());
+			vertexQueue.pop();
+			GzColor c = colorQueue.front();
+			colorQueue.pop();
+			frameBuffer.drawPoint(v, c, status);
 		}
 	}
-	else
+	break;
+	case GZ_TRIANGLES:
 	{
-		switch (currentPrimitive)
+		//Put your triangles shading code here. You might copy and modify the source in assignment 2.
+		while ((vertexQueue.size() >= 3) && (colorQueue.size() >= 3))
 		{
-		case GZ_POINTS:
-		{
-			while ((vertexQueue.size() >= 1) && (colorQueue.size() >= 1))
+			vector<GzVertex> v(3);
+			vector<GzColor> c(3);
+			vector<GzVector> n(3);
+			for (int i = 0; i < 3; i++)
 			{
-				GzVertex v = transAll(vertexQueue.front());
+				v[i] = transAll(vertexQueue.front());
 				vertexQueue.pop();
-				GzColor c = colorQueue.front();
+				c[i] = colorQueue.front();
 				colorQueue.pop();
-				frameBuffer.drawPoint(v, c, status);
+				n[i] = normalQueue.front();
+				normalQueue.pop();
 			}
+			frameBuffer.drawTriangle(GzTriangle(v, c, n), status);
 		}
-		break;
-		case GZ_TRIANGLES:
-		{
-			while ((vertexQueue.size() >= 3) && (colorQueue.size() >= 3))
-			{
-				vector<GzVertex> v(3);
-				vector<GzColor> c(3);
-				for (int i = 0; i < 3; i++)
-				{
-					v[i] = transAll(vertexQueue.front());
-					vertexQueue.pop();
-					c[i] = colorQueue.front();
-					colorQueue.pop();
-				}
-				frameBuffer.drawTriangle(v, c, status);
-			}
-		}
-		}
+	}
+	break;
 	}
 }
 

@@ -28,7 +28,7 @@ public:
 	void setClearDepth(GzReal depth);
 
 	void drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status);
-	void drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunctional status);
+	GzColor shade(GzColor c);
 
 private:
 	//Put any variables and private functions for your implementation here
