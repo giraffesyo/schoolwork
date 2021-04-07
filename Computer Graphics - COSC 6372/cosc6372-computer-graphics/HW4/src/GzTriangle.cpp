@@ -15,12 +15,12 @@ GzTriangle::GzTriangle(const vector<GzVertex> points, const vector<GzColor> colo
     q.color = colors[1];
     s.color = colors[2];
     // Sort by highest y (lowest value but closest to top)
-    sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(Y) < b.at(Y); });
+    // sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(Y) < b.at(Y); });
     // the first vertex is now the one with highest Y
     topVertex = at(0);
     rowMin = at(0)[Y];
     rowMax = at(2)[Y];
-    sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
+    // sort(begin(), end(), [](const GzVertex &a, const GzVertex &b) -> bool { return a.at(X) < b.at(X); });
     colMin = at(0)[X];
     colMax = at(2)[X];
     this->colors = colors;
