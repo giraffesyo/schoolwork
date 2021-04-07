@@ -152,14 +152,20 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 					xMin = x;
 					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMin);
 					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
-					normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
+					if (curShadeModel == GZ_PHONG)
+					{
+						normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
+					}
 				}
 				if (x > xMax)
 				{
 					xMax = x;
 					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMax);
 					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
-					normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
+					if (curShadeModel == GZ_PHONG)
+					{
+						normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
+					}
 				}
 			}
 		}
@@ -169,7 +175,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 
 GzColor GzFrameBuffer::shade(GzColor c, GzVector n)
 {
-	if (curShadeModel == GZ_GOURAUD)
+	if (curShadeModel == GZ_GOURAUD || curShadeModel == GZ_PHONG)
 	{
 		GzColor color;
 		//Add ambient light first
@@ -212,9 +218,6 @@ GzColor GzFrameBuffer::shade(GzColor c, GzVector n)
 		for (int i = 0; i < 3; i++)
 			color[i] = clamp(color[i], 0.0, 1.0);
 		return color;
-	}
-	else if (curShadeModel == GZ_PHONG)
-	{
 	}
 	else
 	{

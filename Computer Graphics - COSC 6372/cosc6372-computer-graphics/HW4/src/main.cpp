@@ -71,27 +71,27 @@ int main()
 
 	draw("GouraudTeaPot2.bmp");
 
-	// gz.shadeModel(GZ_PHONG);
+	gz.shadeModel(GZ_PHONG);
 
-	// gz.lookAt(	10, 10, 10,	//Eye position
-	// 			0, 0, 0,	//Look at
-	// 			0, 1, 0);	//Up vector
-	// gz.orthographic(-2.4, 2.4,	//Left and Right
-	// 				-1.8, 1.8,	//Bottom and Top
-	// 				1, 10);	//zNear and zFar
-	// gz.translate(0, -1, 0);
-	// draw("PhongTeaPot1.bmp");
+	gz.lookAt(10, 10, 10,	   //Eye position
+			  0, 0, 0,		   //Look at
+			  0, 1, 0);		   //Up vector
+	gz.orthographic(-2.4, 2.4, //Left and Right
+					-1.8, 1.8, //Bottom and Top
+					1, 10);	   //zNear and zFar
+	gz.translate(0, -1, 0);
+	draw("PhongTeaPot1.bmp");
 
-	// gz.lookAt(	3, 3, 3,	//Eye position
-	// 			0, 0, 0,	//Look at
-	// 			0, 1, 0);	//Up vector
-	// gz.perspective(	50,				//Fovy
-	// 				(GzReal)4/3,	//Aspect
-	// 				1, 10);			//zNear and zFar
-	// gz.rotate(45, 1, 0, 0);
-	// gz.translate(0, -1, 0);
+	gz.lookAt(3, 3, 3,			  //Eye position
+			  0, 0, 0,			  //Look at
+			  0, 1, 0);			  //Up vector
+	gz.perspective(50,			  //Fovy
+				   (GzReal)4 / 3, //Aspect
+				   1, 10);		  //zNear and zFar
+	gz.rotate(45, 1, 0, 0);
+	gz.translate(0, -1, 0);
 
-	// draw("PhongTeaPot2.bmp");
+	draw("PhongTeaPot2.bmp");
 
 	return 0;
 }
