@@ -34,6 +34,11 @@ GzVector operator-(const GzVector &a, const GzVector &b)
 	return GzVector(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 }
 
+GzVector operator-(const GzVector &a)
+{
+	return GzVector(-a[0], -a[1], -a[2]);
+}
+
 double dotProduct(const GzVector &a, const GzVector &b)
 {
 	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];

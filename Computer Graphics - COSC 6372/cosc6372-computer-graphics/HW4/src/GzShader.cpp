@@ -3,7 +3,7 @@
 GzLight::GzLight(const GzVector &v, const GzColor &c)
 {
     this->color = c;
-    this->direction = v;
+    this->direction = GzVector(-v[0], -v[1], -v[2]);
 }
 // GzVector GzGouraudShader::vertex(int iface, int nthvert)
 // {
