@@ -123,6 +123,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 	{
 		xMin = INT_MAX;
 		xMax = -INT_MAX;
+
 		for (GzInt i = 0; i < 3; i++)
 		{
 			if ((GzInt)floor(tri[i][Y]) == y)
@@ -151,12 +152,14 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 					xMin = x;
 					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMin);
 					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
+					normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
 				}
 				if (x > xMax)
 				{
 					xMax = x;
 					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMax);
 					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
+					normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
 				}
 			}
 		}
