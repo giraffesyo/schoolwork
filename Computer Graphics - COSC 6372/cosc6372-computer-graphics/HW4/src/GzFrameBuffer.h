@@ -28,7 +28,7 @@ public:
 	void setClearDepth(GzReal depth);
 
 	void drawPoint(const GzVertex &v, const GzColor &c, GzFunctional status);
-	GzColor shade(GzColor c);
+	GzColor shade(GzColor c, GzVector n);
 
 private:
 	//Put any variables and private functions for your implementation here
@@ -39,7 +39,9 @@ private:
 
 	void realInterpolate(GzReal key1, GzReal val1, GzReal key2, GzReal val2, GzReal key, GzReal &val);
 	void colorInterpolate(GzReal key1, GzColor &val1, GzReal key2, GzColor &val2, GzReal key, GzColor &val);
-	void drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status);
+	void normalInterpolate(GzReal key1, GzVector &val1, GzReal key2, GzVector &val2, GzReal key, GzVector &val);
+
+	void drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzVector nMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzVector nMax, GzFunctional status);
 
 	//============================================================================
 	//End of Declarations in Assignment #1, 2, 3
@@ -59,11 +61,11 @@ public:
 	void loadLightTrans(GzMatrix &transMatrix);
 	void drawTriangle(GzTriangle tri, GzFunctional status);
 	vector<GzLight> Lights;
-	vector<GzLight> transformedLights;
 
 private:
 	GzInt curShadeModel;
 	GzReal kA, kD, kS, s;
+	GzMatrix lightTransformMat;
 
 	//============================================================================
 	//End of Declarations in Assignment #4

@@ -104,9 +104,11 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 	GzInt yMin, yMax;
 	GzReal xMin, xMax, zMin, zMax;
 	GzColor cMin, cMax;
+	GzVector nMin, nMax;
 
 	tri.push_back(tri[0]);
 	tri.colors.push_back(tri.colors[0]);
+	tri.normals.push_back(tri.normals[0]);
 
 	yMin = INT_MAX;
 	yMax = -INT_MAX;
@@ -130,12 +132,14 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 					xMin = tri[i][X];
 					zMin = tri[i][Z];
 					cMin = tri.colors[i];
+					nMin = tri.normals[i];
 				}
 				if (tri[i][X] > xMax)
 				{
 					xMax = tri[i][X];
 					zMax = tri[i][Z];
 					cMax = tri.colors[i];
+					nMax = tri.normals[i];
 				}
 			}
 			if ((y - tri[i][Y]) * (y - tri[i + 1][Y]) < 0)
@@ -156,16 +160,67 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 				}
 			}
 		}
-		drawRasLine(y, xMin, zMin, cMin, xMax - 1e-3, zMax, cMax, status);
+		drawRasLine(y, xMin, zMin, cMin, nMin, xMax - 1e-3, zMax, cMax, nMax, status);
 	}
 }
 
-GzColor GzFrameBuffer::shade(GzColor c)
+GzColor GzFrameBuffer::shade(GzColor c, GzVector n)
 {
-	return c;
+	if (curShadeModel == GZ_GOURAUD)
+	{
+		GzColor color;
+		//Add ambient light first
+		for (int i = 0; i < 3; i++)
+		{
+			color[i] = kA * c[i];
+		}
+
+		for (int i = 0; i < Lights.size(); i++)
+		{
+			//Add diffuse light
+			float normalLight = dotProduct(n, Lights[i].direction);
+			for (int j = 0; j < 3; j++)
+			{
+				color[j] += kD * Lights[i].color[j] * normalLight;
+			}
+			//If n and l are normalized, then r = 2n<n,l> - l
+			GzVector r = 2 * abs(normalLight) * n - Lights[i].direction;
+			GzVector E = GzVector(0, 0, 1);
+			GzMatrix reflectedMatrix = GzMatrix();
+			reflectedMatrix.resize(3, 1);
+
+			reflectedMatrix[0][0] = r[0];
+			reflectedMatrix[1][0] = r[1];
+			reflectedMatrix[2][0] = r[2];
+			reflectedMatrix = lightTransformMat * reflectedMatrix;
+			r[0] = reflectedMatrix[0][0];
+			r[1] = reflectedMatrix[1][0];
+			r[2] = reflectedMatrix[2][0];
+			r.normalize();
+
+			GzReal z = dotProduct(r, E);
+			// Apply specular lighting
+			for (int j = 0; j < 3; j++)
+				//all numbers inferior to 1 will decrease when we apply the power,
+				// this is helping us know if it should be glossy or not (specular)
+				color[i] += kS * Lights[i].color[j] * pow(max(z, 0.0), s);
+		}
+
+		for (int i = 0; i < 3; i++)
+			color[i] = clamp(color[i], 0.0, 1.0);
+		return color;
+	}
+	else if (curShadeModel == GZ_PHONG)
+	{
+	}
+	else
+	{
+		// base case no shader
+		return c;
+	}
 }
 
-void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status)
+void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzVector nMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzVector nMax, GzFunctional status)
 {
 	if ((y < 0) || (y >= image.sizeH()))
 		return;
@@ -180,6 +235,7 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 	{
 		GzReal z;
 		GzColor c;
+		GzVector n;
 		y = image.sizeH() - y - 1;
 		int w = image.sizeW();
 		if (status & GZ_DEPTH_TEST)
@@ -190,7 +246,11 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 				if (z >= depthBuffer[x][y])
 				{
 					colorInterpolate(xMin, cMin, xMax, cMax, x, c);
-					c = shade(c);
+					if (status & GZ_LIGHTING)
+					{
+						normalInterpolate(xMin, nMin, xMax, nMax, x, n);
+						c = shade(c, n);
+					}
 					image.set(x, y, c);
 					depthBuffer[x][y] = z;
 				}
@@ -202,7 +262,12 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 			{
 				realInterpolate(xMin, zMin, xMax, zMax, x, z);
 				colorInterpolate(xMin, cMin, xMax, cMax, x, c);
-				c = shade(c);
+				if (status & GZ_LIGHTING)
+				{
+					normalInterpolate(xMin, nMin, xMax, nMax, x, n);
+					c = shade(c, n);
+				}
+
 				image.set(x, y, c);
 				depthBuffer[x][y] = z;
 			}
@@ -222,6 +287,14 @@ void GzFrameBuffer::colorInterpolate(GzReal key1, GzColor &val1, GzReal key2, Gz
 		val[i] = val1[i] + (val2[i] - val1[i]) * k;
 }
 
+void GzFrameBuffer::normalInterpolate(GzReal key1, GzVector &val1, GzReal key2, GzVector &val2, GzReal key, GzVector &val)
+{
+	GzReal k = (key - key1) / (key2 - key1);
+	for (GzInt i = 0; i < 3; i++)
+	{
+		val[i] = val1[i] + (val2[i] - val1[i]) * k;
+	}
+}
 void GzFrameBuffer::shadeModel(const GzInt model)
 {
 	curShadeModel = model;
@@ -238,20 +311,17 @@ void GzFrameBuffer::material(GzReal _kA, GzReal _kD, GzReal _kS, GzReal _s)
 void GzFrameBuffer::addLight(const GzVector &v, const GzColor &c)
 {
 	Lights.push_back(GzLight(v, c));
-	transformedLights.push_back(GzLight(v, c));
 }
 
 void GzFrameBuffer::loadLightTrans(GzMatrix &transMatrix)
 {
-	// copy lights and transform them
-	for (int i = 0; i < Lights.size(); i++)
-	{
-		GzMatrix inverseTrans = transMatrix.transpose();
-		GzVector dir = Lights[i].direction;
-		transformedLights[i].direction = {
-			inverseTrans[0][0] * dir[0] + inverseTrans[0][1] * dir[1] + inverseTrans[0][2] * dir[2],
-			inverseTrans[1][0] * dir[0] + inverseTrans[1][1] * dir[1] + inverseTrans[1][2] * dir[2],
-			inverseTrans[2][0] * dir[0] + inverseTrans[2][1] * dir[1] + inverseTrans[2][2] * dir[2],
-		};
-	}
+	GzMatrix lightTransform = GzMatrix();
+	// make it a 3x3
+	lightTransform.resize(3, 3);
+	// copy transform matrix into light transform matrix
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			lightTransform[i][j] = transMatrix[i][j];
+	// inverse and transpose matrix, store to class
+	lightTransformMat = lightTransform.inverse3x3().transpose();
 }
