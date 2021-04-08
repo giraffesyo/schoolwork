@@ -122,10 +122,16 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 	{
 		assert(curShadeModel == GZ_GOURAUD || curShadeModel == GZ_PHONG);
 	}
-
+	else
+	{
+		// skip this function because this is specific for lighting
+		drawTriangle(tri, tri.colors, status);
+		return;
+	}
+	vector<GzColor> colors(3);
 	if (curShadeModel == GZ_GOURAUD)
 	{
-		vector<GzColor> colors(3);
+
 		for (int i = 0; i < tri.colors.size(); i++)
 		{
 			colors[i] = shade(tri.colors[i], tri.normals[i]);
@@ -141,7 +147,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 		GzVector nMin, nMax;
 
 		tri.push_back(tri[0]);
-		tri.colors.push_back(tri.colors[0]);
+		colors.push_back(colors[0]);
 		tri.normals.push_back(tri.normals[0]);
 
 		yMin = INT_MAX;
@@ -166,14 +172,14 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 					{
 						xMin = tri[i][X];
 						zMin = tri[i][Z];
-						cMin = tri.colors[i];
+						cMin = colors[i];
 						nMin = tri.normals[i];
 					}
 					if (tri[i][X] > xMax)
 					{
 						xMax = tri[i][X];
 						zMax = tri[i][Z];
-						cMax = tri.colors[i];
+						cMax = colors[i];
 						nMax = tri.normals[i];
 					}
 				}
@@ -189,7 +195,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 						{
 							normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
 						}
-						colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
+						colorInterpolate(tri[i][Y], colors[i], tri[i + 1][Y], colors[i + 1], y, cMin);
 					}
 					if (x > xMax)
 					{
@@ -199,7 +205,7 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 						{
 							normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
 						}
-						colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
+						colorInterpolate(tri[i][Y], colors[i], tri[i + 1][Y], colors[i + 1], y, cMax);
 					}
 				}
 			}
