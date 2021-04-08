@@ -54,6 +54,67 @@ void GzFrameBuffer::drawPoint(const GzVertex &v, const GzColor &c, GzFunctional 
 	}
 }
 
+void GzFrameBuffer::drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunctional status)
+{
+	GzInt yMin, yMax;
+	GzReal xMin, xMax, zMin, zMax;
+	GzColor cMin, cMax;
+
+	v.push_back(v[0]);
+	c.push_back(c[0]);
+
+	yMin = INT_MAX;
+	yMax = -INT_MAX;
+
+	for (GzInt i = 0; i < 3; i++)
+	{
+		yMin = min((GzInt)floor(v[i][Y]), yMin);
+		yMax = max((GzInt)floor(v[i][Y] - 1e-3), yMax);
+	}
+
+	for (GzInt y = yMin; y <= yMax; y++)
+	{
+		xMin = INT_MAX;
+		xMax = -INT_MAX;
+		for (GzInt i = 0; i < 3; i++)
+		{
+			if ((GzInt)floor(v[i][Y]) == y)
+			{
+				if (v[i][X] < xMin)
+				{
+					xMin = v[i][X];
+					zMin = v[i][Z];
+					cMin = c[i];
+				}
+				if (v[i][X] > xMax)
+				{
+					xMax = v[i][X];
+					zMax = v[i][Z];
+					cMax = c[i];
+				}
+			}
+			if ((y - v[i][Y]) * (y - v[i + 1][Y]) < 0)
+			{
+				GzReal x;
+				realInterpolate(v[i][Y], v[i][X], v[i + 1][Y], v[i + 1][X], y, x);
+				if (x < xMin)
+				{
+					xMin = x;
+					realInterpolate(v[i][Y], v[i][Z], v[i + 1][Y], v[i + 1][Z], y, zMin);
+					colorInterpolate(v[i][Y], c[i], v[i + 1][Y], c[i + 1], y, cMin);
+				}
+				if (x > xMax)
+				{
+					xMax = x;
+					realInterpolate(v[i][Y], v[i][Z], v[i + 1][Y], v[i + 1][Z], y, zMax);
+					colorInterpolate(v[i][Y], c[i], v[i + 1][Y], c[i + 1], y, cMax);
+				}
+			}
+		}
+		drawRasLine(y, xMin, zMin, cMin, xMax - 1e-3, zMax, cMax, status);
+	}
+}
+
 void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 {
 	// only support two shaders at the moment
@@ -62,114 +123,88 @@ void GzFrameBuffer::drawTriangle(GzTriangle tri, GzFunctional status)
 		assert(curShadeModel == GZ_GOURAUD || curShadeModel == GZ_PHONG);
 	}
 
-	// handle different shaders
-	// if (curShadeModel == GZ_GOURAUD)
-	// {
-	// 	vector<GzColor> colors(3);
-	// 	// Apply ambient color
-	// 	// for (int i = 0; i < colors.size(); i++)
-	// 	// {
-	// 	// 	colors[i] = GzColor();
-
-	// 	// 	for (int j = 0; j < colors[i].size(); j++)
-	// 	// 	{
-	// 	// 		colors[i][j] = tri.colors[i][j] * kA;
-	// 	// 	}
-	// 	// }
-
-	// 	for (int i = 0; i < Lights.size(); i++)
-	// 	{
-	// 		GzVector n = tri.normals[i];
-	// 		GzVector lightDir = transformedLights[i].direction;
-	// 		lightDir.normalize();
-	// 		GzVector r = (n * (n * lightDir * 2.f) - lightDir);
-	// 		r.normalize();
-	// 		// lightDir = -lightDir;
-
-	// 		GzReal diffuse = kD * dotProduct(tri.normals[i], r);
-	// 		GzReal specular = kS * pow(max(float(r.at(Z)), 0.f), s);
-	// 		for (int j = 0; j < colors.size(); j++)
-	// 		{
-	// 			GzReal color = colors[i][j];
-	// 			colors[i][j] = clamp(kA + color * (diffuse + specular), 0.0, 1.0);
-	// 		}
-	// 		cout << colors[0][0];
-	// 	}
-
-	// 	drawTriangle(tri, colors, status);
-	// }
-	// else if (curShadeModel == GZ_PHONG)
-	// {
-	// }
-	GzInt yMin, yMax;
-	GzReal xMin, xMax, zMin, zMax;
-	GzColor cMin, cMax;
-	GzVector nMin, nMax;
-
-	tri.push_back(tri[0]);
-	tri.colors.push_back(tri.colors[0]);
-	tri.normals.push_back(tri.normals[0]);
-
-	yMin = INT_MAX;
-	yMax = -INT_MAX;
-
-	for (GzInt i = 0; i < 3; i++)
+	if (curShadeModel == GZ_GOURAUD)
 	{
-		yMin = min((GzInt)floor(tri[i][Y]), yMin);
-		yMax = max((GzInt)floor(tri[i][Y] - 1e-3), yMax);
+		vector<GzColor> colors(3);
+		for (int i = 0; i < tri.colors.size(); i++)
+		{
+			colors[i] = shade(tri.colors[i], tri.normals[i]);
+		}
+		drawTriangle(tri, colors, status);
 	}
-
-	for (GzInt y = yMin; y <= yMax; y++)
+	else
 	{
-		xMin = INT_MAX;
-		xMax = -INT_MAX;
+
+		GzInt yMin, yMax;
+		GzReal xMin, xMax, zMin, zMax;
+		GzColor cMin, cMax;
+		GzVector nMin, nMax;
+
+		tri.push_back(tri[0]);
+		tri.colors.push_back(tri.colors[0]);
+		tri.normals.push_back(tri.normals[0]);
+
+		yMin = INT_MAX;
+		yMax = -INT_MAX;
 
 		for (GzInt i = 0; i < 3; i++)
 		{
-			if ((GzInt)floor(tri[i][Y]) == y)
-			{
-				if (tri[i][X] < xMin)
-				{
-					xMin = tri[i][X];
-					zMin = tri[i][Z];
-					cMin = tri.colors[i];
-					nMin = tri.normals[i];
-				}
-				if (tri[i][X] > xMax)
-				{
-					xMax = tri[i][X];
-					zMax = tri[i][Z];
-					cMax = tri.colors[i];
-					nMax = tri.normals[i];
-				}
-			}
-			if ((y - tri[i][Y]) * (y - tri[i + 1][Y]) < 0)
-			{
-				GzReal x;
-				realInterpolate(tri[i][Y], tri[i][X], tri[i + 1][Y], tri[i + 1][X], y, x);
-				if (x < xMin)
-				{
-					xMin = x;
-					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMin);
-					if (curShadeModel == GZ_PHONG)
-					{
-						normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
-					}
-					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
-				}
-				if (x > xMax)
-				{
-					xMax = x;
-					realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMax);
-					if (curShadeModel == GZ_PHONG)
-					{
-						normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
-					}
-					colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
-				}
-			}
+			yMin = min((GzInt)floor(tri[i][Y]), yMin);
+			yMax = max((GzInt)floor(tri[i][Y] - 1e-3), yMax);
 		}
-		drawRasLine(y, xMin, zMin, cMin, nMin, xMax - 1e-3, zMax, cMax, nMax, status);
+
+		for (GzInt y = yMin; y <= yMax; y++)
+		{
+			xMin = INT_MAX;
+			xMax = -INT_MAX;
+
+			for (GzInt i = 0; i < 3; i++)
+			{
+				if ((GzInt)floor(tri[i][Y]) == y)
+				{
+					if (tri[i][X] < xMin)
+					{
+						xMin = tri[i][X];
+						zMin = tri[i][Z];
+						cMin = tri.colors[i];
+						nMin = tri.normals[i];
+					}
+					if (tri[i][X] > xMax)
+					{
+						xMax = tri[i][X];
+						zMax = tri[i][Z];
+						cMax = tri.colors[i];
+						nMax = tri.normals[i];
+					}
+				}
+				if ((y - tri[i][Y]) * (y - tri[i + 1][Y]) < 0)
+				{
+					GzReal x;
+					realInterpolate(tri[i][Y], tri[i][X], tri[i + 1][Y], tri[i + 1][X], y, x);
+					if (x < xMin)
+					{
+						xMin = x;
+						realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMin);
+						if (curShadeModel == GZ_PHONG)
+						{
+							normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMin);
+						}
+						colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMin);
+					}
+					if (x > xMax)
+					{
+						xMax = x;
+						realInterpolate(tri[i][Y], tri[i][Z], tri[i + 1][Y], tri[i + 1][Z], y, zMax);
+						if (curShadeModel == GZ_PHONG)
+						{
+							normalInterpolate(tri[i][Y], tri.normals[i], tri[i + 1][Y], tri.normals[i + 1], y, nMax);
+						}
+						colorInterpolate(tri[i][Y], tri.colors[i], tri[i + 1][Y], tri.colors[i + 1], y, cMax);
+					}
+				}
+			}
+			drawRasLine(y, xMin, zMin, cMin, nMin, xMax - 1e-3, zMax, cMax, nMax, status);
+		}
 	}
 }
 
@@ -223,6 +258,49 @@ GzColor GzFrameBuffer::shade(GzColor c, GzVector n)
 	{
 		// base case no shader
 		return c;
+	}
+}
+
+void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status)
+{
+	if ((y < 0) || (y >= image.sizeH()))
+		return;
+	if ((GzInt)floor(xMin) == (GzInt)floor(xMax))
+	{
+		if (zMin > zMax)
+			drawPoint(GzVertex(floor(xMin), y, zMin), cMin, status);
+		else
+			drawPoint(GzVertex(floor(xMin), y, zMax), cMax, status);
+	}
+	else
+	{
+		GzReal z;
+		GzColor c;
+		y = image.sizeH() - y - 1;
+		int w = image.sizeW();
+		if (status & GZ_DEPTH_TEST)
+		{
+			for (int x = max(0, (GzInt)floor(xMin)); x <= min(w - 1, (GzInt)floor(xMax)); x++)
+			{
+				realInterpolate(xMin, zMin, xMax, zMax, x, z);
+				if (z >= depthBuffer[x][y])
+				{
+					colorInterpolate(xMin, cMin, xMax, cMax, x, c);
+					image.set(x, y, c);
+					depthBuffer[x][y] = z;
+				}
+			}
+		}
+		else
+		{
+			for (int x = max(0, (GzInt)floor(xMin)); x <= min(w - 1, (GzInt)floor(xMax)); x++)
+			{
+				realInterpolate(xMin, zMin, xMax, zMax, x, z);
+				colorInterpolate(xMin, cMin, xMax, cMax, x, c);
+				image.set(x, y, c);
+				depthBuffer[x][y] = z;
+			}
+		}
 	}
 }
 

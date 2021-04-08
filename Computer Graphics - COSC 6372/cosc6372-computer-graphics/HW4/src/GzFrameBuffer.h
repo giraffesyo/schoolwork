@@ -60,6 +60,8 @@ public:
 																  //	_s: The spec power
 	void loadLightTrans(GzMatrix &transMatrix);
 	void drawTriangle(GzTriangle tri, GzFunctional status);
+	void drawTriangle(vector<GzVertex> &v, vector<GzColor> &c, GzFunctional status);
+	void drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status);
 	vector<GzLight> Lights;
 
 private:
