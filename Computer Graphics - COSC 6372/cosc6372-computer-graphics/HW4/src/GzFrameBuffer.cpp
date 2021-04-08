@@ -254,16 +254,17 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 				{
 					colorInterpolate(xMin, cMin, xMax, cMax, x, c);
 
+					// if (status & GZ_LIGHTING)
+					// {
+					// 	normalInterpolate(xMin, nMin, xMax, nMax, x, n);
+					// 	c = shade(c, n);
+					// }
 					if (status & GZ_LIGHTING)
 					{
 						normalInterpolate(xMin, nMin, xMax, nMax, x, n);
-						c = shade(c, n);
-					}
-					GzColor t;
-					colorInterpolate(xMin, t, xMax, cMax, x, c);
-					if (status & GZ_LIGHTING)
-					{
-						normalInterpolate(xMin, nMin, xMax, nMax, x, n);
+						GzColor t;
+
+						colorInterpolate(xMin, t, xMax, cMax, x, c);
 						c = shade(c, n);
 					}
 					image.set(x, y, c);
@@ -281,9 +282,10 @@ void GzFrameBuffer::drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin
 				if (status & GZ_LIGHTING)
 				{
 					normalInterpolate(xMin, nMin, xMax, nMax, x, n);
+					GzColor t;
+					colorInterpolate(xMin, t, xMax, cMax, x, c);
 					c = shade(c, n);
 				}
-				colorInterpolate(xMin, cMin, xMax, cMax, x, c);
 
 				image.set(x, y, c);
 				depthBuffer[x][y] = z;
