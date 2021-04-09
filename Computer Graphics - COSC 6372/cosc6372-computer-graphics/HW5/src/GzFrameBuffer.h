@@ -35,7 +35,7 @@ public:
 
 	void drawPointWLight(const GzVertex &v, const GzColor &c, const GzVector &n, GzFunctional status);
 	void drawTriangleWLight(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status);
-
+	void drawTriangleWTexture(vector<GzVertex> &v, vector<GzTexCoord> &tc, GzFunctional status);
 	void texture(const GzImage &t);
 
 private:

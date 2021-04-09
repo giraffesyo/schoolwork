@@ -222,6 +222,10 @@ void GzFrameBuffer::drawPointWLight(const GzVertex &v, const GzColor &c, const G
 	}
 }
 
+void GzFrameBuffer::drawTriangleWTexture(vector<GzVertex> &v, vector<GzTexCoord> &tc, GzFunctional status)
+{
+}
+
 void GzFrameBuffer::drawTriangleWLight(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status)
 {
 	if (curShadeModel == GZ_GOURAUD)

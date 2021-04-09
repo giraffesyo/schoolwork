@@ -273,6 +273,7 @@ void Gz::texture(const GzImage &t)
 
 void Gz::addTexCoord(const GzTexCoord &tc)
 {
+	texCoordQueue.push(tc);
 }
 
 void Gz::end()
@@ -284,9 +285,21 @@ void Gz::end()
 
 	if (get(GZ_TEXTURE))
 	{
+		while (vertexQueue.size() >= 3 && texCoordQueue.size() >= 3)
+		{
+			vector<GzVertex> v(3);
+			vector<GzTexCoord> tc(3);
+			for (int i = 0; i < 3; i++)
+			{
+				v[i] = transAll(vertexQueue.front());
+				vertexQueue.pop();
+				tc[i] = texCoordQueue.front();
+				texCoordQueue.pop();
+			}
+			frameBuffer.drawTriangleWTexture(v, tc, status);
+		}
 	}
-
-	if (get(GZ_LIGHTING))
+	else if (get(GZ_LIGHTING))
 	{
 		frameBuffer.loadLightTrans(transMatrix);
 		switch (currentPrimitive)
