@@ -29,12 +29,12 @@ After compiling successfully, execute the following to run the application:
 ./out/hw
 ```
 
-Nothing will be written to standard out. It's important that you run the command from the `HW4` directory, as that is where the input file is located.
+Nothing will be written to standard out. It's important that you run the command from the `HW5` directory, as that is where the input file is located.
 
 ## Running with Visual Studio Code
 
 Alternatively to using Make, you can run it with VS Code. Since I used Visual Studio Code to develop this assignment, I've generated and modified a [tasks.json](.vscode/tasks.json) file and a [launch.json](.vscode/launch.json) file. These files enable running the project by opening [main.cpp](src/main.cpp) and pressing <kbd>ctrl</kbd> + <kbd>F5</kbd> or going to `Run` and choosing `Run without debugging`.
 
-When you run this way, object files with the extension `.o` will be generated in an `out` directory. This folder and these files are not under source control, so you must create the out directory first.
+When you run this way, object files with the extension `.o` will be generated in an `out` directory. If the `out` directory doesn't exist, this command will error. I've included a `.gitignore` file which should make the folder itself be within version control, but if it's not there, create the directory with `mkdir out`.
 
 **IMPORTANT**: For this to work, you must have opened the `HW5` workspace in VS Code. You can do this from the command line by running `code .` from within the `HW5` directory or you can choose `File` > `Open Workspace` and choose the [workspace.code-workspace](workspace.code-workspace) file.
