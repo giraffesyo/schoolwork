@@ -48,6 +48,7 @@ private:
 
 	//Put any variables and private functions for your implementation here
 	GzImage image;
+	GzImage imageTexture;
 	vector<vector<GzReal>> depthBuffer;
 	GzColor clearColor;
 	GzReal clearDepth;

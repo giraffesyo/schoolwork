@@ -389,3 +389,8 @@ GzColor GzFrameBuffer::colorWLight(GzColor c, GzVector n)
 		res[i] = min(res[i], double(1));
 	return res;
 }
+
+void GzFrameBuffer::texture(const GzImage &t)
+{
+	imageTexture = t;
+}

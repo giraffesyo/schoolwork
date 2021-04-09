@@ -268,6 +268,7 @@ void Gz::addLight(const GzVector &v, const GzColor &c)
 //============================================================================
 void Gz::texture(const GzImage &t)
 {
+	frameBuffer.texture(t);
 }
 
 void Gz::addTexCoord(const GzTexCoord &tc)
