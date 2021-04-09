@@ -4,8 +4,6 @@
 #include <vector>
 using namespace std;
 
-
-
 //============================================================================
 //Declarations in Assignment #1
 //============================================================================
@@ -20,7 +18,7 @@ typedef unsigned int GzMatrixModeType;
 //----------------------------------------------------------------------------
 
 //Funtional constants---------------------------------------------------------
-#define GZ_DEPTH_TEST   0x00000001
+#define GZ_DEPTH_TEST 0x00000001
 #define GZ_COLOR_BUFFER 0x00000002
 #define GZ_DEPTH_BUFFER 0x00000004
 //----------------------------------------------------------------------------
@@ -34,10 +32,14 @@ typedef unsigned int GzMatrixModeType;
 #define Y 1
 #define Z 2
 
-struct GzVertex:public vector<GzReal> {
-	GzVertex():vector<GzReal>(3, 0) {}
-	GzVertex(GzReal x, GzReal y, GzReal z):vector<GzReal>(3, 0) {
-		at(X)=x; at(Y)=y; at(Z)=z;
+struct GzVertex : public vector<GzReal>
+{
+	GzVertex() : vector<GzReal>(3, 0) {}
+	GzVertex(GzReal x, GzReal y, GzReal z) : vector<GzReal>(3, 0)
+	{
+		at(X) = x;
+		at(Y) = y;
+		at(Z) = z;
 	}
 };
 //----------------------------------------------------------------------------
@@ -48,13 +50,22 @@ struct GzVertex:public vector<GzReal> {
 #define B 2
 #define A 3
 
-struct GzColor:public vector<GzReal> {
-	GzColor():vector<GzReal>(4, 0) {at(A)=1;}
-	GzColor(GzReal r, GzReal g, GzReal b):vector<GzReal>(4, 0) {
-		at(R)=r; at(G)=g; at(B)=b; at(A)=1;
+struct GzColor : public vector<GzReal>
+{
+	GzColor() : vector<GzReal>(4, 0) { at(A) = 1; }
+	GzColor(GzReal r, GzReal g, GzReal b) : vector<GzReal>(4, 0)
+	{
+		at(R) = r;
+		at(G) = g;
+		at(B) = b;
+		at(A) = 1;
 	}
-	GzColor(GzReal r, GzReal g, GzReal b, GzReal a):vector<GzReal>(4, 0) {
-		at(R)=r; at(G)=g; at(B)=b; at(A)=a;
+	GzColor(GzReal r, GzReal g, GzReal b, GzReal a) : vector<GzReal>(4, 0)
+	{
+		at(R) = r;
+		at(G) = g;
+		at(B) = b;
+		at(A) = a;
 	}
 };
 //----------------------------------------------------------------------------
@@ -62,8 +73,6 @@ struct GzColor:public vector<GzReal> {
 //============================================================================
 //End of Declarations in Assignment #1
 //============================================================================
-
-
 
 //============================================================================
 //Declarations in Assignment #2
@@ -76,8 +85,6 @@ struct GzColor:public vector<GzReal> {
 //============================================================================
 //End of Declarations in Assignment #2
 //============================================================================
-
-
 
 //============================================================================
 //Declarations in Assignment #4
@@ -96,8 +103,6 @@ struct GzColor:public vector<GzReal> {
 //End of Declarations in Assignment #4
 //============================================================================
 
-
-
 //============================================================================
 //Declarations in Assignment #5
 //============================================================================
@@ -110,10 +115,13 @@ struct GzColor:public vector<GzReal> {
 #define U 0
 #define V 1
 
-struct GzTexCoord:public vector<GzReal> {
-	GzTexCoord():vector<GzReal>(2, 0) {}
-	GzTexCoord(GzReal u, GzReal v):vector<GzReal>(2, 0) {
-		at(U)=u; at(V)=v;
+struct GzTexCoord : public vector<GzReal>
+{
+	GzTexCoord() : vector<GzReal>(2, 0) {}
+	GzTexCoord(GzReal u, GzReal v) : vector<GzReal>(2, 0)
+	{
+		at(U) = u;
+		at(V) = v;
 	}
 };
 //----------------------------------------------------------------------------
@@ -121,7 +129,5 @@ struct GzTexCoord:public vector<GzReal> {
 //============================================================================
 //End of Declarations in Assignment #5
 //============================================================================
-
-
 
 #endif
