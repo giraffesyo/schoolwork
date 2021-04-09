@@ -35,3 +35,4 @@
 
 # build folder I added to tasks.json
 out/
+!HW5/out/
