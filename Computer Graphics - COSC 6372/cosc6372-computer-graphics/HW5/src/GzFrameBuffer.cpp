@@ -348,9 +348,9 @@ void GzFrameBuffer::drawRasLineWTexture(GzInt y, GzReal xMin, GzReal zMin, GzTex
 	if ((GzInt)floor(xMin) == (GzInt)floor(xMax))
 	{
 		if (zMin > zMax)
-			drawPoint(GzVertex(floor(xMin), y, zMin), imageTexture.get(tcMin[X], tcMin[Y]), status);
+			drawPoint(GzVertex(floor(xMin), y, zMin), imageTexture.get(tcMin), status);
 		else
-			drawPoint(GzVertex(floor(xMin), y, zMax), imageTexture.get(tcMax[X], tcMax[Y]), status);
+			drawPoint(GzVertex(floor(xMin), y, zMax), imageTexture.get(tcMax), status);
 	}
 	else
 	{
@@ -366,7 +366,7 @@ void GzFrameBuffer::drawRasLineWTexture(GzInt y, GzReal xMin, GzReal zMin, GzTex
 				if (z >= depthBuffer[x][y])
 				{
 					texCoordInterpolate(xMin, tcMin, xMax, tcMax, x, tc);
-					image.set(x, y, imageTexture.get(tc[X], tc[Y]));
+					image.set(x, y, imageTexture.get(tc));
 					depthBuffer[x][y] = z;
 				}
 			}
@@ -377,7 +377,7 @@ void GzFrameBuffer::drawRasLineWTexture(GzInt y, GzReal xMin, GzReal zMin, GzTex
 			{
 				realInterpolate(xMin, zMin, xMax, zMax, x, z);
 				texCoordInterpolate(xMin, tcMin, xMax, tcMax, x, tc);
-				image.set(x, y, imageTexture.get(tc[X], tc[Y]));
+				image.set(x, y, imageTexture.get(tc));
 				depthBuffer[x][y] = z;
 			}
 		}

@@ -82,6 +82,21 @@ GzBool GzImage::resize(GzInt width, GzInt height)
 	return true;
 }
 
+GzColor GzImage::get(GzTexCoord &tc)
+{
+	// tc will be a floating point value 0-1, so we can multiply it against the size to get the closest pixel
+	GzInt x = (int)floor(tc[X] * (sizeW() - 1));
+	GzInt y = (int)floor<int>(tc[Y] * (sizeH() - 1));
+	if (x < 0 || y < 0 || x >= w || y >= h)
+	{
+		return GzColor();
+	}
+	else
+	{
+		return pixel[x][y];
+	}
+}
+
 GzColor GzImage::get(GzInt x, GzInt y)
 {
 	if ((x < 0) || (y < 0) || (x >= w) || (y >= h))

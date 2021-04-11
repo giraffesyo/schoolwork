@@ -14,7 +14,8 @@
     "string_view": "cpp",
     "unordered_map": "cpp",
     "ios": "cpp",
-    "limits": "cpp"
+    "limits": "cpp",
+    "bit": "cpp"
   },
   "C_Cpp.default.cppStandard": "c++20"
 }
