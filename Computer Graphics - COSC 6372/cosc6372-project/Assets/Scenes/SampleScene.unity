@@ -249,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHand: {fileID: 1813262557}
   RightHandYPosition: 0
+  BallPrefab: {fileID: 6661465144154166374, guid: 738c88a3420f9471292cb480b6bd1664, type: 3}
 --- !u!4 &429722020
 Transform:
   m_ObjectHideFlags: 0

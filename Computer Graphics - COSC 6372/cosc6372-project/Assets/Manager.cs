@@ -8,9 +8,15 @@ public class Manager : MonoBehaviour
     public Transform rightHand;
     [SerializeField]
     private float RightHandYPosition;
+    public GameObject BallPrefab;
+    private GameObject ball;
     void Start()
     {
         UpdateRightHandPosition();
+        ball = Instantiate(BallPrefab);
+
+        // slow down the engine
+        Time.timeScale = 0.2f;
     }
 
     // Update is called once per frame
