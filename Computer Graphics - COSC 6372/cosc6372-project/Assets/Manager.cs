@@ -34,12 +34,15 @@ public class Manager : MonoBehaviour
         // Get current hand position
         UpdateRightHandPosition();
         // Create virtual ball
-        ball = Instantiate(BallPrefab);
+        ball = Instantiate(BallPrefab, rightHand.transform);
         // Mark this as the first pass through the animation
         isFirstAnimationLoop = true;
         // slow down the engine
-        Time.timeScale = 0.1f;
-
+        Time.timeScale = 1.0f;
+        BallScript ballScript = GetComponent<BallScript>();
+        ballScript.Target = rightHand.transform;
+        ballScript.Projectile = ball.transform;
+        StartCoroutine(ballScript.SimulateProjectile());
         AnimatorStateInfo animatorStateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
         normalizedAnimationTime = animatorStateInfo.normalizedTime;
 
