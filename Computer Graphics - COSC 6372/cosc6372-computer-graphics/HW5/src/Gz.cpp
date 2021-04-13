@@ -285,6 +285,8 @@ void Gz::end()
 
 	if (get(GZ_TEXTURE))
 	{
+
+		// frameBuffer.loadTextureTrans(transMatrix);
 		while (vertexQueue.size() >= 3 && texCoordQueue.size() >= 3)
 		{
 			vector<GzVertex> v(3);

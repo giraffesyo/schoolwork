@@ -123,6 +123,20 @@ struct GzTexCoord : public vector<GzReal>
 		at(U) = u;
 		at(V) = v;
 	}
+	GzTexCoord operator/(GzReal b)
+	{
+		GzTexCoord res = GzTexCoord();
+		res[U] = at(U) / b;
+		res[V] = at(V) / b;
+		return res;
+	}
+	GzTexCoord operator*(GzReal b)
+	{
+		GzTexCoord res = GzTexCoord();
+		res[U] = at(U) * b;
+		res[V] = at(V) * b;
+		return res;
+	}
 };
 //----------------------------------------------------------------------------
 

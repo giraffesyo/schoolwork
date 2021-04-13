@@ -161,13 +161,20 @@ void GzFrameBuffer::drawTriangleWTexture(vector<GzVertex> &v, vector<GzTexCoord>
 				{
 					xMin = x;
 					realInterpolate(v[i][Y], v[i][Z], v[i + 1][Y], v[i + 1][Z], y, zMin);
-					texCoordInterpolate(v[i][Y], tc[i], v[i + 1][Y], tc[i + 1], y, tcMin);
+					GzTexCoord ztcMin = tc[i] / zMin;
+					GzTexCoord ztcMinNext = tc[i + 1] / zMin;
+					texCoordInterpolate(v[i][Y], ztcMin, v[i + 1][Y], ztcMinNext, y, tcMin);
+					tcMin = tcMin * (1 / (1 / zMin));
 				}
 				if (x > xMax)
 				{
 					xMax = x;
 					realInterpolate(v[i][Y], v[i][Z], v[i + 1][Y], v[i + 1][Z], y, zMax);
-					texCoordInterpolate(v[i][Y], tc[i], v[i + 1][Y], tc[i + 1], y, tcMax);
+
+					GzTexCoord ztcMax = tc[i] / zMax;
+					GzTexCoord ztcMaxNext = tc[i + 1] / zMax;
+					texCoordInterpolate(v[i][Y], ztcMax, v[i + 1][Y], ztcMaxNext, y, tcMax);
+					tcMax = tcMax * (1 / (1 / zMax));
 				}
 			}
 		}
@@ -362,10 +369,45 @@ void GzFrameBuffer::drawRasLineWTexture(GzInt y, GzReal xMin, GzReal zMin, GzTex
 		{
 			for (int x = max(0, (GzInt)floor(xMin)); x <= min(w - 1, (GzInt)floor(xMax)); x++)
 			{
+				GzReal zReciprocal = 1 / z;
+				GzReal rzMin = 1 / zMin;
+				GzReal rzMax = 1 / zMax;
+				realInterpolate(xMin, rzMin, xMax, rzMax, x, zReciprocal);
 				realInterpolate(xMin, zMin, xMax, zMax, x, z);
 				if (z >= depthBuffer[x][y])
 				{
-					texCoordInterpolate(xMin, tcMin, xMax, tcMax, x, tc);
+
+					GzTexCoord ztcMin = tcMin / zReciprocal;
+					GzTexCoord ztcMax = tcMax / zReciprocal;
+					texCoordInterpolate(xMin, ztcMin, xMax, ztcMax, x, tc);
+					GzReal zCorrect = (1 / (1 / zReciprocal));
+					tc = tc * zCorrect;
+					// GzReal u = tc[U];
+					// GzReal v = tc[V];
+					// u = u / zReciprocal;
+					// v = u / zReciprocal;
+
+					// realInterpolate(xMin, u - 10, xMax, u + .5, x, u);
+					// realInterpolate(xMin, v - .5, xMax, v + .5, x, v);
+					// GzTexCoord ztcMin = tcMin / zReciprocal;
+					// GzTexCoord ztcMax = tcMax / zReciprocal;
+					// texCoordInterpolate(xMin, ztcMin, xMax, ztcMax, x, tc);
+					// GzTexCoord newTc = GzTexCoord();
+					// newTc[U] = tc[U] * zCorrect;
+					// newTc[V] = tc[V] * zCorrect;
+					// texCoordInterpolate(zMin, tcMin, zMax, tcMax, z, tc);
+					// newTc = newTc * zCorrect;
+
+					// GzMatrix tcM = GzMatrix();
+					// tcM.resize(3, 3);
+					// tcM[0] = {tc[U], 0, 0};
+					// tcM[1] = {0, tc[V], 0};
+					// 	tcM[2] = {0, 0, 1};
+					// tcM = textureTrans * tcM;
+
+					// tc[0] = tcM[0][0];
+					// tc[1] = tcM[1][1];
+					// tc = getPerspectiveTextureCoordinates(tc, z);
 					image.set(x, y, imageTexture.get(tc));
 					depthBuffer[x][y] = z;
 				}
@@ -382,6 +424,15 @@ void GzFrameBuffer::drawRasLineWTexture(GzInt y, GzReal xMin, GzReal zMin, GzTex
 			}
 		}
 	}
+}
+GzTexCoord getPerspectiveTextureCoordinates(GzTexCoord tc, GzReal depth)
+{
+	// float u = tc[U];
+	// float v = tc[V];
+	// float z = depth;
+	// rU = u/z;
+	// rV = u/v;
+	// rZ = 1/z;
 }
 
 void GzFrameBuffer::realInterpolate(GzReal key1, GzReal val1, GzReal key2, GzReal val2, GzReal key, GzReal &val)
@@ -427,6 +478,16 @@ void GzFrameBuffer::loadLightTrans(GzMatrix &mat)
 			rotMat[i][j] = mat[i][j];
 	lightTrans = (rotMat.inverse3x3()).transpose();
 }
+
+// void GzFrameBuffer::loadTextureTrans(GzMatrix &mat)
+// {
+// 	GzMatrix rotMat;
+// 	rotMat.resize(3, 3);
+// 	for (int i = 0; i < 3; i++)
+// 		for (int j = 0; j < 3; j++)
+// 			rotMat[i][j] = mat[i][j];
+// 	textureTrans = (rotMat.inverse3x3()).transpose();
+// }
 
 void GzFrameBuffer::addLight(const GzVector &v, const GzColor &c)
 {

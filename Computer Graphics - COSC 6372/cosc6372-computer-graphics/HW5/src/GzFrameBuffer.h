@@ -32,7 +32,7 @@ public:
 																  //	_kS: The specular coefficients
 																  //	_s: The spec power
 	void loadLightTrans(GzMatrix &mat);
-
+	// void loadTextureTrans(GzMatrix &mat);
 	void drawPointWLight(const GzVertex &v, const GzColor &c, const GzVector &n, GzFunctional status);
 	void drawTriangleWLight(vector<GzVertex> &v, vector<GzColor> &c, vector<GzVector> &n, GzFunctional status);
 	void drawTriangleWTexture(vector<GzVertex> &v, vector<GzTexCoord> &tc, GzFunctional status);
@@ -45,6 +45,7 @@ private:
 	vector<GzColor> lightColor;
 	GzReal kA, kD, kS, s;
 	GzMatrix lightTrans;
+	// GzMatrix textureTrans;
 
 	//Put any variables and private functions for your implementation here
 	GzImage image;
@@ -57,6 +58,7 @@ private:
 	void colorInterpolate(GzReal key1, GzColor &val1, GzReal key2, GzColor &val2, GzReal key, GzColor &val);
 	void normalInterpolate(GzReal key1, GzVector &val1, GzReal key2, GzVector &val2, GzReal key, GzVector &val);
 	void texCoordInterpolate(GzReal key1, GzTexCoord &val1, GzReal key2, GzTexCoord &val2, GzReal key, GzTexCoord &val);
+	GzTexCoord getPerspectiveTextureCoordinates(GzTexCoord tc, GzReal depth);
 	void drawRasLine(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzFunctional status);
 	void drawRasLineWLight(GzInt y, GzReal xMin, GzReal zMin, GzColor &cMin, GzVector &nMin, GzReal xMax, GzReal zMax, GzColor &cMax, GzVector &nMax, GzFunctional status);
 	void drawRasLineWTexture(GzInt y, GzReal xMin, GzReal zMin, GzTexCoord &tcMin, GzReal xMax, GzReal zMax, GzTexCoord &tcMax, GzFunctional status);
