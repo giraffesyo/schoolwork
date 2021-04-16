@@ -15,8 +15,6 @@ public class Manager : MonoBehaviour
     private Animator modelAnimator;
     public float normalizedAnimationTime;
     public List<Section> sections;
-    [SerializeField]
-    private bool isFirstAnimationLoop;
     private Section currentSection;
     [SerializeField]
     private float currentSectionMax;
@@ -39,10 +37,7 @@ public class Manager : MonoBehaviour
         sections = new List<Section>();
         // Get current hand position
         UpdateRightHandPosition();
-        // Create virtual ball
-        ball = Instantiate(BallPrefab, rightHand.transform);
-        // Mark this as the first pass through the animation
-        isFirstAnimationLoop = true;
+
         // slow down the engine
         Time.timeScale = 2.0f;
         // BallScript ballScript = GetComponent<BallScript>();
@@ -71,12 +66,12 @@ public class Manager : MonoBehaviour
         // that is, when the normalized time is less then 1
 
 
-        if (isFirstAnimationLoop)
+        if (currentLoop == 0)
         {
-            if (normalizedAnimationTime > 1)
+            if (normalizedAnimationTime >= 1)
             {
                 // we're no longer on the first animation loop
-                isFirstAnimationLoop = false;
+                currentLoop++;
                 // TODO: Close out last section?
             }
             else
@@ -130,8 +125,15 @@ public class Manager : MonoBehaviour
             // get current loop and compare to stored current loop
             // setup second (and onwards) loops
             int realCurrentLoop = Mathf.FloorToInt(normalizedAnimationTime);
-            if (realCurrentLoop > currentLoop)
+
+            if (realCurrentLoop + 1 > currentLoop)
             {
+                if (currentLoop == 1)
+                {
+                    // Create virtual ball
+                    ball = Instantiate(BallPrefab);
+                    ball.transform.position = rightHand.position;
+                }
                 currentStartTime = Time.time;
                 currentSection = sections[0];
                 currentSectionIndex = 0;
@@ -148,20 +150,30 @@ public class Manager : MonoBehaviour
                 currentStartTime = Time.time;
                 currentSectionIndex++;
                 currentSection = sections[currentSectionIndex];
-                // animate next section, if its an upward section
-                if (currentSection.isUpwardSection)
-                {
-                    AnimateSection(currentSectionIndex);
-                }
+                // animate next section
+
+
+                AnimateSection(currentSectionIndex);
+
             }
 
         }
 
     }
 
-    void AnimateSection(int section)
+    void AnimateSection(int sectionIndex)
     {
-        ball.transform.DOMoveY()
+        Section section = sections[sectionIndex];
+
+        if (section.isUpwardSection)
+        {
+            ball.transform.DOMoveY(section.endYPosition + .5f, section.duration);
+        }
+        else
+        {
+            ball.transform.DOMoveY(section.endYPosition, section.duration);
+        }
+
     }
     void UpdateRightHandPosition()
     {
