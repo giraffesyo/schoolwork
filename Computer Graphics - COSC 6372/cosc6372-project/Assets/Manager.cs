@@ -38,8 +38,8 @@ public class Manager : MonoBehaviour
         // Get current hand position
         UpdateRightHandPosition();
 
-        // slow down the engine
-        Time.timeScale = 2.0f;
+        // modify engine speed
+        Time.timeScale = 1.0f;
         // BallScript ballScript = GetComponent<BallScript>();
         // ballScript.Target = rightHand.transform;
         // ballScript.Projectile = ball.transform;
@@ -135,11 +135,13 @@ public class Manager : MonoBehaviour
                     ball.transform.position = rightHand.position;
                 }
                 currentStartTime = Time.time;
-                currentSection = sections[0];
                 currentSectionIndex = 0;
+                currentSection = sections[0];
                 currentLoop++;
                 // start animation for first section
                 AnimateSection(0);
+                // make it obvious that it stops here on first pass through current loop
+                return;
             }
 
             // get total current runtime of current section
