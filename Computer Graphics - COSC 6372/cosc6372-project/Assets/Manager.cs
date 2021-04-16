@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Manager : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class Manager : MonoBehaviour
     private bool isCurrentSectionUpwards;
     [SerializeField]
     private float currentStartTime;
+    [SerializeField]
+    private int currentSectionIndex;
+    [SerializeField]
+    private int currentLoop = 0;
+
 
     void Start()
     {
@@ -38,13 +44,15 @@ public class Manager : MonoBehaviour
         // Mark this as the first pass through the animation
         isFirstAnimationLoop = true;
         // slow down the engine
-        Time.timeScale = 1.0f;
-        BallScript ballScript = GetComponent<BallScript>();
-        ballScript.Target = rightHand.transform;
-        ballScript.Projectile = ball.transform;
-        StartCoroutine(ballScript.SimulateProjectile());
+        Time.timeScale = 2.0f;
+        // BallScript ballScript = GetComponent<BallScript>();
+        // ballScript.Target = rightHand.transform;
+        // ballScript.Projectile = ball.transform;
+        // StartCoroutine(ballScript.SimulateProjectile());
         AnimatorStateInfo animatorStateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
         normalizedAnimationTime = animatorStateInfo.normalizedTime;
+        currentSectionIndex = 0;
+        DOTween.Init();
 
     }
 
@@ -61,6 +69,7 @@ public class Manager : MonoBehaviour
         // loops the animation has already played
         // we only want to  add sections on first pass of animation,
         // that is, when the normalized time is less then 1
+
 
         if (isFirstAnimationLoop)
         {
@@ -118,9 +127,41 @@ public class Manager : MonoBehaviour
         {
             // TODO: animate virtual ball(s)
 
+            // get current loop and compare to stored current loop
+            // setup second (and onwards) loops
+            int realCurrentLoop = Mathf.FloorToInt(normalizedAnimationTime);
+            if (realCurrentLoop > currentLoop)
+            {
+                currentStartTime = Time.time;
+                currentSection = sections[0];
+                currentSectionIndex = 0;
+                currentLoop++;
+                // start animation for first section
+                AnimateSection(0);
+            }
+
+            // get total current runtime of current section
+            float currentRunningTime = Time.time - currentStartTime;
+            // update the current section we are on
+            if (currentSection.duration <= currentRunningTime)
+            {
+                currentStartTime = Time.time;
+                currentSectionIndex++;
+                currentSection = sections[currentSectionIndex];
+                // animate next section, if its an upward section
+                if (currentSection.isUpwardSection)
+                {
+                    AnimateSection(currentSectionIndex);
+                }
+            }
 
         }
 
+    }
+
+    void AnimateSection(int section)
+    {
+        ball.transform.DOMoveY()
     }
     void UpdateRightHandPosition()
     {
