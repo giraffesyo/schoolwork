@@ -51,6 +51,119 @@ public class Manager : MonoBehaviour
 
     }
 
+    // this function gets called every frame during the recording phase
+    private void RecordingPhase()
+    {
+        if (normalizedAnimationTime >= 1)
+        {
+            // we're no longer on the first animation loop
+            currentLoop++;
+            // Close out last section
+            // set the Y position to be equal to the current right hand y position
+            currentSection.endYPosition = RightHandYPosition;
+            // set if its an upwards or downards section
+            currentSection.isUpwardSection = isCurrentSectionUpwards;
+            // set current section's duration 
+            currentSection.duration = Time.time - currentStartTime;
+            // push the final section into the list
+            sections.Add(currentSection);
+            // null out current section for sanity
+            currentSection = null;
+
+            // do initial setup before going to FIRST animation loop, e.g. create ball, set it to the position of the hand
+            // Create virtual ball
+            ball = Instantiate(BallPrefab);
+            // set position of ball to hand position
+            ball.transform.position = rightHand.position;
+
+        }
+        else
+        {
+            // this part of the if statement/update loop happens when 
+            // the animation loop is definitely still going on
+            if (currentSection is null) // this is the beginning of a new section
+            {
+                // create new section, using starting position as the current right haand y position
+                currentSection = new Section(startYPosition: RightHandYPosition);
+                // set max and min positions to the right hand Y position
+                currentSectionMax = RightHandYPosition;
+                currentSectionMin = RightHandYPosition;
+                // set state time to current time
+                currentStartTime = Time.time;
+            }
+            else // we already have a current section, which means this isn't the beginning of a new section
+            {
+                // set new max and min
+                if (RightHandYPosition > currentSectionMax)
+                {
+                    // set this to be an upwards section
+                    isCurrentSectionUpwards = true;
+                    // set the current max to the right hand Y position
+                    currentSectionMax = RightHandYPosition;
+                }
+                else if (RightHandYPosition < currentSectionMin)
+                {
+                    // set this to be a downwards sections
+                    isCurrentSectionUpwards = false;
+                    // set the current min to the right hand Y position
+                    currentSectionMin = RightHandYPosition;
+                }
+
+                // start new section if the right hand has changed directions
+                if ((isCurrentSectionUpwards && RightHandYPosition < currentSectionMax) || (!isCurrentSectionUpwards && RightHandYPosition > currentSectionMin))
+                {
+                    // set remaining values in the section object
+                    currentSection.isUpwardSection = isCurrentSectionUpwards;
+                    // this is technically one frame late but it shouldn't really matter:
+                    currentSection.endYPosition = RightHandYPosition;
+                    currentSection.duration = Time.time - currentStartTime;
+                    // push the current section into the list
+                    sections.Add(currentSection);
+                    // set currentSection to null
+                    currentSection = null;
+                }
+
+            }
+
+        }
+    }
+
+    // this function gets called every frame during the animation phase
+    private void PlaybackPhase()
+    {
+        // get current loop and compare to stored current loop
+        // setup second (and onwards) loops
+        // real current loop can be obtained by flooring normalized animation time because the first digit of the normaalized animation time is the amount of times the animation has looped
+        // the fractioanl part represents the percentage of the way through the current loop
+        int realCurrentLoop = Mathf.FloorToInt(normalizedAnimationTime);
+        // current loop is a number we are creating and managing, where real current loop represents animation loops, so we can increment current loop but shouldnt modify real current loop directly.
+        // so, this if statement should happen at the beginning of every animation loop.
+        if (realCurrentLoop + 1 > currentLoop)
+        {
+            currentStartTime = Time.time;
+            currentSectionIndex = 0;
+            currentSection = sections[0];
+            currentLoop++;
+            // start animation for first section
+            AnimateSection(0);
+
+        }
+        else // this only happens while we're in a loop already
+        {
+            // get total current runtime of current section
+            float currentRunningTime = Time.time - currentStartTime;
+            // update the current section we are on
+            if (currentSection.duration <= currentRunningTime)
+            {
+                currentStartTime = Time.time;
+                currentSectionIndex++;
+                currentSection = sections[currentSectionIndex];
+                // animate next section
+                AnimateSection(currentSectionIndex);
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -66,116 +179,13 @@ public class Manager : MonoBehaviour
         // that is, when the normalized time is less then 1
 
 
-        if (currentLoop == 0)
+        if (currentLoop == 0) // we're in the recording phase
         {
-            if (normalizedAnimationTime >= 1)
-            {
-                // we're no longer on the first animation loop
-                currentLoop++;
-                // Close out last section
-                // set the Y position to be equal to the current right hand y position
-                currentSection.endYPosition = RightHandYPosition;
-                // set if its an upwards or downards section
-                currentSection.isUpwardSection = isCurrentSectionUpwards;
-                // set current section's duration 
-                currentSection.duration = Time.time - currentStartTime;
-                // push the final section into the list
-                sections.Add(currentSection);
-                // null out current section for sanity
-                currentSection = null;
-
-                // do initial setup before going to FIRST animation loop, e.g. create ball, set it to the position of the hand
-                // Create virtual ball
-                ball = Instantiate(BallPrefab);
-                // set position of ball to hand position
-                ball.transform.position = rightHand.position;
-
-            }
-            else
-            {
-                // this part of the if statement/update loop happens when 
-                // the animation loop is definitely still going on
-                if (currentSection is null) // this is the beginning of a new section
-                {
-                    // create new section, using starting position as the current right haand y position
-                    currentSection = new Section(startYPosition: RightHandYPosition);
-                    // set max and min positions to the right hand Y position
-                    currentSectionMax = RightHandYPosition;
-                    currentSectionMin = RightHandYPosition;
-                    // set state time to current time
-                    currentStartTime = Time.time;
-                }
-                else // we already have a current section, which means this isn't the beginning of a new section
-                {
-                    // set new max and min
-                    if (RightHandYPosition > currentSectionMax)
-                    {
-                        // set this to be an upwards section
-                        isCurrentSectionUpwards = true;
-                        // set the current max to the right hand Y position
-                        currentSectionMax = RightHandYPosition;
-                    }
-                    else if (RightHandYPosition < currentSectionMin)
-                    {
-                        // set this to be a downwards sections
-                        isCurrentSectionUpwards = false;
-                        // set the current min to the right hand Y position
-                        currentSectionMin = RightHandYPosition;
-                    }
-
-                    // start new section if the right hand has changed directions
-                    if ((isCurrentSectionUpwards && RightHandYPosition < currentSectionMax) || (!isCurrentSectionUpwards && RightHandYPosition > currentSectionMin))
-                    {
-                        // set remaining values in the section object
-                        currentSection.isUpwardSection = isCurrentSectionUpwards;
-                        // this is technically one frame late but it shouldn't really matter:
-                        currentSection.endYPosition = RightHandYPosition;
-                        currentSection.duration = Time.time - currentStartTime;
-                        // push the current section into the list
-                        sections.Add(currentSection);
-                        // set currentSection to null
-                        currentSection = null;
-                    }
-
-                }
-
-            }
+            RecordingPhase();
         }
-        else
+        else // we're in the animation looping phase, not the recording phase
         {
-            // get current loop and compare to stored current loop
-            // setup second (and onwards) loops
-            // real current loop can be obtained by flooring normalized animation time because the first digit of the normaalized animation time is the amount of times the animation has looped
-            // the fractioanl part represents the percentage of the way through the current loop
-            int realCurrentLoop = Mathf.FloorToInt(normalizedAnimationTime);
-            // current loop is a number we are creating and managing, where real current loop represents animation loops, so we can increment current loop but shouldnt modify real current loop directly.
-            if (realCurrentLoop + 1 > currentLoop)
-            {
-                currentStartTime = Time.time;
-                currentSectionIndex = 0;
-                currentSection = sections[0];
-                currentLoop++;
-                // start animation for first section
-                AnimateSection(0);
-                // make it obvious that it stops here on first pass through current loop
-                return;
-            }
-
-            // get total current runtime of current section
-            float currentRunningTime = Time.time - currentStartTime;
-            // update the current section we are on
-            if (currentSection.duration <= currentRunningTime)
-            {
-                currentStartTime = Time.time;
-                currentSectionIndex++;
-                currentSection = sections[currentSectionIndex];
-                // animate next section
-
-
-                AnimateSection(currentSectionIndex);
-
-            }
-
+            PlaybackPhase();
         }
 
     }
