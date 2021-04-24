@@ -72,31 +72,54 @@ public class Manager : MonoBehaviour
             {
                 // we're no longer on the first animation loop
                 currentLoop++;
-                // TODO: Close out last section?
+                // Close out last section
+                // set the Y position to be equal to the current right hand y position
+                currentSection.endYPosition = RightHandYPosition;
+                // set if its an upwards or downards section
+                currentSection.isUpwardSection = isCurrentSectionUpwards;
+                // set current section's duration 
+                currentSection.duration = Time.time - currentStartTime;
+                // push the final section into the list
+                sections.Add(currentSection);
+                // null out current section for sanity
+                currentSection = null;
+
+                // do initial setup before going to FIRST animation loop, e.g. create ball, set it to the position of the hand
+                // Create virtual ball
+                ball = Instantiate(BallPrefab);
+                // set position of ball to hand position
+                ball.transform.position = rightHand.position;
+
             }
             else
             {
                 // this part of the if statement/update loop happens when 
                 // the animation loop is definitely still going on
-                if (currentSection is null)
+                if (currentSection is null) // this is the beginning of a new section
                 {
-                    // create new section
+                    // create new section, using starting position as the current right haand y position
                     currentSection = new Section(startYPosition: RightHandYPosition);
+                    // set max and min positions to the right hand Y position
                     currentSectionMax = RightHandYPosition;
                     currentSectionMin = RightHandYPosition;
+                    // set state time to current time
                     currentStartTime = Time.time;
                 }
-                else
+                else // we already have a current section, which means this isn't the beginning of a new section
                 {
                     // set new max and min
                     if (RightHandYPosition > currentSectionMax)
                     {
+                        // set this to be an upwards section
                         isCurrentSectionUpwards = true;
+                        // set the current max to the right hand Y position
                         currentSectionMax = RightHandYPosition;
                     }
                     else if (RightHandYPosition < currentSectionMin)
                     {
+                        // set this to be a downwards sections
                         isCurrentSectionUpwards = false;
+                        // set the current min to the right hand Y position
                         currentSectionMin = RightHandYPosition;
                     }
 
@@ -120,20 +143,14 @@ public class Manager : MonoBehaviour
         }
         else
         {
-            // TODO: animate virtual ball(s)
-
             // get current loop and compare to stored current loop
             // setup second (and onwards) loops
+            // real current loop can be obtained by flooring normalized animation time because the first digit of the normaalized animation time is the amount of times the animation has looped
+            // the fractioanl part represents the percentage of the way through the current loop
             int realCurrentLoop = Mathf.FloorToInt(normalizedAnimationTime);
-
+            // current loop is a number we are creating and managing, where real current loop represents animation loops, so we can increment current loop but shouldnt modify real current loop directly.
             if (realCurrentLoop + 1 > currentLoop)
             {
-                if (currentLoop == 1)
-                {
-                    // Create virtual ball
-                    ball = Instantiate(BallPrefab);
-                    ball.transform.position = rightHand.position;
-                }
                 currentStartTime = Time.time;
                 currentSectionIndex = 0;
                 currentSection = sections[0];
