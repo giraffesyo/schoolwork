@@ -7,9 +7,9 @@ const lambda = !!process.env.LAMBDA_TASK_ROOT;
 
 const AWS = require('aws-sdk');
 AWS.config.update({
-    region: 'us-east-1',
-    accessKeyId: 'REDACTED_AWS_ACCESS_KEY_ID',
-    secretAccessKey: 'REDACTED_AWS_SECRET_ACCESS_KEY'
+    region: '',
+    accessKeyId: '',
+    secretAccessKey: ''
 });
 
 let dynamodb = new AWS.DynamoDB();
