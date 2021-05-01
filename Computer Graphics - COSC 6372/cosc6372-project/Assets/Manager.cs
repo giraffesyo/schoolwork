@@ -34,6 +34,9 @@ public class Manager : MonoBehaviour
     // This will be populated in the editor
     public TextMeshProUGUI CurrentStateText;
     public TextMeshProUGUI NumberOfSectionsText;
+    public TextMeshProUGUI CurrentSectionText;
+    public TextMeshProUGUI CurrentSectionTypeText;
+    public TextMeshProUGUI CurrentSectionTimeText;
 
 
     void Start()
@@ -104,7 +107,7 @@ public class Manager : MonoBehaviour
             if (currentSection is null) // this is the beginning of a new section
             {
                 // create new section, using starting position as the current right haand y position
-                currentSection = new Section(startYPosition: RightHandYPosition);
+                currentSection = new Section() { startYPosition = RightHandYPosition };
                 // set max and min positions to the right hand Y position
                 currentSectionMax = RightHandYPosition;
                 currentSectionMin = RightHandYPosition;
@@ -113,6 +116,7 @@ public class Manager : MonoBehaviour
             }
             else // we already have a current section, which means this isn't the beginning of a new section
             {
+
                 // set new max and min
                 if (RightHandYPosition > currentSectionMax)
                 {
@@ -153,6 +157,9 @@ public class Manager : MonoBehaviour
         currentStartTime = Time.time;
         currentSectionIndex = index;
         currentSection = sections[index];
+        CurrentSectionText.text = $"Current Section: {index}";
+        CurrentSectionTypeText.text = $"Section Type: {(currentSection.isUpwardSection ? "up" : "down")}";
+
     }
     // this function gets called every frame during the animation phase
     private void PlaybackPhase()
@@ -173,6 +180,9 @@ public class Manager : MonoBehaviour
         {
             // get total current runtime of current section
             float currentRunningTime = Time.time - currentStartTime;
+            // update current time on this section  
+            CurrentSectionTimeText.text = $"Section Time: {(int)(currentRunningTime % 1 * 1000)}/{(int)(currentSection.duration % 1 * 1000)} ms";
+
             // update the current section we are on
             if (currentSection.duration <= currentRunningTime)
             {
@@ -210,7 +220,7 @@ public class Manager : MonoBehaviour
         }
         else // we're in the animation looping phase, not the recording phase
         {
-            UpdateCurrentStateText($"playback loop {currentLoop - 1}");
+            UpdateCurrentStateText($"playback loop {currentLoop - 1} ({(int)(normalizedAnimationTime % 1 * 100)}%)");
             PlaybackPhase();
         }
 
@@ -243,8 +253,5 @@ public class Section
     public float duration;
     public bool isUpwardSection;
 
-    public Section(float startYPosition)
-    {
-        this.startYPosition = startYPosition;
-    }
+
 }
