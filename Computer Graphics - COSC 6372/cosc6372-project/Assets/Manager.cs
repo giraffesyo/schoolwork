@@ -33,6 +33,7 @@ public class Manager : MonoBehaviour
 
     // This will be populated in the editor
     public TextMeshProUGUI CurrentStateText;
+    public TextMeshProUGUI NumberOfSectionsText;
 
 
     void Start()
@@ -62,6 +63,14 @@ public class Manager : MonoBehaviour
         CurrentStateText.text = "Current State: " + newState;
     }
 
+
+    private void AddSection(Section newSection)
+    {
+        sections.Add(newSection);
+        NumberOfSectionsText.text = "# Of Sections: " + sections.Count;
+    }
+
+
     // this function gets called every frame during the recording phase
     private void RecordingPhase()
     {
@@ -77,7 +86,7 @@ public class Manager : MonoBehaviour
             // set current section's duration 
             currentSection.duration = Time.time - currentStartTime;
             // push the final section into the list
-            sections.Add(currentSection);
+            AddSection(currentSection);
             // null out current section for sanity
             currentSection = null;
 
@@ -129,7 +138,7 @@ public class Manager : MonoBehaviour
                     currentSection.endYPosition = RightHandYPosition;
                     currentSection.duration = Time.time - currentStartTime;
                     // push the current section into the list
-                    sections.Add(currentSection);
+                    AddSection(currentSection);
                     // set currentSection to null
                     currentSection = null;
                 }
@@ -201,7 +210,7 @@ public class Manager : MonoBehaviour
         }
         else // we're in the animation looping phase, not the recording phase
         {
-            UpdateCurrentStateText($"playback {currentLoop - 1}");
+            UpdateCurrentStateText($"playback loop {currentLoop - 1}");
             PlaybackPhase();
         }
 
