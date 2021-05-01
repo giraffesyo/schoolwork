@@ -128,6 +128,12 @@ public class Manager : MonoBehaviour
         }
     }
 
+    private void SetCurrentSection(int index)
+    {
+        currentStartTime = Time.time;
+        currentSectionIndex = index;
+        currentSection = sections[index];
+    }
     // this function gets called every frame during the animation phase
     private void PlaybackPhase()
     {
@@ -140,13 +146,8 @@ public class Manager : MonoBehaviour
         // so, this if statement should happen at the beginning of every animation loop.
         if (realCurrentLoop + 1 > currentLoop)
         {
-            currentStartTime = Time.time;
-            currentSectionIndex = 0;
-            currentSection = sections[0];
+            SetCurrentSection(0);
             currentLoop++;
-            // start animation for first section
-            AnimateSection(0);
-
         }
         else // this only happens while we're in a loop already
         {
@@ -155,11 +156,14 @@ public class Manager : MonoBehaviour
             // update the current section we are on
             if (currentSection.duration <= currentRunningTime)
             {
-                currentStartTime = Time.time;
-                currentSectionIndex++;
-                currentSection = sections[currentSectionIndex];
+                SetCurrentSection(currentSectionIndex);
                 // animate next section
+                // if (currentSectionIndex > sections.Count - 2)
+                // {
+                //     Debug.Log("Overflow");
+                // }
                 AnimateSection(currentSectionIndex);
+                currentSectionIndex++;
             }
         }
     }
