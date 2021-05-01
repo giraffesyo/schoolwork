@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class Manager : MonoBehaviour
 {
@@ -30,6 +31,9 @@ public class Manager : MonoBehaviour
     [SerializeField]
     private int currentLoop = 0;
 
+    // This will be populated in the editor
+    public TextMeshProUGUI CurrentStateText;
+
 
     void Start()
     {
@@ -49,6 +53,13 @@ public class Manager : MonoBehaviour
         currentSectionIndex = 0;
         DOTween.Init();
 
+
+
+    }
+
+    private void UpdateCurrentStateText(string newState)
+    {
+        CurrentStateText.text = "Current State: " + newState;
     }
 
     // this function gets called every frame during the recording phase
@@ -185,10 +196,12 @@ public class Manager : MonoBehaviour
 
         if (currentLoop == 0) // we're in the recording phase
         {
+            UpdateCurrentStateText("recording");
             RecordingPhase();
         }
         else // we're in the animation looping phase, not the recording phase
         {
+            UpdateCurrentStateText($"playback {currentLoop - 1}");
             PlaybackPhase();
         }
 

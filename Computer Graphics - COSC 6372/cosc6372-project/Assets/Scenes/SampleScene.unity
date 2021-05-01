@@ -276,6 +276,7 @@ MonoBehaviour:
   currentStartTime: 0
   currentSectionIndex: 0
   currentLoop: 0
+  CurrentStateText: {fileID: 908140935}
 --- !u!4 &429722020
 Transform:
   m_ObjectHideFlags: 0
