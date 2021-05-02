@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.UI;
+
 
 public class Manager : MonoBehaviour
 {
+
+    public enum ManagerStates
+    {
+        recording,
+        idle,
+        playback
+    }
+
+    private ManagerStates ManagerState;
+
     // Start is called before the first frame update
     public Transform rightHand;
-    [SerializeField]
-    private float RightHandYPosition;
     public GameObject BallPrefab;
     private GameObject ball;
     [SerializeField]
@@ -38,27 +48,49 @@ public class Manager : MonoBehaviour
     public TextMeshProUGUI CurrentSectionTypeText;
     public TextMeshProUGUI CurrentSectionTimeText;
 
+    public Button RecordingButton;
+    public Button PlaybackButton;
+
+
+
 
     void Start()
     {
-        // initialize list of sections
-        sections = new List<Section>();
-        // Get current hand position
-        UpdateRightHandPosition();
 
         // modify engine speed
         Time.timeScale = 1.0f;
-        // BallScript ballScript = GetComponent<BallScript>();
-        // ballScript.Target = rightHand.transform;
-        // ballScript.Projectile = ball.transform;
-        // StartCoroutine(ballScript.SimulateProjectile());
+
+
+        DOTween.Init();
+        ManagerState = ManagerStates.idle;
+        RecordingButton.onClick.AddListener(StartRecordingClicked);
+        PlaybackButton.onClick.AddListener(StartPlaybackClicked);
+
+    }
+
+    private void ToggleAnimation()
+    {
+        modelAnimator.SetTrigger("Animating");
+    }
+
+    private void StartRecordingClicked()
+    {
+        // initialize list of sections
+        sections = new List<Section>();
         AnimatorStateInfo animatorStateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
         normalizedAnimationTime = animatorStateInfo.normalizedTime;
         currentSectionIndex = 0;
-        DOTween.Init();
-
-
-
+        // Start the animation
+        ToggleAnimation();
+        // Set current manager state to recording so state machine progresses on
+        ManagerState = ManagerStates.recording;
+        // Get a reference to the button text component in
+        TextMeshProUGUI ButtonText = RecordingButton.GetComponentInChildren<TextMeshProUGUI>();
+        // Change button text to recording
+        ButtonText.text = "Recording...";
+        // disable the buttons (leaving it on screen)
+        RecordingButton.interactable = false;
+        PlaybackButton.interactable = false;
     }
 
     private void UpdateCurrentStateText(string newState)
@@ -73,32 +105,53 @@ public class Manager : MonoBehaviour
         NumberOfSectionsText.text = "# Of Sections: " + sections.Count;
     }
 
+    private void StartPlaybackClicked()
+    {
+        TextMeshProUGUI buttonText = PlaybackButton.GetComponentInChildren<TextMeshProUGUI>();
+        buttonText.text = "playing...";
+        RecordingButton.interactable = false;
+        PlaybackButton.interactable = false;
+        // null out current section for sanity
+        currentSection = null;
+        // do initial setup before going to FIRST animation loop, e.g. create ball, set it to the position of the hand
+        // Create virtual ball
+        ball = Instantiate(BallPrefab);
+        // set position of ball to hand position on first frame 
+        ball.transform.position = rightHand.position;
+        ManagerState = ManagerStates.playback;
+        SetCurrentSection(0);
+        ToggleAnimation();
+    }
 
     // this function gets called every frame during the recording phase
     private void RecordingPhase()
     {
+        // don't start recording until the animator is in the correct animation
+        var transitionInfo = modelAnimator.GetAnimatorTransitionInfo(0);
+        if (transitionInfo.IsName("New State -> Base Stack"))
+        {
+            Debug.Log("Still transitioning");
+        }
         if (normalizedAnimationTime >= 1)
         {
+            ToggleAnimation();
             // we're no longer on the first animation loop
             currentLoop++;
             // Close out last section
             // set the Y position to be equal to the current right hand y position
-            currentSection.endYPosition = RightHandYPosition;
+            currentSection.endPosition = rightHand.position;
             // set if its an upwards or downards section
             currentSection.isUpwardSection = isCurrentSectionUpwards;
             // set current section's duration 
             currentSection.duration = Time.time - currentStartTime;
             // push the final section into the list
             AddSection(currentSection);
-            // null out current section for sanity
-            currentSection = null;
 
-            // do initial setup before going to FIRST animation loop, e.g. create ball, set it to the position of the hand
-            // Create virtual ball
-            ball = Instantiate(BallPrefab);
-            // set position of ball to hand position
-            ball.transform.position = rightHand.position;
-
+            // Switch back to idle state, enable both buttons now
+            RecordingButton.GetComponentInChildren<TextMeshProUGUI>().text = "Start Recording";
+            ManagerState = ManagerStates.idle;
+            RecordingButton.interactable = true;
+            PlaybackButton.interactable = true;
         }
         else
         {
@@ -107,10 +160,10 @@ public class Manager : MonoBehaviour
             if (currentSection is null) // this is the beginning of a new section
             {
                 // create new section, using starting position as the current right haand y position
-                currentSection = new Section() { startYPosition = RightHandYPosition };
+                currentSection = new Section() { startPosition = rightHand.position };
                 // set max and min positions to the right hand Y position
-                currentSectionMax = RightHandYPosition;
-                currentSectionMin = RightHandYPosition;
+                currentSectionMax = rightHand.position.y;
+                currentSectionMin = rightHand.position.y;
                 // set state time to current time
                 currentStartTime = Time.time;
             }
@@ -118,28 +171,28 @@ public class Manager : MonoBehaviour
             {
 
                 // set new max and min
-                if (RightHandYPosition > currentSectionMax)
+                if (rightHand.position.y > currentSectionMax)
                 {
                     // set this to be an upwards section
                     isCurrentSectionUpwards = true;
                     // set the current max to the right hand Y position
-                    currentSectionMax = RightHandYPosition;
+                    currentSectionMax = rightHand.position.y;
                 }
-                else if (RightHandYPosition < currentSectionMin)
+                else if (rightHand.position.y < currentSectionMin)
                 {
                     // set this to be a downwards sections
                     isCurrentSectionUpwards = false;
                     // set the current min to the right hand Y position
-                    currentSectionMin = RightHandYPosition;
+                    currentSectionMin = rightHand.position.y;
                 }
 
                 // start new section if the right hand has changed directions
-                if ((isCurrentSectionUpwards && RightHandYPosition < currentSectionMax) || (!isCurrentSectionUpwards && RightHandYPosition > currentSectionMin))
+                if ((isCurrentSectionUpwards && rightHand.position.y < currentSectionMax) || (!isCurrentSectionUpwards && rightHand.position.y > currentSectionMin))
                 {
                     // set remaining values in the section object
                     currentSection.isUpwardSection = isCurrentSectionUpwards;
                     // this is technically one frame late but it shouldn't really matter:
-                    currentSection.endYPosition = RightHandYPosition;
+                    currentSection.endPosition = rightHand.position;
                     currentSection.duration = Time.time - currentStartTime;
                     // push the current section into the list
                     AddSection(currentSection);
@@ -168,12 +221,26 @@ public class Manager : MonoBehaviour
         // setup second (and onwards) loops
         // real current loop can be obtained by flooring normalized animation time because the first digit of the normaalized animation time is the amount of times the animation has looped
         // the fractioanl part represents the percentage of the way through the current loop
-        int realCurrentLoop = Mathf.FloorToInt(normalizedAnimationTime);
+        int timesPlayed = Mathf.FloorToInt(normalizedAnimationTime);
         // current loop is a number we are creating and managing, where real current loop represents animation loops, so we can increment current loop but shouldnt modify real current loop directly.
         // so, this if statement should happen at the beginning of every animation loop.
-        if (realCurrentLoop + 1 > currentLoop)
+        if (timesPlayed >= 1)
         {
+            ManagerState = ManagerStates.idle;
+            // reset current section to 0 
             SetCurrentSection(0);
+            // reset section type text and section time text
+            CurrentSectionTypeText.text = "Section Type: ";
+            CurrentSectionTimeText.text = "Section Time: ";
+            // Destroy the ball
+            Destroy(ball);
+            // exit the playback phase
+            ToggleAnimation();
+            PlaybackButton.interactable = true;
+            RecordingButton.interactable = true;
+            PlaybackButton.GetComponentInChildren<TextMeshProUGUI>().text = "Start Playback";
+
+
             currentLoop++;
         }
         else // this only happens while we're in a loop already
@@ -202,8 +269,6 @@ public class Manager : MonoBehaviour
     void Update()
     {
 
-        // Get current hand position
-        UpdateRightHandPosition();
         // Get animation normalized time
         AnimatorStateInfo animatorStateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
         normalizedAnimationTime = animatorStateInfo.normalizedTime;
@@ -212,18 +277,27 @@ public class Manager : MonoBehaviour
         // we only want to  add sections on first pass of animation,
         // that is, when the normalized time is less then 1
 
-
-        if (currentLoop == 0) // we're in the recording phase
+        // state machine
+        switch (ManagerState)
         {
-            UpdateCurrentStateText("recording");
-            RecordingPhase();
+            case ManagerStates.idle:
+                {
+                    UpdateCurrentStateText($"idle");
+                    return;
+                }
+            case ManagerStates.playback:
+                {
+                    UpdateCurrentStateText($"playback loop {currentLoop - 1} ({(int)(normalizedAnimationTime % 1 * 100)}%)");
+                    PlaybackPhase();
+                    return;
+                }
+            case ManagerStates.recording:
+                {
+                    UpdateCurrentStateText("recording");
+                    RecordingPhase();
+                    return;
+                }
         }
-        else // we're in the animation looping phase, not the recording phase
-        {
-            UpdateCurrentStateText($"playback loop {currentLoop - 1} ({(int)(normalizedAnimationTime % 1 * 100)}%)");
-            PlaybackPhase();
-        }
-
     }
 
     void AnimateSection(int sectionIndex)
@@ -232,24 +306,25 @@ public class Manager : MonoBehaviour
 
         if (section.isUpwardSection)
         {
-            ball.transform.DOMoveY(section.endYPosition + .5f, section.duration);
+            Vector3 newPos = new Vector3(section.endPosition.x, section.endPosition.y + .5f, section.endPosition.z);
+            DOTween.To(() => ball.transform.position, v => ball.transform.position = v, newPos, section.duration);
+            // t.DOMove(newPos, section.duration);
+            // ball.transform.DOMove(newPos, section.duration);
         }
         else
         {
-            ball.transform.DOMoveY(section.endYPosition, section.duration);
+            Vector3 newPos = new Vector3(section.endPosition.x, section.endPosition.y, section.endPosition.z);
+            DOTween.To(() => ball.transform.position, v => ball.transform.position = v, newPos, section.duration);
+            // ball.transform.DOMove(newPos, section.duration);
         }
 
-    }
-    void UpdateRightHandPosition()
-    {
-        RightHandYPosition = rightHand.position.y;
     }
 }
 
 public class Section
 {
-    public float startYPosition;
-    public float endYPosition;
+    public Vector3 startPosition;
+    public Vector3 endPosition;
     public float duration;
     public bool isUpwardSection;
 
