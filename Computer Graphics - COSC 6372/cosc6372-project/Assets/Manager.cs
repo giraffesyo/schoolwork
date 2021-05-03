@@ -50,7 +50,8 @@ public class Manager : MonoBehaviour
 
     public Button RecordingButton;
     public Button PlaybackButton;
-
+    [SerializeField]
+    private bool hasFinishedRecording;
 
 
 
@@ -65,7 +66,7 @@ public class Manager : MonoBehaviour
         ManagerState = ManagerStates.idle;
         RecordingButton.onClick.AddListener(StartRecordingClicked);
         PlaybackButton.onClick.AddListener(StartPlaybackClicked);
-
+        hasFinishedRecording = false;
     }
 
     private void ToggleAnimation()
@@ -75,6 +76,7 @@ public class Manager : MonoBehaviour
 
     private void StartRecordingClicked()
     {
+        hasFinishedRecording = false;
         // initialize list of sections
         sections = new List<Section>();
         AnimatorStateInfo animatorStateInfo = modelAnimator.GetCurrentAnimatorStateInfo(0);
@@ -107,6 +109,8 @@ public class Manager : MonoBehaviour
 
     private void StartPlaybackClicked()
     {
+        // set state to playback
+        ManagerState = ManagerStates.playback;
         TextMeshProUGUI buttonText = PlaybackButton.GetComponentInChildren<TextMeshProUGUI>();
         buttonText.text = "playing...";
         RecordingButton.interactable = false;
@@ -118,7 +122,6 @@ public class Manager : MonoBehaviour
         ball = Instantiate(BallPrefab);
         // set position of ball to hand position on first frame 
         ball.transform.position = rightHand.position;
-        ManagerState = ManagerStates.playback;
         SetCurrentSection(0);
         ToggleAnimation();
     }
@@ -126,26 +129,26 @@ public class Manager : MonoBehaviour
     // this function gets called every frame during the recording phase
     private void RecordingPhase()
     {
-        // don't start recording until the animator is in the correct animation
-        var transitionInfo = modelAnimator.GetAnimatorTransitionInfo(0);
-        if (transitionInfo.IsName("New State -> Base Stack"))
+        if (normalizedAnimationTime >= 1 && !hasFinishedRecording)
         {
-            Debug.Log("Still transitioning");
-        }
-        if (normalizedAnimationTime >= 1)
-        {
+            // we have this so we make sure we never come in here twice
+            hasFinishedRecording = true;
             ToggleAnimation();
             // we're no longer on the first animation loop
             currentLoop++;
             // Close out last section
-            // set the Y position to be equal to the current right hand y position
-            currentSection.endPosition = rightHand.position;
-            // set if its an upwards or downards section
-            currentSection.isUpwardSection = isCurrentSectionUpwards;
-            // set current section's duration 
-            currentSection.duration = Time.time - currentStartTime;
-            // push the final section into the list
-            AddSection(currentSection);
+            if (!(currentSection is null))
+            {
+                // set the Y position to be equal to the current right hand y position
+                currentSection.endPosition = rightHand.position;
+                // set if its an upwards or downards section
+                currentSection.isUpwardSection = isCurrentSectionUpwards;
+                // set current section's duration 
+                currentSection.duration = Time.time - currentStartTime;
+                // push the final section into the list
+                AddSection(currentSection);
+
+            }
 
             // Switch back to idle state, enable both buttons now
             RecordingButton.GetComponentInChildren<TextMeshProUGUI>().text = "Start Recording";
@@ -205,14 +208,21 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void SetCurrentSection(int index)
+    // returns true if should animate (e.g. this was successful )
+    private bool SetCurrentSection(int index)
     {
-        currentStartTime = Time.time;
-        currentSectionIndex = index;
-        currentSection = sections[index];
-        CurrentSectionText.text = $"Current Section: {index}";
-        CurrentSectionTypeText.text = $"Section Type: {(currentSection.isUpwardSection ? "up" : "down")}";
-
+        bool shouldAnimate = false;
+        // Only update the currentSection if the index is in range
+        if (sections.Count > index)
+        {
+            currentStartTime = Time.time;
+            currentSectionIndex = index;
+            shouldAnimate = true;
+            currentSection = sections[index];
+            CurrentSectionText.text = $"Current Section: {index}";
+            CurrentSectionTypeText.text = $"Section Type: {(currentSection.isUpwardSection ? "up" : "down")}";
+        }
+        return shouldAnimate;
     }
     // this function gets called every frame during the animation phase
     private void PlaybackPhase()
@@ -253,14 +263,17 @@ public class Manager : MonoBehaviour
             // update the current section we are on
             if (currentSection.duration <= currentRunningTime)
             {
-                SetCurrentSection(currentSectionIndex);
+                bool shouldAnimate = SetCurrentSection(currentSectionIndex + 1);
                 // animate next section
                 // if (currentSectionIndex > sections.Count - 2)
                 // {
                 //     Debug.Log("Overflow");
                 // }
-                AnimateSection(currentSectionIndex);
-                currentSectionIndex++;
+                if (shouldAnimate)
+                {
+                    AnimateSection(currentSectionIndex);
+                }
+
             }
         }
     }
