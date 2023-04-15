@@ -22,9 +22,9 @@ The primary challenges in this project include:
 - Ensuring the integrity and functionality of the application are maintained throughout the deployment and evaluation process.
 - The motivation behind this project is to explore the potential benefits and trade-offs of various deployment strategies, enabling better-informed decisions on application deployment to optimize cost and performance.
 
-## Timeline and milestones (e.g., task for each week)
+## Milestones
 
-1. Research and select an appropriate monolithic application for deployment.
+1. Create an example application for deployment.
 2. Deep dive into containerization (Docker), Google Cloud Functions, and Google Kubernetes Engine.
 3. Decompose the chosen application into microservices for deployment on Google Cloud Functions.
 4. Prepare the application for containerization and deployment on VMs and GKE.
