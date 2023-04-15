@@ -1,2 +1,3 @@
 *.auto.pkrvars.hcl
 build.zip
+credentials.json
