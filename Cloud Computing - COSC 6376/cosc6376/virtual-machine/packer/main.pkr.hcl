@@ -13,6 +13,7 @@ source "googlecompute" "google" {
   source_image_project_id = ["rocky-linux-cloud"]
   source_image_family = "rocky-linux-9-optimized-gcp"
   ssh_username = "packer"
+  temporary_key_pair_type = "ed25519"
   image_name = "nodejs-app-image"
   image_family = "nodejs-app"
   zone = var.gcp_zone
@@ -40,12 +41,13 @@ build {
   provisioner "shell" {
     inline = [
       "sudo dnf install -y epel-release",
-      "sudo dnf install -y curl",
+      "sudo dnf install -y curl unzip",
       "curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -",
       "sudo dnf install -y nodejs",
       "sudo unzip /tmp/build.zip -d /tmp/app",
       "sudo mkdir /opt/nodejs-app",
       "sudo mv /tmp/app/* /opt/nodejs-app/",
+      "npm install -g yarn",
       "cd /opt/nodejs-app && sudo yarn",
       "sudo mv /tmp/nodejs-app.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
