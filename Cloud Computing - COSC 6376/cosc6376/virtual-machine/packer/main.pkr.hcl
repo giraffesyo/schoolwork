@@ -47,7 +47,7 @@ build {
       "sudo unzip /tmp/build.zip -d /tmp/app",
       "sudo mkdir /opt/nodejs-app",
       "sudo mv /tmp/app/* /opt/nodejs-app/",
-      "npm install -g yarn",
+      "sudo npm install -g yarn",
       "cd /opt/nodejs-app && sudo yarn",
       "sudo mv /tmp/nodejs-app.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
