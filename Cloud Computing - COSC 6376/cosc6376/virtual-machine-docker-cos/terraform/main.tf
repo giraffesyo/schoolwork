@@ -4,34 +4,8 @@ module "gce-container" {
 
 
   container = {
-    image = "gcr.io/google-samples/hello-app:1.0"
-
-    env = [
-      {
-        name  = "TEST_VAR"
-        value = "Hello World!"
-      },
-    ]
-
-    volumeMounts = [
-      {
-        mountPath = "/cache"
-        name      = "tempfs-0"
-        readOnly  = false
-      },
-    ]
+    image = var.container_image
   }
-
-  volumes = [
-    {
-      name = "tempfs-0"
-
-      emptyDir = {
-        medium = "Memory"
-      }
-    },
-  ]
-
   restart_policy = "Always"
 }
 

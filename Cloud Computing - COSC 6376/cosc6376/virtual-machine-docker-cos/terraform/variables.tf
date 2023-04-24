@@ -18,3 +18,7 @@ variable "instance_name" {
   default     = "nodejs-app-cos"
 }
 
+variable "container_image" {
+  description = "The container image to deploy"
+  default     = "giraffesyo/cosc6376:latest"
+}
