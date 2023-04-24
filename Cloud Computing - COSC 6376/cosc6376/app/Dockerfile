@@ -15,4 +15,5 @@ WORKDIR /app
 COPY --from=builder /app/build ./build
 COPY --from=production_modules /app/node_modules ./node_modules
 CMD ["node", "build/index.js"]
+ENV PORT 80
 EXPOSE 80
