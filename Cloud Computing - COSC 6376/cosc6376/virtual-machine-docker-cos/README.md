@@ -17,6 +17,7 @@ You will also need the following:
    2. Login to dockerhub from the command line `docker login`
    3. Build the node.js docker image `./buildimage.sh` from the `app` directory,
    4. Push the image to dockerhub, note that you can do this with `docker push <imagename>`
+   5. Note that if you just want to test the image locally you can do so with `docker run -p 3000:3000 --rm -it giraffesyo/cosc6376` and then try to curl port 3000, e.g. `curl http://localhost:3000`
 3. Else, I have the image already built and pushed at giraffesyo/cosc6376, that is the default image name in the terraform config
 4. Run `gcloud auth login` to authenticate with Google Cloud
 5. Enable the following Google Cloud APIs (ensure you have your project set for gcloud, e.g. `gcloud config set project <project-id>`)
