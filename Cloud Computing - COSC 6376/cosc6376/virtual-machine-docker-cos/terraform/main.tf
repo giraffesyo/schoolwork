@@ -61,6 +61,7 @@ resource "google_compute_instance" "vm" {
     google-logging-enabled    = "true"
     google-monitoring-enabled = "true"
   }
+  tags = ["http-server", "https-server"]
 
   labels = {
     container-vm = module.gce-container.vm_container_label
