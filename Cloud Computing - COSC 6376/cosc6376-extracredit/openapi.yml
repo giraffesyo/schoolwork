@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  title: minions
+  description: An API to summon minions and retrieve minion information
+  version: 1.0.0
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /summon:
+    post:
+      x-google-backend:
+        address: https://us-central1-cosc-6376-383820.cloudfunctions.net/minions/summon
+      summary: Summon a minion
+      operationId: summonMinion
+      description: Summon a minion from the available minions in the Cloud Spanner database
+      responses:
+        200:
+          description: Successfully summoned a minion
+          schema:
+            type: object
+            properties:
+              minion_id:
+                type: string
+                description: The ID of the summoned minion
+              minion_name:
+                type: string
+                description: The name of the summoned minion
+              minion_email:
+                type: string
+                description: The email of the summoned minion
+        404:
+          description: No minions available
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+        500:
+          description: Error querying Cloud Spanner
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+  /:
+    get:
+      x-google-backend:
+        address: https://us-central1-cosc-6376-383820.cloudfunctions.net/minions
+      summary: Get all minions
+      operationId: getMinions
+      description: Retrieve a list of all minions from the Cloud Spanner database
+      responses:
+        200:
+          description: Successfully retrieved minions
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                minion_id:
+                  type: string
+                  description: The ID of the minion
+                minion_name:
+                  type: string
+                  description: The name of the minion
+                minion_email:
+                  type: string
+                  description: The email of the minion
+        500:
+          description: Error querying Cloud Spanner
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+  /reset:
+    post:
+      x-google-backend:
+        address: https://us-central1-cosc-6376-383820.cloudfunctions.net/minions/reset
+      summary: Reset minions
+      operationId: resetMinions
+      description: Reset minion state and return a status message
+      responses:
+        200:
+          description: Successfully reset minions
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                description: Indicates if an error occurred during the reset operation
+              message:
+                type: string
+                description: A status message describing the result of the reset operation
+        500:
+          description: Error resetting minions
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                description: Indicates if an error occurred during the reset operation
+              message:
+                type: string
+                description: A status message describing the error
