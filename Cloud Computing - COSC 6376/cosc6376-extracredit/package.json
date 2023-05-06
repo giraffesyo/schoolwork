@@ -1,0 +1,8 @@
+{
+  "name": "minion-summon",
+  "version": "1.0.0",
+  "dependencies": {
+    "@google-cloud/spanner": "^6.6.0",
+    "express": "^4.18.2"
+  }
+}
