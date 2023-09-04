@@ -21,17 +21,31 @@ struct Card {
 struct ContentView: View {
     
     // array of cards
-    var cards: [Card] = [
-        Card(title: "test", image: UIImage(named: "1"), bulletPoints: ["test", "test"]),
+    let cards: [Card] = [
+        Card(title: "View Controller", image: UIImage(named: "1"), bulletPoints: ["defines the behavior for common VCs", "updates the content of the view", "responding to user interactions", "resizing views and layout mgmnt", "coordinating with other objects"]),
+        Card(title: "UIKit", image: UIImage(named: "2"), bulletPoints: ["provides required iOS infrastructure", "window and view architecture", "event handling for multi-touch and etc", "manages interaction with system", "a lot of features incl. resource management"]),
+        Card(title: "UIAlertController", image: UIImage(named: "3"), bulletPoints: ["configure alerts and action sheets", "intended to be used as-is", "does not support subclassing", "inherits from UIViewController", "support text fields to the alert interface"])
     ]
 
     @State private var currentCardIndex = 0
-
+    let imageSize = 64.0
+    // #eec292 hex color is tan
+    let tanColor = Color(red: 238/255, green: 194/255, blue: 146/255)
+    // #f2671c hex color is orange
+    let orangeColor = Color(red: 242/255, green: 103/255, blue: 28/255)
+    // #8e4235 hex color is brown
+    let brownColor = Color(red: 142/255, green: 66/255, blue: 53/255)
+    let buttonTextColor = Color(.white)
+    let fontWeight = Font.Weight.black
     func nextCard() {
         currentCardIndex += 1
         if currentCardIndex >= cards.count {
             currentCardIndex = 0
         }
+    }
+
+    func getCurrentCard() -> Card {
+        return cards[currentCardIndex]
     }
 
     func randomCard() {
@@ -42,31 +56,29 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("CardHub")
-                .font(.largeTitle)
+                .font(.title)
                 .fontWeight(.bold)
-                .padding() 
-                .foregroundColor(.brown)
-            Image(systemName: "globe")
-                .imageScale(.large)
+                .foregroundColor(brownColor)
+         
+            Image(uiImage: getCurrentCard().image ?? UIImage()).resizable().frame(width: imageSize, height: imageSize)
                 .foregroundColor(.accentColor)
-            // each button should be full width
+            Spacer()
             Button(action: randomCard, label: {
-                Text("Random Card").padding().fontWeight(.bold).foregroundColor(.white).frame(maxWidth: .infinity)
-            }) // #eec292 hex color is tan
-            
-            .background(Color(red: 238/255, green: 194/255, blue: 146/255))
-            
-            
+                Text("Random Card").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(maxWidth: .infinity)
+            })
+            .background(tanColor)
             Button(action: nextCard, label: {
-                Text("Next Card").padding().fontWeight(.bold).foregroundColor(.white).frame(maxWidth: .infinity)
-            }) // #f2671c hex color is orange
-            .background(Color(red: 242/255, green: 103/255, blue: 28/255))
+                Text("Next Card").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(maxWidth: .infinity)
+            })
+            .background(orangeColor)
             
             Button(action: {}, label: {
-                Text("Card Selector").padding().fontWeight(.bold).foregroundColor(.white).frame(maxWidth: .infinity)
-            }) // #8e4235 hex color is brown 
-            .background(Color(red: 142/255, green: 66/255, blue: 53/255))
+                Text("Card Selector").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(maxWidth: .infinity)
+            })
+            .background(brownColor)
+            Spacer()
         }
+        .padding(.horizontal, 20.0)
 
     }
 }
