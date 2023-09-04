@@ -62,6 +62,12 @@ struct ContentView: View {
          
             Image(uiImage: getCurrentCard().image ?? UIImage()).resizable().frame(width: imageSize, height: imageSize)
                 .foregroundColor(.accentColor)
+            Text("Card: " + getCurrentCard().title)
+                .padding(.leading, 20.0)
+                .frame(maxWidth: .infinity)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .background(orangeColor)
             Spacer()
             Button(action: randomCard, label: {
                 Text("Random Card").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(maxWidth: .infinity)
