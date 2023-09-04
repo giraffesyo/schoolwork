@@ -7,7 +7,38 @@
 
 import SwiftUI
 
+// cards are literals in an array, 
+// have a card title, which is a string
+// card image,
+// and card bullet points, which is an array of strings
+
+struct Card {
+    var title: String
+    var image: UIImage?
+    var bulletPoints: [String]
+}
+
 struct ContentView: View {
+    
+    // array of cards
+    var cards: [Card] = [
+        Card(title: "test", image: UIImage(named: "1"), bulletPoints: ["test", "test"]),
+    ]
+
+    @State private var currentCardIndex = 0
+
+    func nextCard() {
+        currentCardIndex += 1
+        if currentCardIndex >= cards.count {
+            currentCardIndex = 0
+        }
+    }
+
+    func randomCard() {
+        currentCardIndex = Int.random(in: 0..<cards.count)
+    }
+
+
     var body: some View {
         VStack {
             Text("CardHub")
@@ -18,11 +49,11 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
-            Button(action: {}, label: {
+            Button(action: randomCard, label: {
                 Text("Random Card").padding().fontWeight(.bold).foregroundColor(.white)
             }) // #eec292 hex color is tan
             .background(Color(red: 238/255, green: 194/255, blue: 146/255))
-            Button(action: {}, label: {
+            Button(action: nextCard, label: {
                 Text("Next Card").padding().fontWeight(.bold).foregroundColor(.white)
             }) // #f2671c hex color is orange
             .background(Color(red: 242/255, green: 103/255, blue: 28/255))
