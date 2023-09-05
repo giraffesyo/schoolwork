@@ -12,7 +12,11 @@ import SwiftUI
 // card image,
 // and card bullet points, which is an array of strings
 
-struct Card {
+struct Card: Identifiable, Equatable, Hashable {
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.id == rhs.id
+    }
+    var id = UUID()
     var title: String
     var image: UIImage?
     var bulletPoints: [String]
@@ -28,6 +32,7 @@ struct ContentView: View {
     ]
 
     @State private var currentCardIndex = 0
+    @State private var showCardSelector = false
     let imageSize = 64.0
     // #eec292 hex color is tan
     let tanColor = Color(red: 238/255, green: 194/255, blue: 146/255)
@@ -35,6 +40,8 @@ struct ContentView: View {
     let orangeColor = Color(red: 242/255, green: 103/255, blue: 28/255)
     // #8e4235 hex color is brown
     let brownColor = Color(red: 142/255, green: 66/255, blue: 53/255)
+    // #b4bec8 hex color is gray
+    let grayColor = Color(red: 180/255, green: 190/255, blue: 200/255)
     let buttonTextColor = Color(.white)
     let fontWeight = Font.Weight.black
     func nextCard() {
@@ -68,6 +75,14 @@ struct ContentView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
                 .background(orangeColor)
+            VStack {
+                ForEach(getCurrentCard().bulletPoints, id: \.self) { bulletPoint in
+                    Text("☆" + bulletPoint)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(.black)
+                        
+                }
+            }.background(grayColor)
             Spacer()
             Button(action: randomCard, label: {
                 Text("Random Card").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(maxWidth: .infinity)
@@ -78,10 +93,23 @@ struct ContentView: View {
             })
             .background(orangeColor)
             
-            Button(action: {}, label: {
+            Button(action: {
+                showCardSelector = true
+            }, label: {
                 Text("Card Selector").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(maxWidth: .infinity)
             })
-            .background(brownColor)
+            .background(brownColor).confirmationDialog("Select a card", isPresented: $showCardSelector , titleVisibility: .visible) {
+                ForEach(cards, id: \.self) { card in
+                    Button(action: {
+                        if let index = cards.firstIndex(of: card) {
+                            currentCardIndex = index
+                        }
+                    }, label: {
+                        Text(card.title)
+                    })
+                }
+            }
+            
             Spacer()
         }
         .padding(.horizontal, 20.0)
