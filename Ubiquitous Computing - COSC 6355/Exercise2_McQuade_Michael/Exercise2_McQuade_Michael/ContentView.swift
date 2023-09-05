@@ -83,9 +83,6 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(.black)
                 }
-                
-                
-                
             }
             .background(grayColor)
             Spacer()
