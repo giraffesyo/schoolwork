@@ -19,6 +19,7 @@ let orangeColor = Color(red: 242 / 255, green: 103 / 255, blue: 28 / 255)
 let brownColor = Color(red: 142 / 255, green: 66 / 255, blue: 53 / 255)
 // #b4bec8 hex color is gray
 let grayColor = Color(red: 180 / 255, green: 190 / 255, blue: 200 / 255)
+let yellowColor = Color(red: 228 / 255, green: 189 / 255, blue: 91 / 255)
 let buttonTextColor = Color(.white)
 let imageSize = 64.0
 
@@ -161,7 +162,7 @@ struct ContentView: View {
         Text("Add bullet").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(
           maxWidth: .infinity
         )
-        .background(tanColor)
+        .background(yellowColor)
       }
       .sheet(
         isPresented: $isShowingAddBulletSheet
@@ -178,7 +179,7 @@ struct ContentView: View {
             .frame(maxWidth: .infinity)
         }
       )
-      .background(tanColor)
+      .background(yellowColor)
       Spacer()
     }
     .padding(.horizontal, 20.0)
