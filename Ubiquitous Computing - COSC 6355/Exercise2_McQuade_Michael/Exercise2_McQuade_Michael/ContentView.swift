@@ -176,7 +176,7 @@ struct AddBulletView: View {
 
   @Binding var isShowingAddBulletSheet: Bool
   @Binding var card: Card
-  @State private var bulletText = ""
+  @State private var bulletText = "New bullet"
   let fontWeight = Font.Weight.black
   var body: some View {
     VStack {
