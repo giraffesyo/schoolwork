@@ -76,7 +76,8 @@ struct ContentView: View {
 
   @State private var currentCardIndex = 0
   @State private var showCardSelector = false
-  @State private var isShowingAddBulletSheet = true
+  @State private var isShowingAddBulletSheet = false
+  @State private var isShowingEditTitleSheet = false
 
   func nextCard() {
     currentCardIndex += 1
@@ -173,12 +174,20 @@ struct ContentView: View {
       }
 
       Button(
-        action: randomCard,
+        action: {
+          isShowingEditTitleSheet.toggle()
+        },
         label: {
           Text("Edit card name").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor)
             .frame(maxWidth: .infinity)
         }
-      )
+      ).sheet(
+        isPresented: $isShowingEditTitleSheet
+      ) {
+        EditTitleView(
+          isShowingEditTitleSheet: $isShowingEditTitleSheet,
+          card: $cards[currentCardIndex])
+      }
       .background(yellowColor)
       Spacer()
     }
@@ -200,21 +209,20 @@ struct AddBulletView: View {
         .fontWeight(.bold)
         .foregroundColor(orangeColor)
         .padding(.bottom, 20)
-        VStack{
-            Text("Card: " + card.title)
-                .font(.title2)
-                .frame(maxWidth: .infinity)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .background(orangeColor)
-            
-            
-            TextField("New bullet text", text: $bulletText).multilineTextAlignment(.center)
-                .padding(.bottom, 20.0)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(.black)
-        }.background(grayColor)
-        
+      VStack {
+        Text("Card: " + card.title)
+          .font(.title2)
+          .frame(maxWidth: .infinity)
+          .fontWeight(.bold)
+          .foregroundColor(.white)
+          .background(orangeColor)
+
+        TextField("New bullet text", text: $bulletText).multilineTextAlignment(.center)
+          .padding(.bottom, 20.0)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .foregroundColor(.black)
+      }.background(grayColor)
+
       Button(
         action: {
           print(
@@ -241,7 +249,63 @@ struct AddBulletView: View {
             .frame(maxWidth: .infinity)
             .fontWeight(fontWeight)
         }
-      ).background(tanColor)
+      ).background(yellowColor)
+      Spacer()
+    }
+    .padding(.horizontal, 20.0)
+  }
+}
+
+struct EditTitleView: View {
+
+  @Binding var isShowingEditTitleSheet: Bool
+  @Binding var card: Card
+  @State private var titleText = "New card name"
+  let fontWeight = Font.Weight.black
+  var body: some View {
+    VStack {
+      Text("EDIT TOPIC")
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(orangeColor)
+        .padding(.bottom, 20)
+      VStack {
+        Text("Card: " + card.title)
+          .font(.title2)
+          .frame(maxWidth: .infinity)
+          .fontWeight(.bold)
+          .foregroundColor(.white)
+          .background(orangeColor)
+
+        TextField("New card name", text: $titleText).multilineTextAlignment(.center)
+          .padding(.bottom, 20.0)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .foregroundColor(.black)
+      }.background(grayColor)
+
+      Button(
+        action: {
+          card.title = titleText
+          isShowingEditTitleSheet.toggle()
+        },
+        label: {
+          Text("Save").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(
+            maxWidth: .infinity)
+        }
+      )
+      .background(brownColor)
+
+      Button(
+        action: {
+          isShowingEditTitleSheet.toggle()
+        },
+        label: {
+          Text("Cancel").padding()
+            .foregroundColor(buttonTextColor)
+            .frame(maxWidth: .infinity)
+            .fontWeight(fontWeight)
+        }
+      ).background(yellowColor)
       Spacer()
     }
     .padding(.horizontal, 20.0)
