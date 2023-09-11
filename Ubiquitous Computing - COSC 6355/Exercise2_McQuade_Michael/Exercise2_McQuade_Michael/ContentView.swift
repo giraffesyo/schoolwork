@@ -200,6 +200,10 @@ struct AddBulletView: View {
 
       Button(
         action: {
+          print(
+            "adding bullet \(bulletText) to card \(card.title) which has \(card.bulletPoints.count) bullets"
+          )
+            card.objectWillChange.send()
           card.bulletPoints.append(bulletText)
           isShowingAddBulletSheet.toggle()
         },
