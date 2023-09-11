@@ -76,7 +76,7 @@ struct ContentView: View {
 
   @State private var currentCardIndex = 0
   @State private var showCardSelector = false
-  @State private var isShowingAddBulletSheet = false
+  @State private var isShowingAddBulletSheet = true
 
   func nextCard() {
     currentCardIndex += 1
@@ -199,20 +199,22 @@ struct AddBulletView: View {
         .font(.title)
         .fontWeight(.bold)
         .foregroundColor(orangeColor)
-      Text("Card: " + card.title)
-        .font(.title2)
-        .frame(maxWidth: .infinity)
-        .fontWeight(.bold)
-        .foregroundColor(.white)
-        .background(orangeColor)
-
-      TextField("New bullet text", text: $bulletText)
-        .padding(.bottom, 20.0)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundColor(.black)
-
-        .background(grayColor)
-
+        .padding(.bottom, 20)
+        VStack{
+            Text("Card: " + card.title)
+                .font(.title2)
+                .frame(maxWidth: .infinity)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .background(orangeColor)
+            
+            
+            TextField("New bullet text", text: $bulletText).multilineTextAlignment(.center)
+                .padding(.bottom, 20.0)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(.black)
+        }.background(grayColor)
+        
       Button(
         action: {
           print(
@@ -242,6 +244,7 @@ struct AddBulletView: View {
       ).background(tanColor)
       Spacer()
     }
+    .padding(.horizontal, 20.0)
   }
 }
 
