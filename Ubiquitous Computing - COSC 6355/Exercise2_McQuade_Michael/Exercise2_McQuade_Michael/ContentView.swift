@@ -11,6 +11,16 @@ import SwiftUI
 // have a card title, which is a string
 // card image,
 // and card bullet points, which is an array of strings
+// #eec292 hex color is tan
+let tanColor = Color(red: 238 / 255, green: 194 / 255, blue: 146 / 255)
+// #f2671c hex color is orange
+let orangeColor = Color(red: 242 / 255, green: 103 / 255, blue: 28 / 255)
+// #8e4235 hex color is brown
+let brownColor = Color(red: 142 / 255, green: 66 / 255, blue: 53 / 255)
+// #b4bec8 hex color is gray
+let grayColor = Color(red: 180 / 255, green: 190 / 255, blue: 200 / 255)
+let buttonTextColor = Color(.white)
+let imageSize = 64.0
 
 struct Card: Identifiable, Equatable, Hashable {
   static func == (lhs: Card, rhs: Card) -> Bool {
@@ -23,9 +33,9 @@ struct Card: Identifiable, Equatable, Hashable {
 }
 
 struct ContentView: View {
-
+  let fontWeight = Font.Weight.black
   // array of cards
-  let cards: [Card] = [
+  @State private var cards: [Card] = [
     Card(
       title: "View Controller", image: UIImage(named: "1"),
       bulletPoints: [
@@ -51,19 +61,8 @@ struct ContentView: View {
 
   @State private var currentCardIndex = 0
   @State private var showCardSelector = false
-  @State private var isShowingAddBullet = false
+  @State private var isShowingAddBulletSheet = false
 
-  let imageSize = 64.0
-  // #eec292 hex color is tan
-  let tanColor = Color(red: 238 / 255, green: 194 / 255, blue: 146 / 255)
-  // #f2671c hex color is orange
-  let orangeColor = Color(red: 242 / 255, green: 103 / 255, blue: 28 / 255)
-  // #8e4235 hex color is brown
-  let brownColor = Color(red: 142 / 255, green: 66 / 255, blue: 53 / 255)
-  // #b4bec8 hex color is gray
-  let grayColor = Color(red: 180 / 255, green: 190 / 255, blue: 200 / 255)
-  let buttonTextColor = Color(.white)
-  let fontWeight = Font.Weight.black
   func nextCard() {
     currentCardIndex += 1
     if currentCardIndex >= cards.count {
@@ -85,7 +84,8 @@ struct ContentView: View {
       Text("CardHub")
         .font(.title)
         .fontWeight(.bold)
-        .foregroundColor(brownColor)
+        .foregroundColor(orangeColor)
+        .padding()
 
       Image(uiImage: getCurrentCard().image ?? UIImage()).resizable().frame(
         width: imageSize, height: imageSize
@@ -143,11 +143,18 @@ struct ContentView: View {
         }
       }
 
-      Button(action: { isShowingAddBullet.toggle() }) {
+      Button(action: { isShowingAddBulletSheet.toggle() }) {
         Text("Add bullet").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(
           maxWidth: .infinity
         )
         .background(tanColor)
+      }
+      .sheet(
+        isPresented: $isShowingAddBulletSheet
+      ) {
+        AddBulletView(
+          isShowingAddBulletSheet: $isShowingAddBulletSheet,
+          card: $cards[currentCardIndex])
       }
 
       Button(
@@ -167,9 +174,54 @@ struct ContentView: View {
 
 struct AddBulletView: View {
 
+  @Binding var isShowingAddBulletSheet: Bool
+  @Binding var card: Card
+  @State private var bulletText = ""
+  let fontWeight = Font.Weight.black
   var body: some View {
     VStack {
-      Text("test")
+      Text("ADD BULLET")
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(orangeColor)
+      Text("Card: " + card.title)
+        .font(.title2)
+        .frame(maxWidth: .infinity)
+        .fontWeight(.bold)
+        .foregroundColor(.white)
+        .background(orangeColor)
+
+      TextField("New bullet text", text: $bulletText)
+        .padding(.bottom, 20.0)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .foregroundColor(.black)
+
+        .background(grayColor)
+
+      Button(
+        action: {
+          card.bulletPoints.append(bulletText)
+          isShowingAddBulletSheet.toggle()
+        },
+        label: {
+          Text("Save").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(
+            maxWidth: .infinity)
+        }
+      )
+      .background(brownColor)
+
+      Button(
+        action: {
+          isShowingAddBulletSheet.toggle()
+        },
+        label: {
+          Text("Cancel").padding()
+            .foregroundColor(buttonTextColor)
+            .frame(maxWidth: .infinity)
+            .fontWeight(fontWeight)
+        }
+      ).background(tanColor)
+      Spacer()
     }
   }
 }
