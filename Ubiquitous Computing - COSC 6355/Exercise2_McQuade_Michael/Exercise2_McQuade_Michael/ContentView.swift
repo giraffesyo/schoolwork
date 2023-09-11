@@ -22,20 +22,77 @@ let grayColor = Color(red: 180 / 255, green: 190 / 255, blue: 200 / 255)
 let buttonTextColor = Color(.white)
 let imageSize = 64.0
 
-struct Card: Identifiable, Equatable, Hashable {
+class Card: Identifiable, Equatable, Hashable {
+
   static func == (lhs: Card, rhs: Card) -> Bool {
     return lhs.id == rhs.id
   }
+  init(title: String, image: UIImage?, bulletPoints: [String]) {
+    self.title = title
+    self.image = image
+    self.bulletPoints = bulletPoints
+  }
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+
   var id = UUID()
   var title: String
   var image: UIImage?
   var bulletPoints: [String]
+
+  func addBulletPoint(_ bulletPoint: String) {
+    bulletPoints.append(bulletPoint)
+  }
+}
+
+class Cards: Identifiable, Equatable {
+
+  init(cards: [Card]) {
+    self.cards = cards
+  }
+  static func == (lhs: Cards, rhs: Cards) -> Bool {
+    return lhs.id == rhs.id
+  }
+  var id = UUID()
+  // implement array indexing
+  var cards: [Card]
+  var currentCardIndex = 0
+
+  func addCard(_ card: Card) {
+    cards.append(card)
+  }
+  func removeCard(_ card: Card) {
+    if let index = cards.firstIndex(of: card) {
+      cards.remove(at: index)
+    }
+  }
+  func removeCard(at index: Int) {
+    cards.remove(at: index)
+  }
+  func nextCard() {
+    print("Next card method called")
+
+    currentCardIndex += 1
+    if currentCardIndex >= cards.count {
+      currentCardIndex = 0
+    }
+    print("Updated card index:", currentCardIndex)
+
+  }
+  func randomCard() {
+    currentCardIndex = Int.random(in: 0..<cards.count)
+  }
+  func getCurrentCard() -> Card {
+    return cards[currentCardIndex]
+  }
+
 }
 
 struct ContentView: View {
   let fontWeight = Font.Weight.black
-  // array of cards
-  @State private var cards: [Card] = [
+
+  @State private var cards = Cards(cards: [
     Card(
       title: "View Controller", image: UIImage(named: "1"),
       bulletPoints: [
@@ -57,26 +114,10 @@ struct ContentView: View {
         "does not support subclassing", "inherits from UIViewController",
         "support text fields to the alert interface",
       ]),
-  ]
+  ])
 
-  @State private var currentCardIndex = 0
   @State private var showCardSelector = false
   @State private var isShowingAddBulletSheet = false
-
-  func nextCard() {
-    currentCardIndex += 1
-    if currentCardIndex >= cards.count {
-      currentCardIndex = 0
-    }
-  }
-
-  func getCurrentCard() -> Card {
-    return cards[currentCardIndex]
-  }
-
-  func randomCard() {
-    currentCardIndex = Int.random(in: 0..<cards.count)
-  }
 
   var body: some View {
 
@@ -87,11 +128,11 @@ struct ContentView: View {
         .foregroundColor(orangeColor)
         .padding()
 
-      Image(uiImage: getCurrentCard().image ?? UIImage()).resizable().frame(
+      Image(uiImage: cards.getCurrentCard().image ?? UIImage()).resizable().frame(
         width: imageSize, height: imageSize
       )
       .foregroundColor(.accentColor)
-      Text("Card: " + getCurrentCard().title)
+      Text("Card: " + cards.getCurrentCard().title)
         .font(.title2)
         .frame(maxWidth: .infinity)
         .fontWeight(.bold)
@@ -99,7 +140,7 @@ struct ContentView: View {
         .background(orangeColor)
 
       VStack {
-        ForEach(getCurrentCard().bulletPoints, id: \.self) { bulletPoint in
+        ForEach(cards.getCurrentCard().bulletPoints, id: \.self) { bulletPoint in
           Text("☆" + bulletPoint)
             .padding(.bottom, 20.0)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -110,7 +151,7 @@ struct ContentView: View {
       Spacer()
 
       Button(
-        action: nextCard,
+        action: { cards.nextCard() },
         label: {
           Text("Next card").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor).frame(
             maxWidth: .infinity)
@@ -130,11 +171,11 @@ struct ContentView: View {
       .background(brownColor).confirmationDialog(
         "Select a card", isPresented: $showCardSelector, titleVisibility: .visible
       ) {
-        ForEach(cards, id: \.self) { card in
+        ForEach(cards.cards, id: \.self) { card in
           Button(
             action: {
-              if let index = cards.firstIndex(of: card) {
-                currentCardIndex = index
+              if let index = cards.cards.firstIndex(of: card) {
+                cards.currentCardIndex = index
               }
             },
             label: {
@@ -154,11 +195,12 @@ struct ContentView: View {
       ) {
         AddBulletView(
           isShowingAddBulletSheet: $isShowingAddBulletSheet,
-          card: $cards[currentCardIndex])
+          cards: $cards
+        )
       }
 
       Button(
-        action: randomCard,
+        action: {},
         label: {
           Text("Edit card name").padding().fontWeight(fontWeight).foregroundColor(buttonTextColor)
             .frame(maxWidth: .infinity)
@@ -175,7 +217,7 @@ struct ContentView: View {
 struct AddBulletView: View {
 
   @Binding var isShowingAddBulletSheet: Bool
-  @Binding var card: Card
+  @Binding var cards: Cards
   @State private var bulletText = "New bullet"
   let fontWeight = Font.Weight.black
   var body: some View {
@@ -184,7 +226,7 @@ struct AddBulletView: View {
         .font(.title)
         .fontWeight(.bold)
         .foregroundColor(orangeColor)
-      Text("Card: " + card.title)
+      Text("Card: " + cards.getCurrentCard().title)
         .font(.title2)
         .frame(maxWidth: .infinity)
         .fontWeight(.bold)
@@ -200,7 +242,7 @@ struct AddBulletView: View {
 
       Button(
         action: {
-          card.bulletPoints.append(bulletText)
+          cards.cards[cards.currentCardIndex].addBulletPoint(bulletText)
           isShowingAddBulletSheet.toggle()
         },
         label: {
