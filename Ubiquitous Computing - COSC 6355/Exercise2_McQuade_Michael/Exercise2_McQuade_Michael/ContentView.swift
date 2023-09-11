@@ -26,16 +26,19 @@ struct Bullet: Identifiable, Equatable, Hashable {
   static func == (lhs: Bullet, rhs: Bullet) -> Bool {
     return lhs.id == rhs.id
   }
+  var id: UUID = UUID()
+  var text: String
   init(_ text: String) {
     self.text = text
+
   }
-  var id = UUID()
-  var text: String
+
 }
 
 struct Card: Identifiable, Equatable, Hashable {
   static func == (lhs: Card, rhs: Card) -> Bool {
-    return lhs.id == rhs.id
+    return lhs.id == rhs.id && lhs.title == rhs.title && lhs.image == rhs.image
+      && lhs.bulletPoints == rhs.bulletPoints
   }
   var id = UUID()
   var title: String
