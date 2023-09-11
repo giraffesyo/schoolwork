@@ -22,6 +22,17 @@ let grayColor = Color(red: 180 / 255, green: 190 / 255, blue: 200 / 255)
 let buttonTextColor = Color(.white)
 let imageSize = 64.0
 
+struct Bullet: Identifiable, Equatable, Hashable {
+  static func == (lhs: Bullet, rhs: Bullet) -> Bool {
+    return lhs.id == rhs.id
+  }
+  init(_ text: String) {
+    self.text = text
+  }
+  var id = UUID()
+  var text: String
+}
+
 struct Card: Identifiable, Equatable, Hashable {
   static func == (lhs: Card, rhs: Card) -> Bool {
     return lhs.id == rhs.id
@@ -29,7 +40,7 @@ struct Card: Identifiable, Equatable, Hashable {
   var id = UUID()
   var title: String
   var image: UIImage?
-  var bulletPoints: [String]
+  var bulletPoints: [Bullet]
 }
 
 struct ContentView: View {
@@ -39,23 +50,23 @@ struct ContentView: View {
     Card(
       title: "View Controller", image: UIImage(named: "1"),
       bulletPoints: [
-        "defines the behavior for common VCs", "updates the content of the view",
-        "responding to user interactions", "resizing views and layout mgmnt",
-        "coordinating with other objects",
+        Bullet("defines the behavior for common VCs"), Bullet("updates the content of the view"),
+        Bullet("responding to user interactions"), Bullet("resizing views and layout mgmnt"),
+        Bullet("coordinating with other objects"),
       ]),
     Card(
       title: "UIKit", image: UIImage(named: "2"),
       bulletPoints: [
-        "provides required iOS infrastructure", "window and view architecture",
-        "event handling for multi-touch and etc", "manages interaction with system",
-        "a lot of features incl. resource management",
+        Bullet("provides required iOS infrastructure"), Bullet("window and view architecture"),
+        Bullet("event handling for multi-touch and etc"), Bullet("manages interaction with system"),
+        Bullet("a lot of features incl. resource management"),
       ]),
     Card(
       title: "UIAlertController", image: UIImage(named: "3"),
       bulletPoints: [
-        "configure alerts and action sheets", "intended to be used as-is",
-        "does not support subclassing", "inherits from UIViewController",
-        "support text fields to the alert interface",
+        Bullet("configure alerts and action sheets"), Bullet("intended to be used as-is"),
+        Bullet("does not support subclassing"), Bullet("inherits from UIViewController"),
+        Bullet("support text fields to the alert interface"),
       ]),
   ]
 
@@ -99,8 +110,8 @@ struct ContentView: View {
         .background(orangeColor)
 
       VStack {
-        ForEach(getCurrentCard().bulletPoints, id: \.self) { bulletPoint in
-          Text("☆" + bulletPoint)
+        ForEach(getCurrentCard().bulletPoints) { bulletPoint in
+          Text("☆" + bulletPoint.text)
             .padding(.bottom, 20.0)
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(.black)
@@ -203,8 +214,8 @@ struct AddBulletView: View {
           print(
             "adding bullet \(bulletText) to card \(card.title) which has \(card.bulletPoints.count) bullets"
           )
-            
-          card.bulletPoints.append(bulletText)
+
+          card.bulletPoints.append(Bullet(bulletText))
           isShowingAddBulletSheet.toggle()
         },
         label: {
