@@ -92,7 +92,7 @@ struct ContentView: View {
   @State var gameState: GameState = GameState()
   // read orientation from environment
   @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
+
   var body: some View {
     VStack {
       TabView {
@@ -104,13 +104,13 @@ struct ContentView: View {
           Image("fire_off")
           Text("Game")
         })
-          ScoreView(
-            player1: gameState.player1,
-            player2: gameState.player2
-          ).tabItem({
-            Image("score_off")
-            Text("Score")
-          })
+        ScoreView(
+          player1: gameState.player1,
+          player2: gameState.player2
+        ).tabItem({
+          Image("score_off")
+          Text("Score")
+        })
       }
     }
   }
@@ -119,62 +119,64 @@ struct ContentView: View {
 struct GameView: View {
 
   @Binding var gameState: GameState
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-      
-    var body: some View {
-        let isLandscape = verticalSizeClass == .compact
-      let layout =
-        isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+  @Environment(\.verticalSizeClass) var verticalSizeClass
+
+  var body: some View {
+    let isLandscape = verticalSizeClass == .compact
+    let layout =
+      isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
     return layout {
-        VStack{
-            Image("logo-text")
-                .resizable()
-                .scaledToFit()
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-                .padding()
-            HStack {
-                PlayerView(player: gameState.player1)
-                PlayerView(player: gameState.player2)
-            }}
+      VStack {
+        Image("logo-text")
+          .resizable()
+          .scaledToFit()
+          .imageScale(.large)
+          .foregroundColor(.accentColor)
+          .padding()
+        HStack {
+          PlayerView(player: gameState.player1)
+          PlayerView(player: gameState.player2)
+        }
+      }
       Spacer()
-        VStack{
-            Spacer()
-            Text(gameState.gameStatus)
+      VStack {
+        Spacer()
+        Text(gameState.gameStatus)
+          .font(.custom(customFont, size: 34))
+          .multilineTextAlignment(.center)
+          .fontWeight(.bold)
+          .foregroundColor(brownColor)
+          .padding()
+        Spacer()
+        HStack {
+          Button(action: { gameState.restartButtonPressed() }) {
+            VStack {
+              Text("Restart")
                 .font(.custom(customFont, size: 34))
-                .multilineTextAlignment(.center)
                 .fontWeight(.bold)
                 .foregroundColor(brownColor)
-                .padding()
-            Spacer()
-            HStack {
-                Button(action: { gameState.restartButtonPressed() }) {
-                    VStack {
-                        Text("Restart")
-                            .font(.custom(customFont, size: 34))
-                            .fontWeight(.bold)
-                            .foregroundColor(brownColor)
-                        Image("restart")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 125, height: 125, alignment: .center)
-                    }
-                }
-                
-                Button(action: { gameState.fightButtonPressed() }) {
-                    VStack {
-                        Text("Fight")
-                            .font(.custom(customFont, size: 34))
-                            .fontWeight(.bold)
-                            .foregroundColor(brownColor)
-                        Image("fight")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 125, height: 125, alignment: .center)
-                    }
-                }.opacity(Double(gameState.gameOver ? 0.25 : 1.0)).disabled(gameState.gameOver)
-                
-            }}
+              Image("restart")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 125, height: 125, alignment: .center)
+            }
+          }
+
+          Button(action: { gameState.fightButtonPressed() }) {
+            VStack {
+              Text("Fight")
+                .font(.custom(customFont, size: 34))
+                .fontWeight(.bold)
+                .foregroundColor(brownColor)
+              Image("fight")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 125, height: 125, alignment: .center)
+            }
+          }.opacity(Double(gameState.gameOver ? 0.25 : 1.0)).disabled(gameState.gameOver)
+
+        }
+      }
     }
   }
 }
@@ -183,9 +185,9 @@ struct ScoreView: View {
   var player1: Player
   var player2: Player
   @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+
   var body: some View {
-      let isLandscape = verticalSizeClass == .compact
+    let isLandscape = verticalSizeClass == .compact
     let layout =
       isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
     return VStack(alignment: .center) {
