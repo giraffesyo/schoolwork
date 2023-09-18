@@ -92,9 +92,11 @@ struct ContentView: View {
   @State var gameState: GameState = GameState()
   // read orientation from environment
   @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
   var body: some View {
     VStack {
       TabView {
+
         GameView(
           gameState: $gameState
         )
@@ -102,35 +104,34 @@ struct ContentView: View {
           Image("fire_off")
           Text("Game")
         })
-        ScoreView(
-          player1: gameState.player1,
-          player2: gameState.player2
-        ).tabItem({
-          Image("score_off")
-          Text("Score")
-        })
+          ScoreView(
+            player1: gameState.player1,
+            player2: gameState.player2
+          ).tabItem({
+            Image("score_off")
+            Text("Score")
+          })
       }
     }
   }
 }
 
 struct GameView: View {
-    
+
   @Binding var gameState: GameState
-    
-        @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass
   var body: some View {
-      let layout = horizontalSizeClass == .regular ?
-      AnyLayout(VStackLayout()):
-      AnyLayout(HStackLayout())
+    let layout =
+      horizontalSizeClass == .compact ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
 
     VStack {
-        Image("logo-text")
-          .resizable()
-          .scaledToFit()
-          .imageScale(.large)
-          .foregroundColor(.accentColor)
-          .padding()
+      Image("logo-text")
+        .resizable()
+        .scaledToFit()
+        .imageScale(.large)
+        .foregroundColor(.accentColor)
+        .padding()
       HStack {
         PlayerView(player: gameState.player1)
         PlayerView(player: gameState.player2)
@@ -178,54 +179,55 @@ struct GameView: View {
 struct ScoreView: View {
   var player1: Player
   var player2: Player
+  @Environment(\.verticalSizeClass) var verticalSizeClass
+    
   var body: some View {
-      VStack(alignment: .center) {
-        Image("logo-text")
-          .resizable()
-          .scaledToFit()
-          .imageScale(.large)
-          .foregroundColor(.accentColor)
-          .padding()
-        
-      PlayerScore(player: player1)
-      PlayerScore(player: player2)
-        Spacer()
+      let isLandscape = verticalSizeClass == .compact
+    let layout =
+      isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+    return VStack(alignment: .center) {
+      Image("logo-text")
+        .resizable()
+        .scaledToFit()
+        .imageScale(.large)
+        .foregroundColor(.accentColor)
+      layout {
+        PlayerScore(player: player1)
+        PlayerScore(player: player2)
       }
-      .padding()
-      
+      Spacer()
+    }
+    .padding()
+
   }
 }
 
 struct PlayerScore: View {
   var player: Player
   var body: some View {
-    VStack {
-        
+    VStack(alignment: .center) {
+
       Text(player.name)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
-        .padding()
       HStack {
         Image("dragon-placeholder")
           .resizable()
           .scaledToFit()
           .frame(width: 100, height: 100, alignment: .center)
-          .padding()
           .opacity(player.score >= 1 ? 1 : 0.25)
         Image("dragon-placeholder")
           .resizable()
           .scaledToFit()
           .frame(width: 100, height: 100, alignment: .center)
-          .padding()
           .opacity(player.score >= 2 ? 1 : 0.25)
         Image("dragon-placeholder")
           .resizable()
           .scaledToFit()
           .frame(width: 100, height: 100, alignment: .center)
-          .padding()
           .opacity(player.score >= 3 ? 1 : 0.25)
-      }
+      }.padding(.horizontal)
     }
   }
 }
