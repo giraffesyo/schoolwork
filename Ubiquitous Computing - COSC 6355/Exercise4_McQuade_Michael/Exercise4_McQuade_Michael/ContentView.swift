@@ -43,9 +43,14 @@ struct GameState {
   var player1: Player = Player(name: "Player 1", score: 0, image: "dragon-placeholder")
   var player2: Player = Player(name: "Player 2", score: 0, image: "dragon-placeholder")
   var gameStatus: String = "Prepare for the battle!"
+  var gameOver: Bool = false
 
   mutating func fightButtonPressed() {
     print("Fight button pressed")
+    if gameOver {
+      print("Game is over, restart to play again")
+      return
+    }
     let player1Dragon = dragons.randomElement()!
     var player2Dragon = dragons.randomElement()!
     while player1Dragon.name == player2Dragon.name {
@@ -59,6 +64,14 @@ struct GameState {
       gameStatus = "\(player2Dragon.name) wins!"
       player2.incrementScore()
     }
+    // game is over if either player has 3 points
+    if player1.score == 3 {
+      gameStatus = "\(player1.name) won (\(player1.score) - \(player2.score))!\n Restart the game."
+      gameOver = true
+    } else if player2.score == 3 {
+      gameStatus = "\(player2.name) won (\(player2.score) - \(player1.score))!\n Restart the game."
+      gameOver = true
+    }
     // update player images
     player1.image = player1Dragon.image
     player2.image = player2Dragon.image
@@ -66,6 +79,7 @@ struct GameState {
 
   mutating func restartButtonPressed() {
     print("Restart button pressed")
+    gameOver = false
     player1.resetScore()
     player2.resetScore()
     gameStatus = "Prepare for the battle!"
