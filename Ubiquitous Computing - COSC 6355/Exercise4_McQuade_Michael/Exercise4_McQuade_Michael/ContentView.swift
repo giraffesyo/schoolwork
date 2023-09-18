@@ -16,6 +16,15 @@ struct ContentView: View {
   var player2Score: Int = 0
   var gameStatus: String = "Prepare for the battle!"
 
+  func fightButtonPressed() {
+    print("Fight button pressed")
+
+  }
+
+  func restartButtonPressed() {
+    print("Restart button pressed")
+  }
+
   var body: some View {
     VStack {
       Image("logo-text")
@@ -27,7 +36,9 @@ struct ContentView: View {
       TabView {
         GameView(
           gameStatus: gameStatus, player1Name: player1Name, player1Score: player1Score,
-          player2Name: player2Name, player2Score: player2Score
+          player2Name: player2Name, player2Score: player2Score,
+          fightButtonPressed: fightButtonPressed,
+          restartButtonPressed: restartButtonPressed
         )
         .tabItem({
           Image("fire_off")
@@ -51,6 +62,8 @@ struct GameView: View {
   var player1Score: Int
   var player2Name: String
   var player2Score: Int
+  var fightButtonPressed: () -> Void
+  var restartButtonPressed: () -> Void
 
   var player1Image: String = "dragon-placeholder"
   var player2Image: String = "dragon-placeholder"
@@ -60,17 +73,15 @@ struct GameView: View {
         PlayerView(playerName: player1Name, playerImage: player1Image)
         PlayerView(playerName: player2Name, playerImage: player2Image)
       }
-        Spacer()
+      Spacer()
       Text(gameStatus)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
         .padding()
-    Spacer()
+      Spacer()
       HStack {
-        Button(action: {
-          print("Restart button pressed")
-        }) {
+        Button(action: restartButtonPressed) {
           VStack {
             Text("Restart")
               .font(.custom(customFont, size: 34))
@@ -83,9 +94,7 @@ struct GameView: View {
           }
         }
 
-        Button(action: {
-          print("Fight button pressed")
-        }) {
+        Button(action: fightButtonPressed) {
           VStack {
             Text("Fight")
               .font(.custom(customFont, size: 34))
