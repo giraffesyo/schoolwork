@@ -9,53 +9,67 @@ import SwiftUI
 
 struct ContentView: View {
 
-  var gameStatus: String = "Prepare for the battle!"
   var body: some View {
     VStack {
-      Image("logo-text")
-        .resizable()
-        .scaledToFit()
-        .imageScale(.large)
-        .foregroundColor(.accentColor)
+     
+      TabView {
+        GameView()
+          .tabItem({
+              Image("fire_off")
+              Text("Game")
+          })
 
-        .padding()
-      HStack {
-        PlayerView(playerName: "Player 1")
-        PlayerView(playerName: "Player 2")
-      }
-      Text(gameStatus)
-        .font(.custom("AcademyEngravedLetPlain", size: 34))
-        .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-        .padding()
-      // buttons for restart and fight
-      HStack {
-        VStack {
-          Text("Restart")
-            .font(.custom("AcademyEngravedLetPlain", size: 34))
-            .fontWeight(.bold)
-            .foregroundColor(.accentColor)
-            .padding()
-          Image("restart")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 100, height: 100, alignment: .center)
-            .padding()
-        }
-        VStack {
-          Text("Fight")
-            .font(.custom("AcademyEngravedLetPlain", size: 34))
-            .fontWeight(.bold)
-            .foregroundColor(.accentColor)
-            .padding()
-          Image("fight")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 100, height: 100, alignment: .center)
-            .padding()
-        }
       }
     }
+  }
+}
+
+struct GameView: View {
+  var gameStatus: String = "Prepare for the battle!"
+  var body: some View {
+      VStack{
+          Image("logo-text")
+              .resizable()
+              .scaledToFit()
+              .imageScale(.large)
+              .foregroundColor(.accentColor)
+              .padding()
+          HStack {
+              PlayerView(playerName: "Player 1")
+              PlayerView(playerName: "Player 2")
+          }
+          Text(gameStatus)
+              .font(.custom("AcademyEngravedLetPlain", size: 34))
+              .fontWeight(.bold)
+              .foregroundColor(.accentColor)
+              .padding()
+          // buttons for restart and fight
+          HStack {
+              VStack {
+                  Text("Restart")
+                      .font(.custom("AcademyEngravedLetPlain", size: 34))
+                      .fontWeight(.bold)
+                      .foregroundColor(.accentColor)
+                      .padding()
+                  Image("restart")
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 100, height: 100, alignment: .center)
+                      .padding()
+              }
+              VStack {
+                  Text("Fight")
+                      .font(.custom("AcademyEngravedLetPlain", size: 34))
+                      .fontWeight(.bold)
+                      .foregroundColor(.accentColor)
+                      .padding()
+                  Image("fight")
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 100, height: 100, alignment: .center)
+                      .padding()
+              }
+          }}
   }
 }
 
