@@ -64,8 +64,13 @@ struct GameState {
     player2.image = player2Dragon.image
   }
 
-  func restartButtonPressed() {
+  mutating func restartButtonPressed() {
     print("Restart button pressed")
+    player1.resetScore()
+    player2.resetScore()
+    gameStatus = "Prepare for the battle!"
+    player1.image = "dragon-placeholder"
+    player2.image = "dragon-placeholder"
   }
 }
 
@@ -116,7 +121,7 @@ struct GameView: View {
         .padding()
       Spacer()
       HStack {
-        Button(action: gameState.restartButtonPressed) {
+        Button(action: { gameState.restartButtonPressed() }) {
           VStack {
             Text("Restart")
               .font(.custom(customFont, size: 34))
@@ -129,7 +134,7 @@ struct GameView: View {
           }
         }
 
-        Button(action: {gameState.fightButtonPressed()}) {
+        Button(action: { gameState.fightButtonPressed() }) {
           VStack {
             Text("Fight")
               .font(.custom(customFont, size: 34))
@@ -199,7 +204,7 @@ struct PlayerView: View {
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
-      Image(player.name)
+      Image(player.image)
         .resizable()
         .scaledToFit()
     }
