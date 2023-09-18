@@ -90,15 +90,10 @@ struct GameState {
 
 struct ContentView: View {
   @State var gameState: GameState = GameState()
-
+  // read orientation from environment
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass
   var body: some View {
     VStack {
-      Image("logo-text")
-        .resizable()
-        .scaledToFit()
-        .imageScale(.large)
-        .foregroundColor(.accentColor)
-        .padding()
       TabView {
         GameView(
           gameState: $gameState
@@ -120,9 +115,22 @@ struct ContentView: View {
 }
 
 struct GameView: View {
+    
   @Binding var gameState: GameState
+    
+        @Environment(\.horizontalSizeClass) var horizontalSizeClass
   var body: some View {
+      let layout = horizontalSizeClass == .regular ?
+      AnyLayout(VStackLayout()):
+      AnyLayout(HStackLayout())
+
     VStack {
+        Image("logo-text")
+          .resizable()
+          .scaledToFit()
+          .imageScale(.large)
+          .foregroundColor(.accentColor)
+          .padding()
       HStack {
         PlayerView(player: gameState.player1)
         PlayerView(player: gameState.player2)
@@ -171,10 +179,20 @@ struct ScoreView: View {
   var player1: Player
   var player2: Player
   var body: some View {
-    VStack {
+      VStack(alignment: .center) {
+        Image("logo-text")
+          .resizable()
+          .scaledToFit()
+          .imageScale(.large)
+          .foregroundColor(.accentColor)
+          .padding()
+        
       PlayerScore(player: player1)
       PlayerScore(player: player2)
-    }
+        Spacer()
+      }
+      .padding()
+      
   }
 }
 
@@ -182,6 +200,7 @@ struct PlayerScore: View {
   var player: Player
   var body: some View {
     VStack {
+        
       Text(player.name)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
