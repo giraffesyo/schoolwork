@@ -119,59 +119,62 @@ struct ContentView: View {
 struct GameView: View {
 
   @Binding var gameState: GameState
-
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass
-  var body: some View {
-    let layout =
-      horizontalSizeClass == .compact ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
-
-    VStack {
-      Image("logo-text")
-        .resizable()
-        .scaledToFit()
-        .imageScale(.large)
-        .foregroundColor(.accentColor)
-        .padding()
-      HStack {
-        PlayerView(player: gameState.player1)
-        PlayerView(player: gameState.player2)
-      }
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+      
+    var body: some View {
+        let isLandscape = verticalSizeClass == .compact
+      let layout =
+        isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+    return layout {
+        VStack{
+            Image("logo-text")
+                .resizable()
+                .scaledToFit()
+                .imageScale(.large)
+                .foregroundColor(.accentColor)
+                .padding()
+            HStack {
+                PlayerView(player: gameState.player1)
+                PlayerView(player: gameState.player2)
+            }}
       Spacer()
-      Text(gameState.gameStatus)
-        .font(.custom(customFont, size: 34))
-        .multilineTextAlignment(.center)
-        .fontWeight(.bold)
-        .foregroundColor(brownColor)
-        .padding()
-      Spacer()
-      HStack {
-        Button(action: { gameState.restartButtonPressed() }) {
-          VStack {
-            Text("Restart")
-              .font(.custom(customFont, size: 34))
-              .fontWeight(.bold)
-              .foregroundColor(brownColor)
-            Image("restart")
-              .resizable()
-              .scaledToFit()
-              .frame(width: 125, height: 125, alignment: .center)
-          }
-        }
-
-        Button(action: { gameState.fightButtonPressed() }) {
-          VStack {
-            Text("Fight")
-              .font(.custom(customFont, size: 34))
-              .fontWeight(.bold)
-              .foregroundColor(brownColor)
-            Image("fight")
-              .resizable()
-              .scaledToFit()
-              .frame(width: 125, height: 125, alignment: .center)
-          }
-        }.opacity(Double(gameState.gameOver ? 0.25 : 1.0)).disabled(gameState.gameOver)
-
-      }
+        VStack{
+            Spacer()
+            Text(gameState.gameStatus)
+                .font(.custom(customFont, size: 34))
+                .multilineTextAlignment(.center)
+                .fontWeight(.bold)
+                .foregroundColor(brownColor)
+                .padding()
+            Spacer()
+            HStack {
+                Button(action: { gameState.restartButtonPressed() }) {
+                    VStack {
+                        Text("Restart")
+                            .font(.custom(customFont, size: 34))
+                            .fontWeight(.bold)
+                            .foregroundColor(brownColor)
+                        Image("restart")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 125, height: 125, alignment: .center)
+                    }
+                }
+                
+                Button(action: { gameState.fightButtonPressed() }) {
+                    VStack {
+                        Text("Fight")
+                            .font(.custom(customFont, size: 34))
+                            .fontWeight(.bold)
+                            .foregroundColor(brownColor)
+                        Image("fight")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 125, height: 125, alignment: .center)
+                    }
+                }.opacity(Double(gameState.gameOver ? 0.25 : 1.0)).disabled(gameState.gameOver)
+                
+            }}
     }
   }
 }
