@@ -9,21 +9,68 @@ import SwiftUI
 
 var brownColor = Color(red: 98 / 255, green: 85 / 255, blue: 84 / 255, opacity: 1.0)
 var customFont: String = "AcademyEngravedLetPlain"
-struct ContentView: View {
-  var player1Name: String = "Player 1"
-  var player1Score: Int = 0
-  var player2Name: String = "Player 2"
-  var player2Score: Int = 0
+
+let dragons: [Dragon] = [
+  Dragon(name: "Balerion", image: "dragon-balerion", power: 10000),
+  Dragon(name: "Meraxes", image: "dragon-meraxes", power: 1000),
+  Dragon(name: "Sheepstealer", image: "dragon-sheepstealer", power: 950),
+  Dragon(name: "Silverwing", image: "dragon-silverwing", power: 900),
+  Dragon(name: "Meleys", image: "dragon-meleys", power: 890),
+  Dragon(name: "Quicksilver", image: "dragon-quicksilver", power: 880),
+  Dragon(name: "Stormcloud", image: "dragon-stormcloud", power: 100),
+  Dragon(name: "Drogon", image: "dragon-drogon", power: 50),
+  Dragon(name: "Viserion", image: "dragon-viserion", power: 25),
+]
+struct Dragon {
+  var name: String
+  var image: String
+  var power: Int
+}
+struct Player {
+  var name: String
+  var score: Int
+  var image: String
+
+  mutating func resetScore() {
+    score = 0
+  }
+  mutating func incrementScore() {
+    score += 1
+  }
+}
+
+struct GameState {
+  var player1: Player = Player(name: "Player 1", score: 0, image: "dragon-placeholder")
+  var player2: Player = Player(name: "Player 2", score: 0, image: "dragon-placeholder")
   var gameStatus: String = "Prepare for the battle!"
 
-  func fightButtonPressed() {
+  mutating func fightButtonPressed() {
     print("Fight button pressed")
-
+    let player1Dragon = dragons.randomElement()!
+    var player2Dragon = dragons.randomElement()!
+    while player1Dragon.name == player2Dragon.name {
+      player2Dragon = dragons.randomElement()!
+    }
+    // compare dragons and update game status
+    if player1Dragon.power > player2Dragon.power {
+      gameStatus = "\(player1Dragon.name) wins!"
+      player1.incrementScore()
+    } else if player1Dragon.power < player2Dragon.power {
+      gameStatus = "\(player2Dragon.name) wins!"
+      player2.incrementScore()
+    }
+    // update player images
+    player1.image = player1Dragon.image
+    player2.image = player2Dragon.image
   }
 
   func restartButtonPressed() {
     print("Restart button pressed")
   }
+}
+
+struct ContentView: View {
+  @State var gameState: GameState = GameState()
 
   var body: some View {
     VStack {
@@ -35,18 +82,15 @@ struct ContentView: View {
         .padding()
       TabView {
         GameView(
-          gameStatus: gameStatus, player1Name: player1Name, player1Score: player1Score,
-          player2Name: player2Name, player2Score: player2Score,
-          fightButtonPressed: fightButtonPressed,
-          restartButtonPressed: restartButtonPressed
+          gameState: $gameState
         )
         .tabItem({
           Image("fire_off")
           Text("Game")
         })
         ScoreView(
-          player1Name: player1Name, player1Score: player1Score, player2Name: player2Name,
-          player2Score: player2Score
+          player1: gameState.player1,
+          player2: gameState.player2
         ).tabItem({
           Image("score_off")
           Text("Score")
@@ -57,31 +101,22 @@ struct ContentView: View {
 }
 
 struct GameView: View {
-  var gameStatus: String
-  var player1Name: String
-  var player1Score: Int
-  var player2Name: String
-  var player2Score: Int
-  var fightButtonPressed: () -> Void
-  var restartButtonPressed: () -> Void
-
-  var player1Image: String = "dragon-placeholder"
-  var player2Image: String = "dragon-placeholder"
+  @Binding var gameState: GameState
   var body: some View {
     VStack {
       HStack {
-        PlayerView(playerName: player1Name, playerImage: player1Image)
-        PlayerView(playerName: player2Name, playerImage: player2Image)
+        PlayerView(player: gameState.player1)
+        PlayerView(player: gameState.player2)
       }
       Spacer()
-      Text(gameStatus)
+      Text(gameState.gameStatus)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
         .padding()
       Spacer()
       HStack {
-        Button(action: restartButtonPressed) {
+        Button(action: gameState.restartButtonPressed) {
           VStack {
             Text("Restart")
               .font(.custom(customFont, size: 34))
@@ -94,7 +129,7 @@ struct GameView: View {
           }
         }
 
-        Button(action: fightButtonPressed) {
+        Button(action: {gameState.fightButtonPressed()}) {
           VStack {
             Text("Fight")
               .font(.custom(customFont, size: 34))
@@ -113,24 +148,21 @@ struct GameView: View {
 }
 
 struct ScoreView: View {
-  var player1Name: String
-  var player1Score: Int = 0
-  var player2Name: String
-  var player2Score: Int = 0
+  var player1: Player
+  var player2: Player
   var body: some View {
     VStack {
-      PlayerScore(playerName: player1Name, playerScore: player1Score)
-      PlayerScore(playerName: player2Name, playerScore: player2Score)
+      PlayerScore(player: player1)
+      PlayerScore(player: player2)
     }
   }
 }
 
 struct PlayerScore: View {
-  var playerName: String
-  var playerScore: Int
+  var player: Player
   var body: some View {
     VStack {
-      Text(playerName)
+      Text(player.name)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
@@ -141,34 +173,33 @@ struct PlayerScore: View {
           .scaledToFit()
           .frame(width: 100, height: 100, alignment: .center)
           .padding()
-          .opacity(playerScore >= 1 ? 1 : 0.25)
+          .opacity(player.score >= 1 ? 1 : 0.25)
         Image("dragon-placeholder")
           .resizable()
           .scaledToFit()
           .frame(width: 100, height: 100, alignment: .center)
           .padding()
-          .opacity(playerScore >= 2 ? 1 : 0.25)
+          .opacity(player.score >= 2 ? 1 : 0.25)
         Image("dragon-placeholder")
           .resizable()
           .scaledToFit()
           .frame(width: 100, height: 100, alignment: .center)
           .padding()
-          .opacity(playerScore >= 3 ? 1 : 0.25)
+          .opacity(player.score >= 3 ? 1 : 0.25)
       }
     }
   }
 }
 
 struct PlayerView: View {
-  var playerName: String
-  var playerImage: String
+  var player: Player
   var body: some View {
     VStack {
-      Text(playerName)
+      Text(player.name)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
-      Image(playerImage)
+      Image(player.name)
         .resizable()
         .scaledToFit()
     }
