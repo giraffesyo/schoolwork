@@ -159,7 +159,7 @@ struct GameView: View {
               .scaledToFit()
               .frame(width: 125, height: 125, alignment: .center)
           }
-        }
+        }.opacity(Double(gameState.gameOver ? 0.25 : 1.0)).disabled(gameState.gameOver)
 
       }
     }
