@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+var brownColor = Color(red: 98 / 255, green: 85 / 255, blue: 84 / 255, opacity: 1.0)
+var customFont: String = "AcademyEngravedLetPlain"
 struct ContentView: View {
   var player1Name: String = "Player 1"
   var player1Score: Int = 0
@@ -56,17 +58,16 @@ struct GameView: View {
         PlayerView(playerName: player2Name)
       }
       Text(gameStatus)
-        .font(.custom("AcademyEngravedLetPlain", size: 34))
+        .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
-        .foregroundColor(.accentColor)
+        .foregroundColor(brownColor)
         .padding()
-      // buttons for restart and fight
       HStack {
         VStack {
           Text("Restart")
-            .font(.custom("AcademyEngravedLetPlain", size: 34))
+            .font(.custom(customFont, size: 34))
             .fontWeight(.bold)
-            .foregroundColor(.accentColor)
+            .foregroundColor(brownColor)
             .padding()
           Image("restart")
             .resizable()
@@ -76,9 +77,9 @@ struct GameView: View {
         }
         VStack {
           Text("Fight")
-            .font(.custom("AcademyEngravedLetPlain", size: 34))
+            .font(.custom(customFont, size: 34))
             .fontWeight(.bold)
-            .foregroundColor(.accentColor)
+            .foregroundColor(brownColor)
             .padding()
           Image("fight")
             .resizable()
@@ -110,12 +111,11 @@ struct PlayerScore: View {
   var body: some View {
     VStack {
       Text(playerName)
-        .font(.custom("AcademyEngravedLetPlain", size: 34))
+        .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
-        .foregroundColor(.accentColor)
+        .foregroundColor(brownColor)
         .padding()
       HStack {
-        // 3 dragon placeholder icons in a horizontal stack, each point fills in one dragon
         Image("dragon-placeholder")
           .resizable()
           .scaledToFit()
@@ -145,9 +145,9 @@ struct PlayerView: View {
   var body: some View {
     VStack {
       Text(playerName)
-        .font(.custom("AcademyEngravedLetPlain", size: 34))
+        .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
-        .foregroundColor(.accentColor)
+        .foregroundColor(brownColor)
       Image(playerImage)
         .resizable()
         .scaledToFit()
