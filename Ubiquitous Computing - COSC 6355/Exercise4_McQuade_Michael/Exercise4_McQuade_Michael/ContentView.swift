@@ -60,36 +60,44 @@ struct GameView: View {
         PlayerView(playerName: player1Name, playerImage: player1Image)
         PlayerView(playerName: player2Name, playerImage: player2Image)
       }
+        Spacer()
       Text(gameStatus)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
         .padding()
+    Spacer()
       HStack {
-        VStack {
-          Text("Restart")
-            .font(.custom(customFont, size: 34))
-            .fontWeight(.bold)
-            .foregroundColor(brownColor)
-            .padding()
-          Image("restart")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 100, height: 100, alignment: .center)
-            .padding()
+        Button(action: {
+          print("Restart button pressed")
+        }) {
+          VStack {
+            Text("Restart")
+              .font(.custom(customFont, size: 34))
+              .fontWeight(.bold)
+              .foregroundColor(brownColor)
+            Image("restart")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 125, height: 125, alignment: .center)
+          }
         }
-        VStack {
-          Text("Fight")
-            .font(.custom(customFont, size: 34))
-            .fontWeight(.bold)
-            .foregroundColor(brownColor)
-            .padding()
-          Image("fight")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 100, height: 100, alignment: .center)
-            .padding()
+
+        Button(action: {
+          print("Fight button pressed")
+        }) {
+          VStack {
+            Text("Fight")
+              .font(.custom(customFont, size: 34))
+              .fontWeight(.bold)
+              .foregroundColor(brownColor)
+            Image("fight")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 125, height: 125, alignment: .center)
+          }
         }
+
       }
     }
   }
