@@ -51,11 +51,14 @@ struct GameView: View {
   var player1Score: Int
   var player2Name: String
   var player2Score: Int
+
+  var player1Image: String = "dragon-placeholder"
+  var player2Image: String = "dragon-placeholder"
   var body: some View {
     VStack {
       HStack {
-        PlayerView(playerName: player1Name)
-        PlayerView(playerName: player2Name)
+        PlayerView(playerName: player1Name, playerImage: player1Image)
+        PlayerView(playerName: player2Name, playerImage: player2Image)
       }
       Text(gameStatus)
         .font(.custom(customFont, size: 34))
@@ -141,7 +144,7 @@ struct PlayerScore: View {
 
 struct PlayerView: View {
   var playerName: String
-  var playerImage: String = "dragon-placeholder"
+  var playerImage: String
   var body: some View {
     VStack {
       Text(playerName)
