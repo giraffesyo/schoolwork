@@ -8,19 +8,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+  var body: some View {
+    VStack {
+      Image("logo-text")
+        .resizable()
+        .scaledToFit()
+        .imageScale(.large)
+        .foregroundColor(.accentColor)
+
     }
+    .padding()
+  }
+}
+
+// new view for each player
+struct PlayerView: View {
+  var playerName: String
+  var playerImage: String = "dragon-placeholder"
+  var body: some View {
+    VStack {
+      Text(playerName)
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.accentColor)
+      Image(playerImage)
+    }
+    .padding()
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+  static var previews: some View {
+    ContentView()
+  }
 }
