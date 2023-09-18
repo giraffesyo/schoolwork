@@ -221,7 +221,7 @@ struct PlayerView: View {
         .foregroundColor(brownColor)
       Image(player.image)
         .resizable()
-        .scaledToFit()
+        .scaledToFit().frame(width: 150, height: 150)
     }
     .padding()
   }
