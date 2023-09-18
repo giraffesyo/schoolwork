@@ -16,8 +16,12 @@ struct ContentView: View {
         .imageScale(.large)
         .foregroundColor(.accentColor)
 
+        .padding()
+      HStack {
+        PlayerView(playerName: "Player 1")
+        PlayerView(playerName: "Player 2")
+      }
     }
-    .padding()
   }
 }
 
@@ -28,10 +32,12 @@ struct PlayerView: View {
   var body: some View {
     VStack {
       Text(playerName)
-        .font(.title)
+            .font(.custom("AcademyEngravedLetPlain", size: 34))
         .fontWeight(.bold)
         .foregroundColor(.accentColor)
       Image(playerImage)
+        .resizable()
+        .scaledToFit()
     }
     .padding()
   }
