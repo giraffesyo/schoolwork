@@ -58,10 +58,10 @@ struct GameState {
     }
     // compare dragons and update game status
     if player1Dragon.power > player2Dragon.power {
-      gameStatus = "\(player1Dragon.name) wins!"
+      gameStatus = "\(player1Dragon.name) is stronger!\n \(player1.name) wins"
       player1.incrementScore()
     } else if player1Dragon.power < player2Dragon.power {
-      gameStatus = "\(player2Dragon.name) wins!"
+      gameStatus = "\(player2Dragon.name) is stronger!\n \(player2.name) wins"
       player2.incrementScore()
     }
     // game is over if either player has 3 points
@@ -130,6 +130,7 @@ struct GameView: View {
       Spacer()
       Text(gameState.gameStatus)
         .font(.custom(customFont, size: 34))
+        .multilineTextAlignment(.center)
         .fontWeight(.bold)
         .foregroundColor(brownColor)
         .padding()
