@@ -273,7 +273,7 @@ struct PlayerView: View {
         Rectangle()
           .frame(width: CGFloat(player.score) * 50, height: 10)
           .foregroundColor(.green)
-          .animation(.easeInOut(duration: 1.0))
+          .animation(.easeInOut(duration: 1.0), value: player.score)
       }
 
     }
