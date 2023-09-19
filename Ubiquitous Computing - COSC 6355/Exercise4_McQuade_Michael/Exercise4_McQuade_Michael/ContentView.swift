@@ -30,6 +30,7 @@ struct Player {
   var name: String
   var score: Int
   var image: String
+  var currentlyDead: Bool = false
 
   mutating func resetScore() {
     score = 0
@@ -51,6 +52,8 @@ struct GameState {
       print("Game is over, restart to play again")
       return
     }
+    player1.currentlyDead = false
+    player2.currentlyDead = false
     let player1Dragon = dragons.randomElement()!
     var player2Dragon = dragons.randomElement()!
     while player1Dragon.name == player2Dragon.name {
@@ -60,9 +63,11 @@ struct GameState {
     if player1Dragon.power > player2Dragon.power {
       gameStatus = "\(player1Dragon.name) is stronger!\n \(player1.name) wins"
       player1.incrementScore()
+      player2.currentlyDead = true
     } else if player1Dragon.power < player2Dragon.power {
       gameStatus = "\(player2Dragon.name) is stronger!\n \(player2.name) wins"
       player2.incrementScore()
+      player1.currentlyDead = true
     }
     // game is over if either player has 3 points
     if player1.score == 3 {
@@ -82,6 +87,8 @@ struct GameState {
     gameOver = false
     player1.resetScore()
     player2.resetScore()
+    player1.currentlyDead = false
+    player2.currentlyDead = false
     gameStatus = "Prepare for the battle!"
     player1.image = "dragon-placeholder"
     player2.image = "dragon-placeholder"
@@ -142,7 +149,7 @@ struct GameView: View {
       VStack {
         Spacer()
         Text(gameState.gameStatus)
-              .frame(width: 300)
+          .frame(width: 300)
           .font(.custom(customFont, size: 28))
           .multilineTextAlignment(.center)
           .fontWeight(.bold)
@@ -240,15 +247,35 @@ struct PlayerScore: View {
 
 struct PlayerView: View {
   var player: Player
+
   var body: some View {
     VStack {
       Text(player.name)
         .font(.custom(customFont, size: 34))
         .fontWeight(.bold)
         .foregroundColor(brownColor)
-      Image(player.image)
-        .resizable()
-        .scaledToFit().frame(width: 150, height: 150)
+
+      ZStack {
+        Image(player.image)
+          .resizable()
+          .scaledToFit().frame(width: 150, height: 150)
+        if player.currentlyDead {
+          Image("x")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 150, height: 150)
+        }
+      }
+      ZStack(alignment: .leading) {
+        Rectangle()
+          .frame(width: 150, height: 10)
+          .foregroundColor(.red)
+        Rectangle()
+          .frame(width: CGFloat(player.score) * 50, height: 10)
+          .foregroundColor(.green)
+          .animation(.easeInOut(duration: 1.0))
+      }
+
     }
     .padding()
   }
