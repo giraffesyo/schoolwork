@@ -142,7 +142,8 @@ struct GameView: View {
       VStack {
         Spacer()
         Text(gameState.gameStatus)
-          .font(.custom(customFont, size: 34))
+              .frame(width: 300)
+          .font(.custom(customFont, size: 28))
           .multilineTextAlignment(.center)
           .fontWeight(.bold)
           .foregroundColor(brownColor)
