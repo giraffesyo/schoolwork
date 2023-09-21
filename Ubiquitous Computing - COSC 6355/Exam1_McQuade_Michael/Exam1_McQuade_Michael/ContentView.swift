@@ -157,8 +157,9 @@ struct GameState: Equatable {
       currentCredit -= currentBet
       sequentialPlayerLosses += 1
     } else {
-      currentCredit += currentBet * 10
-      currentWinCount += 1
+      var winnings = currentBet * 10
+      currentCredit += winnings
+      currentWinCount += winnings
       sequentialPlayerLosses = 0
     }
     currentBet = 1
@@ -381,7 +382,7 @@ struct GamePiece: View, Hashable {
       ? Image(systemName: "questionmark")
       : Image(imageLookup[getImageName(value, win)]!))
       .resizable()
-         .frame(width: 40, height: 40)
+      .frame(width: 40, height: 40)
       .foregroundColor(.blue)
       .background(Color.clear)
       .padding(.horizontal)
