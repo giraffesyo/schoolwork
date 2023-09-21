@@ -381,7 +381,7 @@ struct GamePiece: View, Hashable {
       ? Image(systemName: "questionmark")
       : Image(imageLookup[getImageName(value, win)]!))
       .resizable()
-      //   .frame(width: 50, height: 75)
+         .frame(width: 40, height: 40)
       .foregroundColor(.blue)
       .background(Color.clear)
       .padding(.horizontal)
