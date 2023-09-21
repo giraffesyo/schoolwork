@@ -84,9 +84,10 @@ struct GameView: View {
               .font(.custom("GillSans", size: 30))
               .foregroundColor(.white)
               .padding()
+              .fontWeight(.bold)
 
           }
-        ).frame(width: .infinity).background(blueColor)
+        ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor)
         Button(
           action: {
             // bet button action
@@ -97,13 +98,14 @@ struct GameView: View {
               Image(systemName: "arrow.up")
               Text("Bet")
                 .font(.custom("GillSans", size: 30))
-            }
-            .foregroundColor(.white)
-            .padding()
+                .fontWeight(.bold)
+
+            }.foregroundColor(.white)
+              .padding()
 
           }
-        ).frame(width: .infinity).background(blueColor)
-      }.padding(.horizontal)
+        ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor)
+      }.padding(.horizontal).fixedSize(horizontal: false, vertical: true)
       Spacer()
     }
   }
