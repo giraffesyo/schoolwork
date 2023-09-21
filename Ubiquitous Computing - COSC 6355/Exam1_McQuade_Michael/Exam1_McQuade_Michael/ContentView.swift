@@ -32,6 +32,12 @@ struct ContentView: View {
 struct GameState: Equatable {
 
   static func == (lhs: GameState, rhs: GameState) -> Bool {
+    if lhs.currentCredit != rhs.currentCredit {
+      return false
+    }
+    if lhs.currentBet != rhs.currentBet {
+      return false
+    }
     // check if all game pieces are equal
     for i in 0..<lhs.gameBoard.count {
       for j in 0..<lhs.gameBoard[i].count {
@@ -103,6 +109,12 @@ struct GameState: Equatable {
     currentPlayCount += 1
   }
 
+  mutating func increaseBet() {
+    currentBet *= 2
+    if currentBet >= 1000 {
+      currentBet = 1
+    }
+  }
 }
 
 struct GameView: View {
@@ -157,6 +169,7 @@ struct GameView: View {
           Button(
             action: {
               print("Bet button pressed")
+              gameState.increaseBet()
             },
             label: {
               HStack {
