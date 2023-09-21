@@ -64,8 +64,71 @@ struct GameState: Equatable {
   var currentBet: Int = 1
   var currentWinCount: Int = 0
   var currentPlayCount: Int = 0
+  var sequentialPlayerLosses: Int = 0
   var showingInsufficientCreditAlert: Bool = false
   var showingValidNumberAlert: Bool = false
+
+  // extract generated game board to a function so we can call it
+
+  func generateGameBoard() -> [[GamePiece]] {
+    var gameBoard = [[GamePiece]](
+      repeating: [GamePiece](repeating: GamePiece(), count: 3), count: 3)
+    for i in 0..<gameBoard.count {
+      for j in 0..<gameBoard[i].count {
+        gameBoard[i][j].value = Bool.random() ? "X" : "O"
+      }
+    }
+    return gameBoard
+  }
+
+  // extract check for win to a function so we can call it
+  mutating func checkGameboardForWin() -> Bool {
+    //check if there are three X or three O in a row horizontally, vertically, or diagonally, if so the player loses
+    // set "win" on each game piece when the computer wins, so we can show right icon
+
+    var computerWin = false
+    // check horizontal
+    for i in 0..<gameBoard.count {
+      if gameBoard[i][0].value == gameBoard[i][1].value
+        && gameBoard[i][1].value == gameBoard[i][2].value
+      {
+        computerWin = true
+        gameBoard[i][0].win = true
+        gameBoard[i][1].win = true
+        gameBoard[i][2].win = true
+      }
+    }
+    // check vertical
+    for i in 0..<gameBoard.count {
+      if gameBoard[0][i].value == gameBoard[1][i].value
+        && gameBoard[1][i].value == gameBoard[2][i].value
+      {
+        computerWin = true
+        gameBoard[0][i].win = true
+        gameBoard[1][i].win = true
+        gameBoard[2][i].win = true
+      }
+    }
+    // check diagonal
+    if gameBoard[0][0].value == gameBoard[1][1].value
+      && gameBoard[1][1].value == gameBoard[2][2].value
+    {
+      computerWin = true
+      gameBoard[0][0].win = true
+      gameBoard[1][1].win = true
+      gameBoard[2][2].win = true
+    }
+    // check other diagonal
+    if gameBoard[0][2].value == gameBoard[1][1].value
+      && gameBoard[1][1].value == gameBoard[2][0].value
+    {
+      computerWin = true
+      gameBoard[0][2].win = true
+      gameBoard[1][1].win = true
+      gameBoard[2][0].win = true
+    }
+    return computerWin
+  }
 
   mutating func Play() {
     // check if there is enough credit to play
@@ -74,49 +137,29 @@ struct GameState: Equatable {
       showingInsufficientCreditAlert = true
       return
     }
-    // generate random game board
-    gameBoard = [[GamePiece]](repeating: [GamePiece](repeating: GamePiece(), count: 3), count: 3)
-    for i in 0..<gameBoard.count {
-      for j in 0..<gameBoard[i].count {
-        gameBoard[i][j].value = Bool.random() ? "X" : "O"
-      }
-    }
+
+    gameBoard = generateGameBoard()
 
     // check if there are three in a row horizontally, vertically, or diagonally, if so the player loses
     // if there are no three in a row, the player wins
     // set "win" on each game piece when the computer wins, so we can show right icon
-    var computerWin = true
-    for i in 0..<gameBoard.count {
-      var rowWin = true
-      var colWin = true
-      for j in 0..<gameBoard[i].count {
-        if gameBoard[i][j].value != "X" {
-          rowWin = false
-        }
-        if gameBoard[j][i].value != "X" {
-          colWin = false
-        }
-      }
-      if rowWin || colWin {
-        computerWin = false
-      }
-      if rowWin {
-        for j in 0..<gameBoard[i].count {
-          gameBoard[i][j].win = true
-        }
-      }
-      if colWin {
-        for j in 0..<gameBoard[i].count {
-          gameBoard[j][i].win = true
-        }
+    var computerWin = checkGameboardForWin()
+
+    if sequentialPlayerLosses > 3 {
+      while computerWin {
+        gameBoard = generateGameBoard()
+        computerWin = checkGameboardForWin()
       }
     }
 
     // player wins 10 * current bet, or loses current bet
     if computerWin {
       currentCredit -= currentBet
+      sequentialPlayerLosses += 1
     } else {
       currentCredit += currentBet * 10
+      currentWinCount += 1
+      sequentialPlayerLosses = 0
     }
     currentBet = 1
     currentPlayCount += 1
