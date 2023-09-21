@@ -55,10 +55,6 @@ struct GameState: Equatable {
     if currentCredit < currentBet {
       return
     }
-    // decrement credit
-    currentCredit -= currentBet
-    // increment play count
-    currentPlayCount += 1
     // generate random game board
     gameBoard = [[GamePiece]](repeating: [GamePiece](repeating: GamePiece(), count: 3), count: 3)
     for i in 0..<gameBoard.count {
@@ -66,8 +62,45 @@ struct GameState: Equatable {
         gameBoard[i][j].value = Bool.random() ? "X" : "O"
       }
     }
-    // check if there is a win
 
+    // check if there are three in a row horizontally, vertically, or diagonally, if so the player loses
+    // if there are no three in a row, the player wins
+    // set "win" on each game piece when the computer wins, so we can show right icon
+    var computerWin = true
+    for i in 0..<gameBoard.count {
+      var rowWin = true
+      var colWin = true
+      for j in 0..<gameBoard[i].count {
+        if gameBoard[i][j].value != "X" {
+          rowWin = false
+        }
+        if gameBoard[j][i].value != "X" {
+          colWin = false
+        }
+      }
+      if rowWin || colWin {
+        computerWin = false
+      }
+      if rowWin {
+        for j in 0..<gameBoard[i].count {
+          gameBoard[i][j].win = true
+        }
+      }
+      if colWin {
+        for j in 0..<gameBoard[i].count {
+          gameBoard[j][i].win = true
+        }
+      }
+    }
+
+    // player wins 10 * current bet, or loses current bet
+    if computerWin {
+      currentCredit -= currentBet
+    } else {
+      currentCredit += currentBet * 10
+    }
+    currentBet = 1
+    currentPlayCount += 1
   }
 
 }
