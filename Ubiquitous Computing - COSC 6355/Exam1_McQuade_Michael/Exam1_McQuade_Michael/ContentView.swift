@@ -129,67 +129,75 @@ struct GameView: View {
 
 struct BankView: View {
   @Binding var gameState: GameState
+  @Environment(\.verticalSizeClass) var verticalSizeClass
   var body: some View {
-    VStack {
-      Text("!XO in a row")
-        .font(.custom("GillSans-Bold", size: 50))
-        .foregroundColor(orangeColor)
+    let isLandscape = verticalSizeClass == .compact
+    let layout =
+      isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+    layout {
+      VStack {
+        Text("!XO in a row")
+          .font(.custom("GillSans-Bold", size: 50))
+          .foregroundColor(orangeColor)
+        VStack {
+          HStack {
+
+            Text("Spins:")
+              .font(.custom("GillSans", size: 40))
+            Spacer()
+            Text("\(gameState.currentPlayCount)")
+              .font(.custom("GillSans", size: 40))
+          }.padding(.horizontal)
+
+          HStack {
+            Text("Won:")
+              .font(.custom("GillSans", size: 40))
+            Spacer()
+            Text("\(gameState.currentWinCount)")
+              .font(.custom("GillSans", size: 40))
+          }.padding(.horizontal)
+          HStack {
+            Text("Credit:")
+              .font(.custom("GillSans", size: 40))
+            Spacer()
+            Text("\(gameState.currentCredit)")
+              .font(.custom("GillSans", size: 40))
+          }.padding(.horizontal)
+        }.padding(.vertical)
+          Spacer()
+      }.padding(.horizontal)
       VStack {
         HStack {
-
-          Text("Spins:")
+          TextField("Add Credit", text: .constant(""))
             .font(.custom("GillSans", size: 40))
-          Spacer()
-          Text("\(gameState.currentPlayCount)")
-            .font(.custom("GillSans", size: 40))
-        }.padding(.horizontal)
-
-        HStack {
-          Text("Won:")
-            .font(.custom("GillSans", size: 40))
-          Spacer()
-          Text("\(gameState.currentWinCount)")
-            .font(.custom("GillSans", size: 40))
-        }.padding(.horizontal)
-        HStack {
-          Text("Credit:")
-            .font(.custom("GillSans", size: 40))
-          Spacer()
-          Text("\(gameState.currentCredit)")
-            .font(.custom("GillSans", size: 40))
-        }.padding(.horizontal)
-      }.padding(.vertical)
-      Spacer()
-      HStack {
-        TextField("Add Credit", text: .constant(""))
-          .font(.custom("GillSans", size: 40))
-          .padding()
-          .background(Color.white)
-          .overlay(
-            Rectangle()
-              .stroke(Color.gray, lineWidth: 2)
-          )
-        Text("$")
-          .font(.custom("GillSans", size: 40))
-          .padding()
-          .background(Color.white)
-          .padding(.horizontal)
-
-      }.padding().fixedSize(horizontal: false, vertical: true)
-      Button(
-        action: {
-          print("Add credit button pressed")
-        },
-        label: {
-          Text("Add Credit")
-            .font(.custom("GillSans", size: 30))
-            .foregroundColor(.white)
             .padding()
-            .fontWeight(.bold)
+            .background(Color.white)
+            .overlay(
+              Rectangle()
+                .stroke(Color.gray, lineWidth: 2)
+            )
+          Text("$")
+            .font(.custom("GillSans", size: 40))
+            .padding()
+            .background(Color.white)
+            .padding(.horizontal)
 
-        }
-      ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor).padding(.horizontal)
-      Spacer()
+        }.padding().fixedSize(horizontal: false, vertical: true)
+        Button(
+          action: {
+            print("Add credit button pressed")
+          },
+          label: {
+            Text("Add Credit")
+              .font(.custom("GillSans", size: 30))
+              .foregroundColor(.white)
+              .padding()
+              .fontWeight(.bold)
+
+          }
+        ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor).padding(.horizontal)
+        Spacer()
+      }
     }
   }
 }
