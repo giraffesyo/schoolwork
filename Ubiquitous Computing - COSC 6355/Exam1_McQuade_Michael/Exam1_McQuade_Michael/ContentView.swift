@@ -49,6 +49,27 @@ struct GameState: Equatable {
   var currentBet: Int = 1
   var currentWinCount: Int = 0
   var currentPlayCount: Int = 0
+
+  mutating func Play() {
+    // check if there is enough credit to play
+    if currentCredit < currentBet {
+      return
+    }
+    // decrement credit
+    currentCredit -= currentBet
+    // increment play count
+    currentPlayCount += 1
+    // generate random game board
+    gameBoard = [[GamePiece]](repeating: [GamePiece](repeating: GamePiece(), count: 3), count: 3)
+    for i in 0..<gameBoard.count {
+      for j in 0..<gameBoard[i].count {
+        gameBoard[i][j].value = Bool.random() ? "X" : "O"
+      }
+    }
+    // check if there is a win
+
+  }
+
 }
 
 struct GameView: View {
@@ -86,6 +107,7 @@ struct GameView: View {
           Button(
             action: {
               print("Play button pressed")
+              gameState.Play()
             },
             label: {
               Text("Play")
@@ -164,7 +186,7 @@ struct BankView: View {
               .font(.custom("GillSans", size: 40))
           }.padding(.horizontal)
         }.padding(.vertical)
-          Spacer()
+        Spacer()
       }.padding(.horizontal)
       VStack {
         HStack {
@@ -202,12 +224,31 @@ struct BankView: View {
   }
 }
 
+let imageLookup: [String: String] = [
+  "win_X": "cross_1",
+  "win_O": "circle_1",
+  "X": "cross_0",
+  "O": "circle_0",
+]
+
+func getImageName(_ value: String, _ win: Bool) -> String {
+  if win {
+    return "win_\(value)"
+  } else {
+    return value
+  }
+}
+
 struct GamePiece: View, Hashable {
 
   var id = UUID()
+  var value: String = ""
+  var win: Bool = false
 
   var body: some View {
-    Image(systemName: "questionmark")
+    (value == ""
+      ? Image(systemName: "questionmark")
+      : Image(imageLookup[getImageName(value, win)]!))
       .resizable()
       //   .frame(width: 50, height: 75)
       .foregroundColor(.blue)
