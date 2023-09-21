@@ -65,6 +65,7 @@ struct GameState: Equatable {
   var currentWinCount: Int = 0
   var currentPlayCount: Int = 0
   var showingInsufficientCreditAlert: Bool = false
+  var showingValidNumberAlert: Bool = false
 
   mutating func Play() {
     // check if there is enough credit to play
@@ -119,6 +120,14 @@ struct GameState: Equatable {
     }
     currentBet = 1
     currentPlayCount += 1
+  }
+
+  mutating func addCredit(_ amount: String) {
+    guard let amount = Int(amount) else {
+      showingValidNumberAlert = true
+      return
+    }
+    currentCredit += amount
   }
 
   mutating func increaseBet() {
@@ -219,6 +228,7 @@ struct GameView: View {
 
 struct BankView: View {
   @Binding var gameState: GameState
+  @State var creditToAdd: String = "0"
   @Environment(\.verticalSizeClass) var verticalSizeClass
   var body: some View {
     let isLandscape = verticalSizeClass == .compact
@@ -258,7 +268,7 @@ struct BankView: View {
       }.padding(.horizontal)
       VStack {
         HStack {
-          TextField("Add Credit", text: .constant(""))
+          TextField("Add Credit", text: $creditToAdd)
             .font(.custom("GillSans", size: 40))
             .padding()
             .background(Color.white)
@@ -276,6 +286,8 @@ struct BankView: View {
         Button(
           action: {
             print("Add credit button pressed")
+            gameState.addCredit(creditToAdd)
+            creditToAdd = "0"
           },
           label: {
             Text("Add Credit")
@@ -286,6 +298,14 @@ struct BankView: View {
 
           }
         ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor).padding(.horizontal)
+          .alert("Please enter a valid number", isPresented: $gameState.showingValidNumberAlert) {
+            Button(role: .cancel) {
+            } label: {
+              Text("OK")
+            }
+          } message: {
+            Text("Please add more credit at the bank tab.")
+          }
         Spacer()
       }
     }
