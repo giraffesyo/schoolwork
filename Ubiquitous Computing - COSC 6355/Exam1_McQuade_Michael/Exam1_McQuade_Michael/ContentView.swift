@@ -53,56 +53,74 @@ struct GameState: Equatable {
 
 struct GameView: View {
   @Binding var gameState: GameState
+  @Environment(\.verticalSizeClass) var verticalSizeClass
   var body: some View {
+    let isLandscape = verticalSizeClass == .compact
+    let layout =
+      isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
     VStack {
-      Text("!XO in a row")
-        .font(.custom("GillSans-Bold", size: 50))
-        .foregroundColor(orangeColor)
-      HStack {
-        Text("Credit: \(gameState.currentCredit)")
-          .font(.custom("GillSans", size: 40))
-        Text("Bet: \(gameState.currentBet)")
-          .font(.custom("GillSans", size: 40))
-      }.padding(.vertical)
 
-      ForEach(gameState.gameBoard, id: \.self) { row in
+      layout {
+        Text("!XO in a row")
+          .font(.custom("GillSans-Bold", size: 50))
+          .foregroundColor(orangeColor).padding(.horizontal)
         HStack {
-          ForEach(row, id: \.self) { piece in
-            piece
-          }
-        }
-      }.padding(.vertical)
-      HStack {
-        Button(
-          action: {
-            print("Play button pressed")
-          },
-          label: {
-            Text("Play")
-              .font(.custom("GillSans", size: 30))
-              .foregroundColor(.white)
-              .padding()
-              .fontWeight(.bold)
+          Text("Credit: \(gameState.currentCredit)")
+            .font(.custom("GillSans", size: 40))
+          Text("Bet: \(gameState.currentBet)")
+            .font(.custom("GillSans", size: 40))
+        }.padding(.vertical)
+      }
 
-          }
-        ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor)
-        Button(
-          action: {
-            print("Bet button pressed")
-          },
-          label: {
+      layout {
+        VStack {
+          ForEach(gameState.gameBoard, id: \.self) { row in
             HStack {
-              Image(systemName: "arrow.up")
-              Text("Bet")
+              ForEach(row, id: \.self) { piece in
+                piece
+              }
+            }
+          }.padding(.vertical)
+        }
+        HStack {
+          Button(
+            action: {
+              print("Play button pressed")
+            },
+            label: {
+              Text("Play")
                 .font(.custom("GillSans", size: 30))
+                .foregroundColor(.white)
+                .padding()
                 .fontWeight(.bold)
 
-            }.foregroundColor(.white)
-              .padding()
+            }
+          )
+          .frame(maxWidth: .infinity)
+          .frame(height: 125)
+          .background(blueColor)
+          Button(
+            action: {
+              print("Bet button pressed")
+            },
+            label: {
+              HStack {
+                Image(systemName: "arrow.up")
+                Text("Bet")
+                  .font(.custom("GillSans", size: 30))
+                  .fontWeight(.bold)
 
-          }
-        ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor)
-      }.padding(.horizontal).fixedSize(horizontal: false, vertical: true)
+              }.foregroundColor(.white)
+                .padding()
+
+            }
+          )
+          .frame(maxWidth: .infinity)
+          .frame(height: 125)
+          .background(blueColor)
+        }.padding(.horizontal).fixedSize(horizontal: false, vertical: true)
+      }
+
       Spacer()
     }
   }
@@ -183,7 +201,7 @@ struct GamePiece: View, Hashable {
   var body: some View {
     Image(systemName: "questionmark")
       .resizable()
-      .frame(width: 50, height: 75)
+      //   .frame(width: 50, height: 75)
       .foregroundColor(.blue)
       .background(Color.clear)
       .padding(.horizontal)
