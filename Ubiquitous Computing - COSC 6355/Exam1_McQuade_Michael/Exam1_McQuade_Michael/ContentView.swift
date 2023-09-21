@@ -145,7 +145,7 @@ struct GameState: Equatable {
     // set "win" on each game piece when the computer wins, so we can show right icon
     var computerWin = checkGameboardForWin()
 
-    if sequentialPlayerLosses > 3 {
+    if sequentialPlayerLosses >= 3 {
       while computerWin {
         gameBoard = generateGameBoard()
         computerWin = checkGameboardForWin()
