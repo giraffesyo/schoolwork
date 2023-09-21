@@ -35,6 +35,15 @@ struct GameState: Equatable {
     if lhs.currentCredit != rhs.currentCredit {
       return false
     }
+    if lhs.currentPlayCount != rhs.currentPlayCount {
+      return false
+    }
+    if lhs.currentWinCount != rhs.currentWinCount {
+      return false
+    }
+    if lhs.showingInsufficientCreditAlert != rhs.showingInsufficientCreditAlert {
+      return false
+    }
     if lhs.currentBet != rhs.currentBet {
       return false
     }
@@ -55,10 +64,13 @@ struct GameState: Equatable {
   var currentBet: Int = 1
   var currentWinCount: Int = 0
   var currentPlayCount: Int = 0
+  var showingInsufficientCreditAlert: Bool = false
 
   mutating func Play() {
     // check if there is enough credit to play
     if currentCredit < currentBet {
+      // not enough credit to play, alert user
+      showingInsufficientCreditAlert = true
       return
     }
     // generate random game board
@@ -165,7 +177,17 @@ struct GameView: View {
           )
           .frame(maxWidth: .infinity)
           .frame(height: 125)
-          .background(blueColor)
+          .background(blueColor).alert(
+            "Not enough credit!",
+            isPresented: $gameState.showingInsufficientCreditAlert
+          ) {
+            Button(role: .cancel) {
+            } label: {
+              Text("OK")
+            }
+          } message: {
+            Text("Please add more credit at the bank tab.")
+          }
           Button(
             action: {
               print("Bet button pressed")
