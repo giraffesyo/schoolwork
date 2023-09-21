@@ -10,15 +10,17 @@ import SwiftUI
 let orangeColor = Color(red: 242 / 255, green: 103 / 255, blue: 28 / 255)
 let blueColor = Color(red: 40 / 255, green: 124 / 255, blue: 180 / 255)
 struct ContentView: View {
+  @State var gameState = GameState(
+    gameBoard: [[GamePiece]](repeating: [GamePiece](repeating: GamePiece(), count: 3), count: 3))
   var body: some View {
     // two tabs, Game and Bank
     TabView {
-      GameView()
+      GameView(gameState: $gameState)
         .tabItem {
           Image(systemName: "gamecontroller")
           Text("Game")
         }
-      BankView()
+      BankView(gameState: $gameState)
         .tabItem {
           Image(systemName: "dollarsign.circle")
           Text("Bank")
@@ -46,11 +48,11 @@ struct GameState: Equatable {
   var currentCredit: Int = 100
   var currentBet: Int = 1
   var currentWinCount: Int = 0
+  var currentPlayCount: Int = 0
 }
 
 struct GameView: View {
-  @State var gameState = GameState(
-    gameBoard: [[GamePiece]](repeating: [GamePiece](repeating: GamePiece(), count: 3), count: 3))
+  @Binding var gameState: GameState
   var body: some View {
     VStack {
       Text("!XO in a row")
@@ -63,7 +65,6 @@ struct GameView: View {
           .font(.custom("GillSans", size: 40))
       }.padding(.vertical)
 
-      // embed game board, where each row is a horizontal stack of game pieces
       ForEach(gameState.gameBoard, id: \.self) { row in
         HStack {
           ForEach(row, id: \.self) { piece in
@@ -71,12 +72,9 @@ struct GameView: View {
           }
         }
       }.padding(.vertical)
-
-      // Play button and Bet button, Bet  has up arrow on left side of label
       HStack {
         Button(
           action: {
-            // play button action
             print("Play button pressed")
           },
           label: {
@@ -90,7 +88,6 @@ struct GameView: View {
         ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor)
         Button(
           action: {
-            // bet button action
             print("Bet button pressed")
           },
           label: {
@@ -113,12 +110,68 @@ struct GameView: View {
 }
 
 struct BankView: View {
+  @Binding var gameState: GameState
   var body: some View {
     VStack {
-      Text("Bank")
-        .font(.largeTitle)
-        .fontWeight(.heavy)
-      Text("Bank goes here")
+      Text("!XO in a row")
+        .font(.custom("GillSans-Bold", size: 50))
+        .foregroundColor(orangeColor)
+      VStack {
+        HStack {
+
+          Text("Spins:")
+            .font(.custom("GillSans", size: 40))
+          Spacer()
+          Text("\(gameState.currentPlayCount)")
+            .font(.custom("GillSans", size: 40))
+        }.padding(.horizontal)
+
+        HStack {
+          Text("Won:")
+            .font(.custom("GillSans", size: 40))
+          Spacer()
+          Text("\(gameState.currentWinCount)")
+            .font(.custom("GillSans", size: 40))
+        }.padding(.horizontal)
+        HStack {
+          Text("Credit:")
+            .font(.custom("GillSans", size: 40))
+          Spacer()
+          Text("\(gameState.currentCredit)")
+            .font(.custom("GillSans", size: 40))
+        }.padding(.horizontal)
+      }.padding(.vertical)
+      Spacer()
+      HStack {
+        TextField("Add Credit", text: .constant(""))
+          .font(.custom("GillSans", size: 40))
+          .padding()
+          .background(Color.white)
+          .overlay(
+            Rectangle()
+              .stroke(Color.gray, lineWidth: 2)
+          )
+        Text("$")
+          .font(.custom("GillSans", size: 40))
+          .padding()
+          .background(Color.white)
+          .padding(.horizontal)
+
+      }.padding().fixedSize(horizontal: false, vertical: true)
+      Button(
+        action: {
+          print("Add credit button pressed")
+        },
+        label: {
+          Text("Add Credit")
+            .font(.custom("GillSans", size: 30))
+            .foregroundColor(.white)
+            .padding()
+            .fontWeight(.bold)
+
+        }
+      ).frame(maxWidth: .infinity).frame(height: 125).background(blueColor).padding(.horizontal)
+      Spacer()
     }
   }
 }
