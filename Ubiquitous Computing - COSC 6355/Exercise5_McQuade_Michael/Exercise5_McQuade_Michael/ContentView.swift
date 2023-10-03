@@ -66,16 +66,23 @@ struct ContentView: View {
   }
 
   var body: some View {
-    VStack {
-        NavigationStack{
-            List(restaurants) { restaurant in
-                NavigationLink(destination:  RestaurantDetail(restaurant: restaurant)) {
-                    RestaurantRow(restaurant: restaurant)
-                }
-            }.task {
-                await fetchRestaurants()
-            }}
-    }
+
+    NavigationStack {
+      ZStack {
+        Color.white
+          .ignoresSafeArea()
+        List {
+          ForEach(restaurants) {
+            restaurant in
+            RestaurantRow(restaurant: restaurant)
+          }
+        }.task {
+          await fetchRestaurants()
+        }
+
+      }
+
+    }.scrollContentBackground(.hidden)
   }
 }
 
@@ -83,14 +90,16 @@ struct RestaurantRow: View {
   var restaurant: Restaurant
 
   var body: some View {
-    HStack {
-      AsyncImage(url: restaurant.logo) { image in
-        image.resizable()
-      } placeholder: {
-        ProgressView()
-      }.frame(width: 100, height: 75)
-      Spacer()
-      Text(restaurant.free).font(.title2).bold()
+    NavigationLink(destination: RestaurantDetail(restaurant: restaurant)) {
+      HStack {
+        AsyncImage(url: restaurant.logo) { image in
+          image.resizable()
+        } placeholder: {
+          ProgressView()
+        }.frame(width: 100, height: 75)
+        Spacer()
+        Text(restaurant.free).font(.title2).bold()
+      }
     }
   }
 }
