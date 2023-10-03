@@ -11,6 +11,7 @@
 		514C33292ACBAA26003FF886 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514C33282ACBAA26003FF886 /* ContentView.swift */; };
 		514C332B2ACBAA27003FF886 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514C332A2ACBAA27003FF886 /* Assets.xcassets */; };
 		514C332E2ACBAA27003FF886 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514C332D2ACBAA27003FF886 /* Preview Assets.xcassets */; };
+		514C33352ACBAB1B003FF886 /* restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514C33342ACBAB1B003FF886 /* restaurant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		514C33282ACBAA26003FF886 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		514C332A2ACBAA27003FF886 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514C332D2ACBAA27003FF886 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		514C33342ACBAB1B003FF886 /* restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = restaurant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				514C33262ACBAA26003FF886 /* Exercise5_McQuade_MichaelApp.swift */,
+				514C33342ACBAB1B003FF886 /* restaurant.swift */,
 				514C33282ACBAA26003FF886 /* ContentView.swift */,
 				514C332A2ACBAA27003FF886 /* Assets.xcassets */,
 				514C332C2ACBAA27003FF886 /* Preview Content */,
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				514C33352ACBAB1B003FF886 /* restaurant.swift in Sources */,
 				514C33292ACBAA26003FF886 /* ContentView.swift in Sources */,
 				514C33272ACBAA26003FF886 /* Exercise5_McQuade_MichaelApp.swift in Sources */,
 			);

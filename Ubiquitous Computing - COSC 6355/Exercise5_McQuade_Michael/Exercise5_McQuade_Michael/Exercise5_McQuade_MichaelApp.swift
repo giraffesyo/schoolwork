@@ -7,11 +7,16 @@
 
 import SwiftUI
 
+struct Response: Codable {
+  var restaurants: [Restaurant]
+}
+
 @main
 struct Exercise5_McQuade_MichaelApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
     }
+  }
 }
