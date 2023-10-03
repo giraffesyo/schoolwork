@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-struct Response: Codable {
-  var restaurants: [Restaurant]
-}
-
 @main
 struct Exercise5_McQuade_MichaelApp: App {
 
