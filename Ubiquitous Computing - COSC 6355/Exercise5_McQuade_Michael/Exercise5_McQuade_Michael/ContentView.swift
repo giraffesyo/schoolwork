@@ -27,7 +27,7 @@ struct ContentView: View {
           let decoder = JSONDecoder()
           let r = try decoder.decode([Restaurant].self, from: data)
           // replace http with https on map and logo
-        restaurants = r.map { restaurant in
+          restaurants = r.map { restaurant in
             guard
               let logo = URL(
                 string:
@@ -67,13 +67,14 @@ struct ContentView: View {
 
   var body: some View {
     VStack {
-      List(restaurants) { restaurant in
-        //                        NavigationLink(destination: RestaurantDetail(restaurant: restaurant)) {
-        RestaurantRow(restaurant: restaurant)
-        //                        }
-      }.task {
-        await fetchRestaurants()
-      }
+        NavigationStack{
+            List(restaurants) { restaurant in
+                NavigationLink(destination:  RestaurantDetail(restaurant: restaurant)) {
+                    RestaurantRow(restaurant: restaurant)
+                }
+            }.task {
+                await fetchRestaurants()
+            }}
     }
   }
 }
@@ -87,8 +88,9 @@ struct RestaurantRow: View {
         image.resizable()
       } placeholder: {
         ProgressView()
-      }
-      Text(restaurant.name)
+      }.frame(width: 100, height: 75)
+      Spacer()
+      Text(restaurant.free).font(.title2).bold()
     }
   }
 }
