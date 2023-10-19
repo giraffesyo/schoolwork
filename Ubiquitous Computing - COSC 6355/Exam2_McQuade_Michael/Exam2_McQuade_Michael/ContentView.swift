@@ -5,6 +5,7 @@
 //  Created by Michael McQuade on 10/19/23.
 //
 
+import MapKit
 import SwiftUI
 
 let CustomGreen = Color(red: 0, green: 0.365, blue: 0.467)
@@ -83,7 +84,7 @@ struct FindableRow: View {
   @Binding var findable: Findable
 
   var body: some View {
-      NavigationLink(destination: FindableDetail(findable: $findable)) {
+    NavigationLink(destination: FindableDetail(findable: $findable)) {
       VStack(alignment: .leading) {
         HStack {
           Text(findable.name)
@@ -122,9 +123,9 @@ struct FindableInfo: View {
   @Binding var findable: Findable
   @Environment(\.verticalSizeClass) var verticalSizeClass
   var body: some View {
-  let isLandscape = verticalSizeClass == .compact
-  let layout =
-    isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+    let isLandscape = verticalSizeClass == .compact
+    let layout =
+      isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
 
     layout {
 
@@ -144,6 +145,7 @@ struct FindableInfo: View {
 struct FindableMap: View {
   @Binding var findable: Findable
   @Environment(\.verticalSizeClass) var verticalSizeClass
+
   var body: some View {
     let isLandscape = verticalSizeClass == .compact
     let layout =
@@ -153,14 +155,32 @@ struct FindableMap: View {
 
       VStack {
 
-        Text(findable.name)
-          .padding().bold().foregroundColor(.blue)
-
-        Text("Distance: \(findable.distance)")
-        Text("At: \(findable.location)").multilineTextAlignment(.center).padding(.bottom)
-        Text("You are: \(findable.type)")
-      }.font(.system(size: CGFloat(45))).foregroundColor(CustomGreen)
+        MapView(findable: $findable)
+          .frame(width: .infinity, height: .infinity)
+      }
     }
+  }
+}
+
+struct MapView: UIViewRepresentable {
+  @Binding var findable: Findable
+  func updateUIView(_ view: MKMapView, context: Context) {
+    let coordinate = CLLocationCoordinate2D(
+      latitude: findable.lati, longitude: findable.longi)
+    let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
+    let region = MKCoordinateRegion(center: coordinate, span: span)
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = coordinate
+    annotation.title = findable.name
+    annotation.subtitle = findable.location
+    view.setRegion(region, animated: true)
+    view.addAnnotation(annotation)
+  }
+  /**
+     - Description - Replace the body with a make UIView(context:) method that creates and return an empty MKMapView
+     */
+  func makeUIView(context: Context) -> MKMapView {
+    MKMapView(frame: .zero)
   }
 }
 
