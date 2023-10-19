@@ -12,7 +12,7 @@ let CustomGreen = Color(red: 0, green: 0.365, blue: 0.467)
 
 struct ContentView: View {
   @State private var findables = [Findable]()
-
+  @State private var currentFilter = "Everyone"
   func fetchFindables() async {
 
     guard
@@ -50,25 +50,15 @@ struct ContentView: View {
     task.resume()
     print(findables)
   }
-  // print people
-  // print out the people
 
   var body: some View {
     VStack {
       NavigationStack {
-
-        Text("Everyone")
-          .font(.largeTitle)
-          // color blue
-          .foregroundColor(.blue)
-          .fontWeight(.bold)
-        Text("somewhere near me")
-          .font(.largeTitle)
-          .frame(maxWidth: 200).multilineTextAlignment(.center)
-          .foregroundColor(CustomGreen)
-          .fontWeight(.bold)
+        // when you tap on vstack it will go to FilterView
+        NavigationLink(destination: FilterView(currentFilter: $currentFilter)) {
+          CurrentFilterView(currentFilter: $currentFilter)
+        }
         Spacer()
-        // UI Table with all the people
         List($findables) { findable in
           FindableRow(findable: findable)
         }
@@ -77,6 +67,66 @@ struct ContentView: View {
       await fetchFindables()
     }
 
+  }
+}
+
+struct CurrentFilterView: View {
+  @Binding var currentFilter: String
+  var onChangeFilterScreen = false
+  var body: some View {
+    VStack {
+      Text(currentFilter)
+        .font(.largeTitle)
+        // color blue
+        .foregroundColor(!onChangeFilterScreen ? .blue : .black)
+        .fontWeight(.bold)
+      Text("somewhere near me")
+        .font(.largeTitle)
+        .frame(maxWidth: 200).multilineTextAlignment(.center)
+        .foregroundColor(CustomGreen)
+        .fontWeight(.bold)
+    }
+  }
+}
+
+struct FilterTypes {
+  static let everyone = "Everyone"
+  static let friends = "Friends"
+  static let closeFriends = "Close friends"
+  static let relatives = "Relatives"
+  static let colleagues = "Colleagues"
+}
+
+// View for changing the filter of the list
+struct FilterView: View {
+  @Environment(\.dismiss) private var dismiss
+
+  @Binding var currentFilter: String
+  func setFilter(filter: String) {
+    currentFilter = filter
+    dismiss()
+  }
+  var body: some View {
+    VStack {
+      CurrentFilterView(currentFilter: $currentFilter, onChangeFilterScreen: true)
+      List {
+        Text(FilterTypes.everyone).onTapGesture {
+          setFilter(filter: FilterTypes.everyone)
+        }
+        Text(FilterTypes.friends).onTapGesture {
+          setFilter(filter: FilterTypes.friends)
+        }
+        Text(FilterTypes.closeFriends).onTapGesture {
+          setFilter(filter: FilterTypes.closeFriends)
+        }
+        Text(FilterTypes.relatives).onTapGesture {
+          setFilter(filter: FilterTypes.relatives)
+        }
+        Text(FilterTypes.colleagues).onTapGesture {
+          setFilter(filter: FilterTypes.colleagues)
+        }
+      }.foregroundColor(.blue).font(.system(size: CGFloat(35))).bold()
+    }
   }
 }
 
