@@ -59,8 +59,16 @@ struct ContentView: View {
           CurrentFilterView(currentFilter: $currentFilter)
         }
         Spacer()
-        List($findables) { findable in
-          FindableRow(findable: findable)
+        // List($findables) { findable in
+        //   FindableRow(findable: findable)
+        // }
+        // for each loop over $findables, with if statement for current filter
+        List {
+          ForEach($findables) { findable in
+
+            FindableRow(findable: findable, currentFilter: $currentFilter)
+
+          }
         }
       }
     }.task {
@@ -132,19 +140,25 @@ struct FilterView: View {
 
 struct FindableRow: View {
   @Binding var findable: Findable
-
+  @Binding var currentFilter: String
   var body: some View {
-    NavigationLink(destination: FindableDetail(findable: $findable)) {
-      VStack(alignment: .leading) {
-        HStack {
-          Text(findable.name)
-            .font(.system(size: CGFloat(25)))
-            .fontWeight(.bold).lineLimit(1)
-          Text("\(findable.distance) miles")
-            .font(.system(size: CGFloat(15)))
-            .fontWeight(.bold)
+    if currentFilter == FilterTypes.everyone
+      || currentFilter == findable.type
+    {
+      return AnyView(NavigationLink(destination: FindableDetail(findable: $findable)) {
+        VStack(alignment: .leading) {
+          HStack {
+            Text(findable.name)
+              .font(.system(size: CGFloat(25)))
+              .fontWeight(.bold).lineLimit(1)
+            Text("\(findable.distance) miles")
+              .font(.system(size: CGFloat(15)))
+              .fontWeight(.bold)
+          }
         }
-      }
+      })
+    } else {
+      return AnyView(EmptyView())
     }
   }
 }
