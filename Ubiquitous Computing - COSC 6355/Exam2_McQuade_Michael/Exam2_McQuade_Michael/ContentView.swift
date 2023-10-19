@@ -139,8 +139,8 @@ struct FindableRow: View {
         HStack {
           Text(findable.name)
             .font(.system(size: CGFloat(25)))
-            .fontWeight(.bold)
-          Text("\(findable.distance) miles away")
+            .fontWeight(.bold).lineLimit(1)
+          Text("\(findable.distance) miles")
             .font(.system(size: CGFloat(15)))
             .fontWeight(.bold)
         }
