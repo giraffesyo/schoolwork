@@ -54,34 +54,113 @@ struct ContentView: View {
 
   var body: some View {
     VStack {
-      Text("Everyone")
-        .font(.largeTitle)
-        // color blue
-        .foregroundColor(.blue)
-        .fontWeight(.bold)
-      Text("somewhere near me")
-        .font(.largeTitle)
-        .frame(maxWidth: 200).multilineTextAlignment(.center)
-        .foregroundColor(CustomGreen)
-        .fontWeight(.bold)
-      Spacer()
-      // UI Table with all the people
-      List(findables) { findable in
-        VStack(alignment: .leading) {
-          HStack {
-            Text(findable.name)
-              .font(.system(size: CGFloat(25)))
-              .fontWeight(.bold)
-            Text("\(findable.distance) miles away")
-              .font(.system(size: CGFloat(15)))
-              .fontWeight(.bold)
-          }
+      NavigationStack {
+
+        Text("Everyone")
+          .font(.largeTitle)
+          // color blue
+          .foregroundColor(.blue)
+          .fontWeight(.bold)
+        Text("somewhere near me")
+          .font(.largeTitle)
+          .frame(maxWidth: 200).multilineTextAlignment(.center)
+          .foregroundColor(CustomGreen)
+          .fontWeight(.bold)
+        Spacer()
+        // UI Table with all the people
+        List($findables) { findable in
+          FindableRow(findable: findable)
         }
       }
     }.task {
       await fetchFindables()
     }
 
+  }
+}
+
+struct FindableRow: View {
+  @Binding var findable: Findable
+
+  var body: some View {
+      NavigationLink(destination: FindableDetail(findable: $findable)) {
+      VStack(alignment: .leading) {
+        HStack {
+          Text(findable.name)
+            .font(.system(size: CGFloat(25)))
+            .fontWeight(.bold)
+          Text("\(findable.distance) miles away")
+            .font(.system(size: CGFloat(15)))
+            .fontWeight(.bold)
+        }
+      }
+    }
+  }
+}
+
+struct FindableDetail: View {
+  @Binding var findable: Findable
+  var body: some View {
+
+    TabView {
+      FindableInfo(findable: $findable)
+        .tabItem {
+          Image(systemName: "info.circle")
+          Text("Details")
+        }
+      FindableMap(findable: $findable)
+        .tabItem {
+          Image(systemName: "map")
+          Text("Map")
+        }
+    }
+
+  }
+}
+
+struct FindableInfo: View {
+  @Binding var findable: Findable
+  @Environment(\.verticalSizeClass) var verticalSizeClass
+  var body: some View {
+  let isLandscape = verticalSizeClass == .compact
+  let layout =
+    isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+
+    layout {
+
+      VStack {
+
+        Text(findable.name)
+          .padding().bold().foregroundColor(.blue)
+
+        Text("Distance: \(findable.distance)")
+        Text("At: \(findable.location)").multilineTextAlignment(.center).padding(.bottom)
+        Text("You are: \(findable.type)")
+      }.font(.system(size: CGFloat(45))).foregroundColor(CustomGreen)
+    }
+  }
+}
+
+struct FindableMap: View {
+  @Binding var findable: Findable
+  @Environment(\.verticalSizeClass) var verticalSizeClass
+  var body: some View {
+    let isLandscape = verticalSizeClass == .compact
+    let layout =
+      isLandscape ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+
+    layout {
+
+      VStack {
+
+        Text(findable.name)
+          .padding().bold().foregroundColor(.blue)
+
+        Text("Distance: \(findable.distance)")
+        Text("At: \(findable.location)").multilineTextAlignment(.center).padding(.bottom)
+        Text("You are: \(findable.type)")
+      }.font(.system(size: CGFloat(45))).foregroundColor(CustomGreen)
+    }
   }
 }
 
