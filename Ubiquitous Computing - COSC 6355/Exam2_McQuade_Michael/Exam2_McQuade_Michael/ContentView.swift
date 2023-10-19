@@ -183,7 +183,7 @@ struct FindableDetail: View {
         .tabItem {
           Image(systemName: "map")
           Text("Map")
-        }
+        }.edgesIgnoringSafeArea(.horizontal)
     }
 
   }
