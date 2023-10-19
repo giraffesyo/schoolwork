@@ -21,6 +21,7 @@
 		514863762AE1D0E60028751E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514863792AE1D0E60028751E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		514863802AE1D37F0028751E /* findable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = findable.swift; sourceTree = "<group>"; };
+		514863862AE1F4DF0028751E /* Exam2-McQuade-Michael-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Exam2-McQuade-Michael-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 		514863712AE1D0E40028751E /* Exam2_McQuade_Michael */ = {
 			isa = PBXGroup;
 			children = (
+				514863862AE1F4DF0028751E /* Exam2-McQuade-Michael-Info.plist */,
 				514863722AE1D0E40028751E /* Exam2_McQuade_MichaelApp.swift */,
 				514863742AE1D0E40028751E /* ContentView.swift */,
 				514863762AE1D0E60028751E /* Assets.xcassets */,
@@ -274,6 +276,8 @@
 				DEVELOPMENT_TEAM = R4VGXX56KF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Exam2-McQuade-Michael-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Used to calculate how far away your friends are";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,6 +307,8 @@
 				DEVELOPMENT_TEAM = R4VGXX56KF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Exam2-McQuade-Michael-Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Used to calculate how far away your friends are";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

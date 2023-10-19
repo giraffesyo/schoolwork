@@ -10,10 +10,32 @@ import SwiftUI
 
 let CustomGreen = Color(red: 0, green: 0.365, blue: 0.467)
 
+// Calculates the distance between two sets of Coordinates
+func CalculateDistance(
+  lat1: Double, lon1: Double, lat2: Double, lon2: Double
+) -> Double {
+  let R = 6371.0  // Radius of the earth in km
+  let dLat = deg2rad(deg: lat2 - lat1)  // deg2rad below
+  let dLon = deg2rad(deg: lon2 - lon1)
+  let a =
+    sin(dLat / 2) * sin(dLat / 2) + cos(deg2rad(deg: lat1))
+    * cos(deg2rad(deg: lat2)) * sin(dLon / 2) * sin(dLon / 2)
+  let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+  let d = R * c  // Distance in km
+  return d
+}
+
+func deg2rad(deg: Double) -> Double {
+  return deg * (Double.pi / 180)
+}
+
 struct ContentView: View {
   @State private var findables = [Findable]()
   @State private var currentFilter = "Everyone"
   func fetchFindables() async {
+    var locManager = CLLocationManager()
+    locManager.requestWhenInUseAuthorization()
+    var currentLocation: CLLocation!
 
     guard
       let url = URL(
@@ -30,9 +52,25 @@ struct ContentView: View {
           let decoder = JSONDecoder()
           let f = try decoder.decode([Findable].self, from: data)
           findables = f.map { findable in
+
+            var distance = findable.distance
+            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse
+              || CLLocationManager.authorizationStatus() == .authorizedAlways
+            {
+              currentLocation = locManager.location
+              let lat = currentLocation.coordinate.latitude
+              let lon = currentLocation.coordinate.longitude
+              distance = Int(
+                CalculateDistance(
+                  lat1: lat, lon1: lon, lat2: findable.lati, lon2: findable.longi
+                )
+              )
+                
+            }
+
             return Findable(
               id: findable.id,
-              distance: findable.distance,
+              distance: distance,
               type: findable.type,
               name: findable.name,
               location: findable.location,
