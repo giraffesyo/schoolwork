@@ -81,12 +81,11 @@ struct ContentView: View {
 struct CurrentFilterView: View {
   @Binding var currentFilter: String
   var onChangeFilterScreen = false
-    
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+
+  @Environment(\.verticalSizeClass) var verticalSizeClass
 
   var body: some View {
-      let isLandscape = verticalSizeClass == .compact
+    let isLandscape = verticalSizeClass == .compact
     VStack {
       Text(currentFilter)
         .font(.largeTitle)
