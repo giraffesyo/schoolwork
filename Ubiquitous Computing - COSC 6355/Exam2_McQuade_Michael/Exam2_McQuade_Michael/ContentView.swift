@@ -81,7 +81,12 @@ struct ContentView: View {
 struct CurrentFilterView: View {
   @Binding var currentFilter: String
   var onChangeFilterScreen = false
+    
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+
   var body: some View {
+      let isLandscape = verticalSizeClass == .compact
     VStack {
       Text(currentFilter)
         .font(.largeTitle)
@@ -90,7 +95,7 @@ struct CurrentFilterView: View {
         .fontWeight(.bold)
       Text("somewhere near me")
         .font(.largeTitle)
-        .frame(maxWidth: 200).multilineTextAlignment(.center)
+        .frame(maxWidth: isLandscape ? .infinity : 200).multilineTextAlignment(.center)
         .foregroundColor(CustomGreen)
         .fontWeight(.bold)
     }
@@ -145,18 +150,19 @@ struct FindableRow: View {
     if currentFilter == FilterTypes.everyone
       || currentFilter == findable.type
     {
-      return AnyView(NavigationLink(destination: FindableDetail(findable: $findable)) {
-        VStack(alignment: .leading) {
-          HStack {
-            Text(findable.name)
-              .font(.system(size: CGFloat(25)))
-              .fontWeight(.bold).lineLimit(1)
-            Text("\(findable.distance) miles")
-              .font(.system(size: CGFloat(15)))
-              .fontWeight(.bold)
+      return AnyView(
+        NavigationLink(destination: FindableDetail(findable: $findable)) {
+          VStack(alignment: .leading) {
+            HStack {
+              Text(findable.name)
+                .font(.system(size: CGFloat(25)))
+                .fontWeight(.bold).lineLimit(1)
+              Text("\(findable.distance) miles")
+                .font(.system(size: CGFloat(15)))
+                .fontWeight(.bold)
+            }
           }
-        }
-      })
+        })
     } else {
       return AnyView(EmptyView())
     }
@@ -235,8 +241,7 @@ struct MapView: UIViewRepresentable {
     let region = MKCoordinateRegion(center: coordinate, span: span)
     let annotation = MKPointAnnotation()
     annotation.coordinate = coordinate
-    annotation.title = findable.name
-    annotation.subtitle = findable.location
+    annotation.title = "\(findable.name) is here!"
     view.setRegion(region, animated: true)
     view.addAnnotation(annotation)
   }
