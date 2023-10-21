@@ -72,8 +72,13 @@ struct ExerciseListRowView: View {
         .frame(width: 50, height: 50)
         .clipShape(Circle())
       VStack(alignment: .leading) {
-        Text(exercise.name)
-          .font(.headline)
+        HStack {
+          Text(exercise.name)
+            .font(.headline)
+          Spacer()
+          Text(exercise.type == .sets ? "Sets" : "Timed")
+            .font(.subheadline)
+        }
         Text(exercise.description)
           .font(.subheadline)
       }
