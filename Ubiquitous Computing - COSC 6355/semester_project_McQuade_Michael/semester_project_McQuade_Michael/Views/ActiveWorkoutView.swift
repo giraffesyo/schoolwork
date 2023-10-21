@@ -7,7 +7,15 @@ let pushups = Exercise(
   image: Image("pushup"),
   type: .sets
 )
-let exercises = [pushups]
+
+let eliptical = Exercise(
+  name: "Eliptical",
+  description: "Eliptical is a great exercise for your legs and arms.",
+  image: Image("eliptical"),
+  type: .time
+)
+
+let exercises = [pushups, eliptical]
 
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout

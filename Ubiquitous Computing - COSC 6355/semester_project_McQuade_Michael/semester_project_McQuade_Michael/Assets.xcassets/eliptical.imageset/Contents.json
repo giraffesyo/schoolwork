@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "pushup-dark.png",
+      "filename" : "eliptical-light.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "pushup.png",
+      "filename" : "eliptical.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
