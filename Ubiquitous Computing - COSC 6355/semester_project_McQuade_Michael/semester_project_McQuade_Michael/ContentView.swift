@@ -1,10 +1,12 @@
 import SwiftUI
 
-
-
 struct ContentView: View {
-  @State private var activeWorkout = false
+  @State private var activeWorkout: Bool
   @State private var currentWorkout: Workout?
+  init(activeWorkout: Bool = false, currentWorkout: Workout? = nil) {
+    _activeWorkout = State(initialValue: activeWorkout)
+    _currentWorkout = State(initialValue: currentWorkout)
+  }
   func startWorkout() {
     activeWorkout = true
     currentWorkout = Workout(startedAt: Date())
@@ -40,10 +42,6 @@ struct ContentView: View {
     }
   }
 }
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {

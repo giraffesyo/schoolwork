@@ -21,7 +21,18 @@ struct ActiveWorkoutView: View {
       }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
       // Live timer
       WorkoutTimerView(currentWorkout: $currentWorkout)
+      // Exercise list
+      // ExerciseListView(currentWorkout: $currentWorkout)
       Spacer()
     }
+  }
+}
+
+struct ActiveWorkoutView_Previews: PreviewProvider {
+  static var previews: some View {
+    ContentView(
+      activeWorkout: true,
+      currentWorkout: Workout(startedAt: Date())
+    )
   }
 }
