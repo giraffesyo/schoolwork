@@ -10,7 +10,8 @@ let pushups = ExerciseMetadata(
 
 let eliptical = ExerciseMetadata(
   name: "Eliptical",
-  description: "Eliptical is a great exercise for your legs and arms.",
+  description:
+    "Eliptical is a great exercise for your legs and arms, as well as excellent cardio. It is also low impact, so it is easy on your joints compared to running.",
   image: Image("eliptical"),
   type: .time
 )
