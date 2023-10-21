@@ -1,5 +1,14 @@
 import SwiftUI
 
+// preset array of exercises for testing
+let pushups = Exercise(
+  name: "Pushups",
+  description: "Pushups are a great exercise for your chest and arms.",
+  image: Image("pushup"),
+  type: .sets
+)
+let exercises = [pushups]
+
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout
   var body: some View {
@@ -18,12 +27,48 @@ struct ActiveWorkoutView: View {
             .foregroundColor(.accentColor)
             .background(Color(.black))
         }
-      }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+      }
       // Live timer
       WorkoutTimerView(currentWorkout: $currentWorkout)
       // Exercise list
-      // ExerciseListView(currentWorkout: $currentWorkout)
+      ExerciseListView(currentWorkout: $currentWorkout)
       Spacer()
+    }
+  }
+}
+
+struct ExerciseListView: View {
+  @Binding var currentWorkout: Workout
+  var body: some View {
+    VStack {
+      Text("Exercises")
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.accentColor)
+        .frame(maxWidth: .infinity, alignment: .leading)
+      List {
+        ForEach(exercises) { exercise in
+          ExerciseListRowView(exercise: exercise)
+        }
+      }
+    }
+  }
+}
+
+struct ExerciseListRowView: View {
+  var exercise: Exercise
+  var body: some View {
+    HStack {
+      exercise.image?
+        .resizable()
+        .frame(width: 50, height: 50)
+        .clipShape(Circle())
+      VStack(alignment: .leading) {
+        Text(exercise.name)
+          .font(.headline)
+        Text(exercise.description)
+          .font(.subheadline)
+      }
     }
   }
 }

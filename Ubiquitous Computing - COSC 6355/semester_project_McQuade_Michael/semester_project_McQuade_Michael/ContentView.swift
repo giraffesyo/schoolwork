@@ -39,6 +39,7 @@ struct ContentView: View {
             Image(systemName: "chart.bar")
           }
       }.toolbarBackground(Color.accentColor).preferredColorScheme(.dark)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
     }
   }
 }

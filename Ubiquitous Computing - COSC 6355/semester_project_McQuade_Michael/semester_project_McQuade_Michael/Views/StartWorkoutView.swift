@@ -10,7 +10,7 @@ struct StartWorkoutView: View {
           .font(.title)
           .fontWeight(.bold)
           .foregroundColor(.accentColor)
-      }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+      }.frame(maxWidth: .infinity, alignment: .leading)
       Spacer()
       Image(systemName: "figure.walk")
         .resizable()
