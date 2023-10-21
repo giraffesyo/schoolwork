@@ -118,6 +118,40 @@ struct CurrentExerciseView: View {
       Text(exercise.metadata.description)
         .font(.subheadline)
         .foregroundColor(.accentColor)
+      Spacer()
+      if exercise.metadata.type == .sets {
+        // -, sets count, +
+        Text("Sets")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+        HStack {
+          Button(action: {}) {
+            Image(systemName: "minus.circle")
+              .font(.system(size: 60))
+              .foregroundColor(.accentColor)
+          }
+          Text("\(exercise.sets ?? 0)")
+            .font(.system(size: 60))
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+          Button(action: {}) {
+            Image(systemName: "plus.circle")
+              .font(.system(size: 60))
+              .foregroundColor(.accentColor)
+          }
+        }
+      } else {
+        Text("Exercise Time")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+        Text(exercise.startedAt ?? Date(), style: .timer)
+          .font(.system(size: 60))
+          .fontWeight(.bold)
+          .foregroundColor(.white)
+      }
+      Spacer()
     }
   }
 }
