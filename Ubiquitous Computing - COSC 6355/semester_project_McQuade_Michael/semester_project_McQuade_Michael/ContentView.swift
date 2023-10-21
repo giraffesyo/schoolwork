@@ -3,23 +3,21 @@ import SwiftUI
 struct ContentView: View {
   var body: some View {
     ZStack {
-
       TabView {
         WorkoutView()
           .tabItem {
-            Image(systemName: "house")
-            Text("Home")
+            Text("Workout")
+            Image(systemName: "figure.walk")
           }
         WorkoutView()
           .tabItem {
-            Image(systemName: "list.bullet")
-            Text("Workouts")
-
+            Text("Goals")
+            Image(systemName: "chart.pie")
           }
         WorkoutView()
           .tabItem {
-            Image(systemName: "person")
-            Text("Profile")
+            Text("History")
+            Image(systemName: "chart.bar")
           }
       }.toolbarBackground(Color.accentColor).preferredColorScheme(.dark)
     }
