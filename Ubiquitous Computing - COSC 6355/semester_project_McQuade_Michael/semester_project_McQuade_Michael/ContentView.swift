@@ -35,10 +35,31 @@ struct WorkoutView: View {
           .font(.title)
           .fontWeight(.bold)
           .foregroundColor(.accentColor)
-        Image(systemName: "globe")
-          .imageScale(.large)
+          // align left
+          .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+        Spacer()
+        Image(systemName: "figure.walk")
+          .resizable()
+          .frame(width: 100, height: 150)
           .foregroundColor(.accentColor)
-        Text("Hello, world!")
+
+        Button(action: {
+          print("Button pressed")
+        }) {
+          Text("Start Workout")
+            .font(.title)
+            .fontWeight(.bold)
+            .foregroundColor(.accentColor)
+            .padding()
+            .background(Color(.black))
+            .cornerRadius(40)
+            .padding(10)
+            .overlay(
+              RoundedRectangle(cornerRadius: 40)
+                .stroke(Color.accentColor, lineWidth: 5)
+            )
+        }.padding()
+        Spacer()
       }
     }
   }
