@@ -1,21 +1,21 @@
 import SwiftUI
 
 // preset array of exercises for testing
-let pushups = Exercise(
+let pushups = ExerciseMetadata(
   name: "Pushups",
   description: "Pushups are a great exercise for your chest and arms.",
   image: Image("pushup"),
   type: .sets
 )
 
-let eliptical = Exercise(
+let eliptical = ExerciseMetadata(
   name: "Eliptical",
   description: "Eliptical is a great exercise for your legs and arms.",
   image: Image("eliptical"),
   type: .time
 )
 
-let exercises = [pushups, eliptical]
+let Preloaded_Exercises = [pushups, eliptical]
 
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout
@@ -46,58 +46,76 @@ struct ActiveWorkoutView: View {
 
 struct ExerciseListView: View {
   @Binding var currentWorkout: Workout
+  func handleExerciseTap(exercise: ExerciseMetadata) {
+    currentWorkout.currentExercise = Exercise(metadata: exercise)
+  }
   var body: some View {
     VStack {
-      Text("Exercises")
-        .font(.title)
-        .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-        .frame(maxWidth: .infinity, alignment: .leading)
-      List {
-        ForEach(exercises) { exercise in
-          ExerciseListRowView(exercise: exercise)
-        }
-      }
+      HStack {
+        Text("Exercises")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+        Spacer()
+        currentWorkout.currentExercise != nil
+          ? Button(action: {
+            currentWorkout.endExercise()
+          }) {
+            Text("End Exercise")
+              .foregroundColor(.accentColor)
+              .background(Color(.black))
+          } : nil
+      }.frame(maxWidth: .infinity, alignment: .leading)
+      currentWorkout.currentExercise == nil
+        ? AnyView(
+          List {
+            ForEach(Preloaded_Exercises) { metadata in
+              ExerciseListRowView(metadata: metadata, handleExerciseTap: handleExerciseTap)
+            }
+          }) : AnyView(CurrentExerciseView(exercise: currentWorkout.currentExercise!))
     }
   }
 }
 
 struct ExerciseListRowView: View {
-  var exercise: Exercise
+  var metadata: ExerciseMetadata
+  var handleExerciseTap: (ExerciseMetadata) -> Void
   var body: some View {
     HStack {
-      exercise.image?
+      metadata.image?
         .resizable()
         .frame(width: 50, height: 50)
         .clipShape(Circle())
       VStack(alignment: .leading) {
         HStack {
-          Text(exercise.name)
+          Text(metadata.name)
             .font(.headline)
           Spacer()
-          Text(exercise.type == .sets ? "Sets" : "Timed")
+          Text(metadata.type == .sets ? "Sets" : "Timed")
             .font(.subheadline)
         }
-        Text(exercise.description)
+        Text(metadata.description)
           .font(.subheadline)
       }
+    }.onTapGesture {
+      handleExerciseTap(metadata)
     }
   }
 }
 
-struct ExerciseView: View {
+struct CurrentExerciseView: View {
   var exercise: Exercise
   var body: some View {
     VStack {
-      exercise.image?
+      exercise.metadata.image?
         .resizable()
         .frame(width: 100, height: 100)
         .clipShape(Circle())
-      Text(exercise.name)
+      Text(exercise.metadata.name)
         .font(.title)
         .fontWeight(.bold)
         .foregroundColor(.accentColor)
-      Text(exercise.description)
+      Text(exercise.metadata.description)
         .font(.subheadline)
         .foregroundColor(.accentColor)
     }
