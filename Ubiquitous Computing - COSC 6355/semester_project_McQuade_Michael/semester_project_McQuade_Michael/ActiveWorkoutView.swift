@@ -20,11 +20,7 @@ struct ActiveWorkoutView: View {
         }
       }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
       // Live timer
-      Text(currentWorkout.startedAt, style: .timer)
-        .font(.system(size: 60))
-        .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-        .padding()
+      WorkoutTimerView(currentWorkout: $currentWorkout)
       Spacer()
     }
   }
