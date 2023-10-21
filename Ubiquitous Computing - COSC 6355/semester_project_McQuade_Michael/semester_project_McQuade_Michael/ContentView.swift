@@ -1,9 +1,17 @@
 import SwiftUI
 
+struct Workout: Identifiable {
+  var id = UUID()
+  var startedAt: Date
+  var endedAt: Date?
+}
+
 struct ContentView: View {
   @State private var activeWorkout = false
+  @State private var currentWorkout: Workout?
   func startWorkout() {
     activeWorkout = true
+    currentWorkout = Workout(startedAt: Date())
   }
 
   var body: some View {
@@ -12,8 +20,12 @@ struct ContentView: View {
         .edgesIgnoringSafeArea(.all)
       TabView {
         (activeWorkout
-          ? AnyView(ActiveWorkoutView())
-         : AnyView(StartWorkoutView(startWorkout: startWorkout)))
+          ? AnyView(
+            ActiveWorkoutView(
+              currentWorkout:
+                Binding<Workout>(get: { self.currentWorkout! }, set: { self.currentWorkout = $0 })
+            ))
+          : AnyView(StartWorkoutView(startWorkout: startWorkout)))
           .tabItem {
             Text("Workout")
             Image(systemName: "figure.walk")
@@ -70,6 +82,7 @@ struct WorkoutView: View {
 }
 
 struct ActiveWorkoutView: View {
+  @Binding var currentWorkout: Workout
   var body: some View {
 
     VStack {
@@ -78,17 +91,22 @@ struct ActiveWorkoutView: View {
         .fontWeight(.bold)
         .foregroundColor(.accentColor)
         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
-      Spacer()
-
+      
+      // Live timer
+      Text(currentWorkout.startedAt, style: .timer)
+        .font(.system(size: 60))
+        .fontWeight(.bold)
+        .foregroundColor(.accentColor)
+        .padding()
       Spacer()
     }
   }
 }
 
 struct StartWorkoutView: View {
-    var startWorkout: () -> Void
-    var body: some View {
-      
+  var startWorkout: () -> Void
+  var body: some View {
+
     VStack {
       Text("Workout")
         .font(.title)
@@ -101,9 +119,9 @@ struct StartWorkoutView: View {
         .frame(width: 100, height: 150)
         .foregroundColor(.accentColor)
 
-        Button(action: {
-            self.startWorkout()
-        }) {
+      Button(action: {
+        self.startWorkout()
+      }) {
         Text("Start Workout")
           .font(.title)
           .fontWeight(.bold)
