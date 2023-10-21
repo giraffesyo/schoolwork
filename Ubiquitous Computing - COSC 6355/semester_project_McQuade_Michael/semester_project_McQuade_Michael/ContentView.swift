@@ -30,12 +30,12 @@ struct ContentView: View {
             Text("Workout")
             Image(systemName: "figure.walk")
           }
-        WorkoutView()
+        TODOView()
           .tabItem {
             Text("Goals")
             Image(systemName: "chart.pie")
           }
-        WorkoutView()
+        TODOView()
           .tabItem {
             Text("History")
             Image(systemName: "chart.bar")
@@ -45,38 +45,11 @@ struct ContentView: View {
   }
 }
 
-struct WorkoutView: View {
+struct TODOView: View {
   var body: some View {
 
     VStack {
-      Text("Workout")
-        .font(.title)
-        .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
-      Spacer()
-      Image(systemName: "figure.walk")
-        .resizable()
-        .frame(width: 100, height: 150)
-        .foregroundColor(.accentColor)
 
-      Button(action: {
-        print("Button pressed")
-      }) {
-        Text("Start Workout")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.accentColor)
-          .padding()
-          .background(Color(.black))
-          .cornerRadius(40)
-          .padding(10)
-          .overlay(
-            RoundedRectangle(cornerRadius: 40)
-              .stroke(Color.accentColor, lineWidth: 5)
-          )
-      }.padding()
-      Spacer()
     }
   }
 }
@@ -86,12 +59,20 @@ struct ActiveWorkoutView: View {
   var body: some View {
 
     VStack {
-      Text("Workout")
-        .font(.title)
-        .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
-      
+      HStack {
+        Text("Workout")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+        Spacer()
+        Button(action: {
+          print("Button pressed")
+        }) {
+          Text("End Workout")
+            .foregroundColor(.accentColor)
+            .background(Color(.black))
+        }
+      }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
       // Live timer
       Text(currentWorkout.startedAt, style: .timer)
         .font(.system(size: 60))
@@ -108,11 +89,12 @@ struct StartWorkoutView: View {
   var body: some View {
 
     VStack {
-      Text("Workout")
-        .font(.title)
-        .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+      HStack {
+        Text("Workout")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+      }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
       Spacer()
       Image(systemName: "figure.walk")
         .resizable()
