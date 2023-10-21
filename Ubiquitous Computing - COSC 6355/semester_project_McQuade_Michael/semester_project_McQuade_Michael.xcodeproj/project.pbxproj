@@ -11,6 +11,10 @@
 		51C2A9ED2AE44A0000469072 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2A9EC2AE44A0000469072 /* ContentView.swift */; };
 		51C2A9EF2AE44A0100469072 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51C2A9EE2AE44A0100469072 /* Assets.xcassets */; };
 		51C2A9F22AE44A0100469072 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51C2A9F12AE44A0100469072 /* Preview Assets.xcassets */; };
+		51C2A9F92AE4794B00469072 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2A9F82AE4794B00469072 /* ActiveWorkoutView.swift */; };
+		51C2A9FB2AE4798B00469072 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2A9FA2AE4798B00469072 /* Workout.swift */; };
+		51C2A9FD2AE479DA00469072 /* TODOView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2A9FC2AE479DA00469072 /* TODOView.swift */; };
+		51C2A9FF2AE47A0500469072 /* StartWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2A9FE2AE47A0500469072 /* StartWorkoutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +23,10 @@
 		51C2A9EC2AE44A0000469072 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		51C2A9EE2AE44A0100469072 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		51C2A9F12AE44A0100469072 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		51C2A9F82AE4794B00469072 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
+		51C2A9FA2AE4798B00469072 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
+		51C2A9FC2AE479DA00469072 /* TODOView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOView.swift; sourceTree = "<group>"; };
+		51C2A9FE2AE47A0500469072 /* StartWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkoutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +61,12 @@
 			children = (
 				51C2A9EA2AE44A0000469072 /* semester_project_McQuade_MichaelApp.swift */,
 				51C2A9EC2AE44A0000469072 /* ContentView.swift */,
+				51C2A9FE2AE47A0500469072 /* StartWorkoutView.swift */,
+				51C2A9FC2AE479DA00469072 /* TODOView.swift */,
+				51C2A9FA2AE4798B00469072 /* Workout.swift */,
 				51C2A9EE2AE44A0100469072 /* Assets.xcassets */,
 				51C2A9F02AE44A0100469072 /* Preview Content */,
+				51C2A9F82AE4794B00469072 /* ActiveWorkoutView.swift */,
 			);
 			path = semester_project_McQuade_Michael;
 			sourceTree = "<group>";
@@ -137,8 +149,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51C2A9FD2AE479DA00469072 /* TODOView.swift in Sources */,
+				51C2A9FF2AE47A0500469072 /* StartWorkoutView.swift in Sources */,
 				51C2A9ED2AE44A0000469072 /* ContentView.swift in Sources */,
 				51C2A9EB2AE44A0000469072 /* semester_project_McQuade_MichaelApp.swift in Sources */,
+				51C2A9F92AE4794B00469072 /* ActiveWorkoutView.swift in Sources */,
+				51C2A9FB2AE4798B00469072 /* Workout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
