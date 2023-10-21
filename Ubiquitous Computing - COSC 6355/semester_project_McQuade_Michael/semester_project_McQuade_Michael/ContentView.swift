@@ -1,15 +1,15 @@
 import SwiftUI
 
 struct ContentView: View {
-  @State private var activeWorkout: Bool
   @State private var currentWorkout: Workout?
-  init(activeWorkout: Bool = false, currentWorkout: Workout? = nil) {
-    _activeWorkout = State(initialValue: activeWorkout)
+  init(currentWorkout: Workout? = nil) {
     _currentWorkout = State(initialValue: currentWorkout)
   }
   func startWorkout() {
-    activeWorkout = true
     currentWorkout = Workout(startedAt: Date())
+  }
+  func endWorkout() {
+    currentWorkout = nil
   }
 
   var body: some View {
@@ -17,11 +17,12 @@ struct ContentView: View {
       Color(.black)
         .edgesIgnoringSafeArea(.all)
       TabView {
-        (activeWorkout
+        (currentWorkout != nil
           ? AnyView(
             ActiveWorkoutView(
               currentWorkout:
-                Binding<Workout>(get: { self.currentWorkout! }, set: { self.currentWorkout = $0 })
+                Binding<Workout>(get: { self.currentWorkout! }, set: { self.currentWorkout = $0 }),
+              endWorkout: endWorkout
             ))
           : AnyView(StartWorkoutView(startWorkout: startWorkout)))
           .tabItem {

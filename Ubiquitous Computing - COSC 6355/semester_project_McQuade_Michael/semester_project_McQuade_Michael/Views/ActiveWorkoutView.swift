@@ -19,6 +19,7 @@ let exercises = [pushups, eliptical]
 
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout
+  var endWorkout: () -> Void
   var body: some View {
 
     VStack {
@@ -28,9 +29,7 @@ struct ActiveWorkoutView: View {
           .fontWeight(.bold)
           .foregroundColor(.accentColor)
         Spacer()
-        Button(action: {
-          print("Button pressed")
-        }) {
+        Button(action: endWorkout) {
           Text("End Workout")
             .foregroundColor(.accentColor)
             .background(Color(.black))
@@ -86,10 +85,28 @@ struct ExerciseListRowView: View {
   }
 }
 
+struct ExerciseView: View {
+  var exercise: Exercise
+  var body: some View {
+    VStack {
+      exercise.image?
+        .resizable()
+        .frame(width: 100, height: 100)
+        .clipShape(Circle())
+      Text(exercise.name)
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.accentColor)
+      Text(exercise.description)
+        .font(.subheadline)
+        .foregroundColor(.accentColor)
+    }
+  }
+}
+
 struct ActiveWorkoutView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView(
-      activeWorkout: true,
       currentWorkout: Workout(startedAt: Date())
     )
   }
