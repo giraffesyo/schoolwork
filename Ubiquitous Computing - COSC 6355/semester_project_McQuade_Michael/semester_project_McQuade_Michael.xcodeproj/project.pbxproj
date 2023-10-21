@@ -61,15 +61,12 @@
 		51C2A9E92AE44A0000469072 /* semester_project_McQuade_Michael */ = {
 			isa = PBXGroup;
 			children = (
-				51C2A9EA2AE44A0000469072 /* semester_project_McQuade_MichaelApp.swift */,
 				51C2A9EC2AE44A0000469072 /* ContentView.swift */,
-				51C2AA002AE47A8D00469072 /* WorkoutTimerView.swift */,
-				51C2A9FE2AE47A0500469072 /* StartWorkoutView.swift */,
-				51C2A9FC2AE479DA00469072 /* TODOView.swift */,
+				51C2AA022AE47B1F00469072 /* Views */,
+				51C2A9EA2AE44A0000469072 /* semester_project_McQuade_MichaelApp.swift */,
 				51C2A9FA2AE4798B00469072 /* Workout.swift */,
 				51C2A9EE2AE44A0100469072 /* Assets.xcassets */,
 				51C2A9F02AE44A0100469072 /* Preview Content */,
-				51C2A9F82AE4794B00469072 /* ActiveWorkoutView.swift */,
 			);
 			path = semester_project_McQuade_Michael;
 			sourceTree = "<group>";
@@ -80,6 +77,17 @@
 				51C2A9F12AE44A0100469072 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		51C2AA022AE47B1F00469072 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				51C2A9F82AE4794B00469072 /* ActiveWorkoutView.swift */,
+				51C2AA002AE47A8D00469072 /* WorkoutTimerView.swift */,
+				51C2A9FE2AE47A0500469072 /* StartWorkoutView.swift */,
+				51C2A9FC2AE479DA00469072 /* TODOView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
