@@ -17,9 +17,7 @@ struct StartWorkoutView: View {
         .frame(width: 100, height: 150)
         .foregroundColor(.accentColor)
 
-      Button(action: {
-        self.startWorkout()
-      }) {
+      Button(action: startWorkout) {
         Text("Start Workout")
           .font(.title)
           .fontWeight(.bold)
