@@ -1,37 +1,5 @@
 import SwiftUI
 
-// preset array of exercises for testing
-let pushups = ExerciseMetadata(
-  name: "Pushups",
-  description: "Pushups are a great exercise for your chest and arms.",
-  image: Image("pushup"),
-  type: .bodyweight_sets
-)
-
-let plank = ExerciseMetadata(
-  name: "Plank",
-  description: "Planks are a great exercise for your core.",
-  image: Image("pushup"),
-  type: .time
-)
-
-let eliptical = ExerciseMetadata(
-  name: "Eliptical",
-  description:
-    "Eliptical is a great exercise for your legs and arms, as well as excellent cardio. It is also low impact, so it is easy on your joints compared to running.",
-  image: Image("eliptical"),
-  type: .time
-)
-
-let curl = ExerciseMetadata(
-  name: "Bicep Curl",
-  description: "Bicep curls are a great exercise for your biceps.",
-  image: Image("bicepcurl"),
-  type: .weighted_sets
-)
-
-let Preloaded_Exercises = [pushups, eliptical, curl, plank]
-
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout
   var endWorkout: () -> Void
@@ -84,7 +52,7 @@ struct ExerciseListView: View {
       currentWorkout.currentExercise == nil
         ? AnyView(
           List {
-            ForEach(Preloaded_Exercises) { metadata in
+              ForEach(PRELOADED_EXERCISES.all) { metadata in
               ExerciseListRowView(metadata: metadata, handleExerciseTap: handleExerciseTap)
             }
           }) : AnyView(CurrentExerciseView(exercise: currentWorkout.currentExercise!))
