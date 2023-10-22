@@ -33,14 +33,19 @@ struct ExerciseListView: View {
     currentWorkout.currentExercise = Exercise(metadata: exercise)
   }
   var body: some View {
+    let currentlyExercising = currentWorkout.currentExercise != nil
     VStack {
       HStack {
-        Text("Exercises")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.accentColor)
+        Text(
+          currentlyExercising
+            ? currentWorkout.currentExercise!.metadata.name
+            : "Exercises"
+        )
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.accentColor)
         Spacer()
-        currentWorkout.currentExercise != nil
+        currentlyExercising
           ? Button(action: {
             currentWorkout.endExercise()
           }) {
@@ -104,34 +109,64 @@ struct ExerciseListView: View {
           .resizable()
           .frame(width: 100, height: 100)
           .clipShape(Circle())
-        Text(exercise.metadata.name)
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.accentColor)
         Text(exercise.metadata.description)
           .font(.subheadline)
           .foregroundColor(.accentColor)
         Spacer()
-        if exercise.metadata.type == .bodyweight_sets {
-          // -, sets count, +
-          Text("Sets")
-            .font(.title)
-            .fontWeight(.bold)
-            .foregroundColor(.accentColor)
+        if exercise.metadata.type == .bodyweight_sets || exercise.metadata.type == .weighted_sets {
+
           HStack {
-            Button(action: {}) {
-              Image(systemName: "minus.circle")
-                .font(.system(size: 60))
-                .foregroundColor(.accentColor)
+            if exercise.metadata.type == .weighted_sets {
+              VStack {
+                Text("Weight")
+                  .font(.title)
+                  .fontWeight(.bold)
+                  .foregroundColor(.accentColor)
+                Button(action: {
+                  // open weight picker
+                  showWeightPicker = true
+
+                }) {
+                  Text("\(exercise.weight ?? 0)")
+                    .font(.system(size: 40))
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                }.alert("Enter weight", isPresented: $showWeightPicker) {
+                  TextField("Weight", value: $exercise.weight, format: .number).keyboardType(
+                    .numberPad
+                  )
+                  .focused($keyboardFocused).onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                      keyboardFocused = true
+                    }
+                  }.foregroundColor(.black)
+                  Button("OK") {
+                    showWeightPicker = false
+                  }
+                }
+              }
             }
-            Text("\(exercise.sets ?? 0)")
-              .font(.system(size: 60))
-              .fontWeight(.bold)
-              .foregroundColor(.white)
-            Button(action: {}) {
-              Image(systemName: "plus.circle")
-                .font(.system(size: 60))
+            VStack {
+              Text("Sets")
+                .font(.title)
+                .fontWeight(.bold)
                 .foregroundColor(.accentColor)
+              HStack {
+                Button(action: {}) {
+                  Image(systemName: "minus.circle")
+                    .font(.system(size: 40))
+                    .foregroundColor(.accentColor)
+                }
+                Text("\(exercise.sets ?? 0)")
+                  .font(.system(size: 40))
+                  .fontWeight(.bold)
+                  .foregroundColor(.white)
+                Button(action: {}) {
+                  Image(systemName: "plus.circle")
+                    .font(.system(size: 40))
+                    .foregroundColor(.accentColor)
+                }
+              }
             }
           }
         } else if exercise.metadata.type == .time {
@@ -143,55 +178,9 @@ struct ExerciseListView: View {
             .font(.system(size: 60))
             .fontWeight(.bold)
             .foregroundColor(.white)
-        } else if exercise.metadata.type == .weighted_sets {
-          Text("Weight")
-            .font(.title)
-            .fontWeight(.bold)
-            .foregroundColor(.accentColor)
-          Button(action: {
-            // open weight picker
-            showWeightPicker = true
-
-          }) {
-            Text("\(exercise.weight ?? 0)")
-              .font(.system(size: 60))
-              .fontWeight(.bold)
-              .foregroundColor(.white)
-          }.alert("Enter weight", isPresented: $showWeightPicker) {
-            TextField("Weight", value: $exercise.weight, format: .number).keyboardType(.numberPad)
-              .focused($keyboardFocused).onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                  keyboardFocused = true
-                }
-              }.foregroundColor(.black)
-            Button("OK") {
-              showWeightPicker = false
-            }
-          } 
-
         }
-        Text("Sets")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.accentColor)
-        HStack {
-          Button(action: {}) {
-            Image(systemName: "minus.circle")
-              .font(.system(size: 60))
-              .foregroundColor(.accentColor)
-          }
-          Text("\(exercise.sets ?? 0)")
-            .font(.system(size: 60))
-            .fontWeight(.bold)
-            .foregroundColor(.white)
-          Button(action: {}) {
-            Image(systemName: "plus.circle")
-              .font(.system(size: 60))
-              .foregroundColor(.accentColor)
-          }
-        }
+        Spacer()
       }
-      Spacer()
     }
   }
 }
