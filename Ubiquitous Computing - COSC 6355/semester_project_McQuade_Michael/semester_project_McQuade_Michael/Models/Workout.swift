@@ -22,6 +22,7 @@ struct Exercise: Identifiable {
   var id = UUID()
   var metadata: ExerciseMetadata
   var sets: Int?
+  var weight: Int?
   var startedAt: Date?
   var endedAt: Date?
 }
