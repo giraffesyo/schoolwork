@@ -12,9 +12,10 @@ struct Workout: Identifiable {
   }
 }
 
-enum ExerciseType {
-  case sets
-  case time
+enum ExerciseType: String {
+  case bodyweight_sets = "Bodyweight"
+  case time = "Timed"
+  case weighted_sets = "Weighted"
 }
 
 struct Exercise: Identifiable {

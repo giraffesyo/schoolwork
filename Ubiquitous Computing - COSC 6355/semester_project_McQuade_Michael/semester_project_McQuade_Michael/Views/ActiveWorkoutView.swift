@@ -5,7 +5,14 @@ let pushups = ExerciseMetadata(
   name: "Pushups",
   description: "Pushups are a great exercise for your chest and arms.",
   image: Image("pushup"),
-  type: .sets
+  type: .bodyweight_sets
+)
+
+let plank = ExerciseMetadata(
+  name: "Plank",
+  description: "Planks are a great exercise for your core.",
+  image: Image("pushup"),
+  type: .time
 )
 
 let eliptical = ExerciseMetadata(
@@ -16,7 +23,14 @@ let eliptical = ExerciseMetadata(
   type: .time
 )
 
-let Preloaded_Exercises = [pushups, eliptical]
+let curl = ExerciseMetadata(
+  name: "Bicep Curl",
+  description: "Bicep curls are a great exercise for your biceps.",
+  image: Image("bicepcurl"),
+  type: .weighted_sets
+)
+
+let Preloaded_Exercises = [pushups, eliptical, curl, plank]
 
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout
@@ -92,7 +106,7 @@ struct ExerciseListRowView: View {
           Text(metadata.name)
             .font(.headline)
           Spacer()
-          Text(metadata.type == .sets ? "Sets" : "Timed")
+          Text(metadata.type.rawValue)
             .font(.subheadline)
         }
         Text(metadata.description)
@@ -120,7 +134,7 @@ struct CurrentExerciseView: View {
         .font(.subheadline)
         .foregroundColor(.accentColor)
       Spacer()
-      if exercise.metadata.type == .sets {
+      if exercise.metadata.type == .bodyweight_sets {
         // -, sets count, +
         Text("Sets")
           .font(.title)
@@ -142,7 +156,7 @@ struct CurrentExerciseView: View {
               .foregroundColor(.accentColor)
           }
         }
-      } else {
+      } else if exercise.metadata.type == .time {
         Text("Exercise Time")
           .font(.title)
           .fontWeight(.bold)
@@ -151,6 +165,27 @@ struct CurrentExerciseView: View {
           .font(.system(size: 60))
           .fontWeight(.bold)
           .foregroundColor(.white)
+      } else if exercise.metadata.type == .weighted_sets {
+        Text("Weighted Sets")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+        HStack {
+          Button(action: {}) {
+            Image(systemName: "minus.circle")
+              .font(.system(size: 60))
+              .foregroundColor(.accentColor)
+          }
+          Text("\(exercise.sets ?? 0)")
+            .font(.system(size: 60))
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+          Button(action: {}) {
+            Image(systemName: "plus.circle")
+              .font(.system(size: 60))
+              .foregroundColor(.accentColor)
+          }
+        }
       }
       Spacer()
     }
