@@ -41,8 +41,8 @@ struct GoalsView: View {
 }
 
 struct DayView: View {
-  private var day = ""
-  private var exercised = false
+   var day = ""
+   var exercised = false
   var body: some View {
     VStack {
       Circle()
