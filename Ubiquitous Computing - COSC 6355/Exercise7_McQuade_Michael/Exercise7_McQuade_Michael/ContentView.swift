@@ -1,17 +1,9 @@
-//
-//  ContentView.swift
-//  Exercise7_McQuade_Michael
-//
-//  Created by Michael McQuade on 10/28/23.
-//
-
 import SwiftUI
 
 struct ContentView: View {
   @StateObject var bpm = BPM()
   var body: some View {
     VStack {
-      // Single button w/ heart emoji
       Button(
         action: {
 

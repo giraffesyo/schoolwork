@@ -28,14 +28,12 @@ class SessionDelegator: NSObject, WCSessionDelegate {
   }
 
   // iOS Protocol comformance
-  // Not needed for this demo otherwise
   #if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
       print("\(#function): activationState = \(session.activationState.rawValue)")
     }
 
     func sessionDidDeactivate(_ session: WCSession) {
-      // Activate the new session after having switched to a new watch.
       session.activate()
     }
 
