@@ -12,6 +12,12 @@ struct HistoryView: View {
         Spacer()
       }
       Spacer()
+      Text("No history yet")
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.white)
+
+      Spacer()
     }
   }
 }
