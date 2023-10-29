@@ -32,12 +32,12 @@ struct ContentView: View {
             Text("Workout")
             Image(systemName: "figure.walk")
           }.tag(0)
-        TODOView()
+        GoalsView()
           .tabItem {
             Text("Goals")
             Image(systemName: "chart.pie")
           }.tag(1)
-        TODOView()
+        HistoryView()
           .tabItem {
             Text("History")
             Image(systemName: "chart.bar")
