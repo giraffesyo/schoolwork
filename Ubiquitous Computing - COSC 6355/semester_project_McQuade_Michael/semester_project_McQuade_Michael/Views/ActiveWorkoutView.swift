@@ -78,7 +78,7 @@ struct ExerciseListView: View {
     var handleExerciseTap: (ExerciseMetadata) -> Void
     var body: some View {
       HStack {
-        metadata.image?
+        Image(metadata.image)
           .resizable()
           .frame(width: 50, height: 50)
           .clipShape(Circle())
@@ -106,7 +106,7 @@ struct ExerciseListView: View {
       
     var body: some View {
       VStack {
-        exercise.metadata.image?
+        Image(exercise.metadata.image)
           .resizable()
           .frame(width: 100, height: 100)
           .clipShape(Circle())

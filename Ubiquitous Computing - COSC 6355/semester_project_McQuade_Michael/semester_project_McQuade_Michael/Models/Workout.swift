@@ -1,6 +1,10 @@
 import SwiftUI
 
-struct Workout: Identifiable {
+struct Store: Codable {
+  var history: [Workout]
+}
+
+struct Workout: Identifiable, Codable {
   var id = UUID()
   var startedAt: Date
   var endedAt: Date?
@@ -12,13 +16,13 @@ struct Workout: Identifiable {
   }
 }
 
-enum ExerciseType: String {
+enum ExerciseType: String, Codable {
   case bodyweight_sets = "Bodyweight"
   case time = "Timed"
   case weighted_sets = "Weighted"
 }
 
-struct Exercise: Identifiable {
+struct Exercise: Identifiable, Codable {
   var id = UUID()
   var metadata: ExerciseMetadata
   var sets: Int?
@@ -27,12 +31,14 @@ struct Exercise: Identifiable {
   var endedAt: Date?
 }
 
-struct ExerciseMetadata: Identifiable {
+struct ExerciseMetadata: Identifiable, Codable {
   var id = UUID()
   var name: String
   var description: String
-  var image: Image?
+  var customImage: Bool
+  var image: String
   var type: ExerciseType
+
 }
 
 // preset array of exercises for testing
@@ -41,14 +47,16 @@ struct PRELOADED_EXERCISES {
   static let pushups = ExerciseMetadata(
     name: "Pushups",
     description: "Pushups are a great exercise for your chest and arms.",
-    image: Image("pushup"),
+    customImage: false,
+    image: "pushup",
     type: .bodyweight_sets
   )
 
   static let plank = ExerciseMetadata(
     name: "Plank",
     description: "Planks are a great exercise for your core.",
-    image: Image("pushup"),
+    customImage: false,
+    image: "pushup",
     type: .time
   )
 
@@ -56,21 +64,24 @@ struct PRELOADED_EXERCISES {
     name: "Eliptical",
     description:
       "Eliptical is a great exercise for your legs and arms, as well as excellent cardio. It is also low impact, so it is easy on your joints compared to running.",
-    image: Image("eliptical"),
+    customImage: false,
+    image: "eliptical",
     type: .time
   )
 
   static let curl = ExerciseMetadata(
     name: "Bicep Curl",
     description: "Bicep curls are a great exercise for your biceps.",
-    image: Image("bicepcurl"),
+    customImage: false,
+    image: "bicepcurl",
     type: .weighted_sets
   )
 
   static let situp = ExerciseMetadata(
     name: "Situp",
     description: "Situps are a great exercise for your core.",
-    image: Image("situp"),
+    customImage: false,
+    image: "situp",
     type: .bodyweight_sets
   )
   static let all = [pushups, plank, eliptical, curl, situp]
