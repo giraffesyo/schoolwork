@@ -103,6 +103,7 @@ struct ExerciseListView: View {
     @Binding var exercise: Exercise
     @State var showWeightPicker = false
     @FocusState private var keyboardFocused
+      
     var body: some View {
       VStack {
         exercise.metadata.image?

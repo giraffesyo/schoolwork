@@ -2,8 +2,11 @@ import SwiftUI
 
 struct ContentView: View {
   @State private var currentWorkout: Workout?
-  init(currentWorkout: Workout? = nil) {
+    @State private var selectedTab: Int = 0
+    init(currentWorkout: Workout? = nil, selectedTab: Int = 0) {
     _currentWorkout = State(initialValue: currentWorkout)
+        
+    _selectedTab = State(initialValue: selectedTab)
   }
   func startWorkout() {
     currentWorkout = Workout(startedAt: Date())
@@ -16,7 +19,7 @@ struct ContentView: View {
     ZStack {
       Color(.black)
         .edgesIgnoringSafeArea(.all)
-      TabView {
+      TabView(selection: $selectedTab) {
         (currentWorkout != nil
           ? AnyView(
             ActiveWorkoutView(
@@ -28,17 +31,17 @@ struct ContentView: View {
           .tabItem {
             Text("Workout")
             Image(systemName: "figure.walk")
-          }
+          }.tag(0)
         TODOView()
           .tabItem {
             Text("Goals")
             Image(systemName: "chart.pie")
-          }
+          }.tag(1)
         TODOView()
           .tabItem {
             Text("History")
             Image(systemName: "chart.bar")
-          }
+          }.tag(2)
       }.toolbarBackground(Color.accentColor).preferredColorScheme(.dark)
         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
     }
