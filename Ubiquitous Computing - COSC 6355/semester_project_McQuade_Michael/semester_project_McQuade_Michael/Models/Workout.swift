@@ -1,7 +1,66 @@
 import SwiftUI
 
-struct Store: Codable {
-  var history: [Workout]
+@MainActor
+class Store: ObservableObject {
+
+  let history_key: String = "history"
+  let exercises_key: String = "exercises"
+  @Published var history: [Workout]
+  @Published var exercises: [ExerciseMetadata]
+  init() {
+    if let data = UserDefaults.standard.data(forKey: history_key) {
+      if let decoded = try? JSONDecoder().decode([Workout].self, from: data) {
+        history = decoded
+      } else {
+        // we had data, but it was corrupted, so use empty history
+        history = []
+      }
+    } else {
+      // we didn't have any saved data, so use empty history
+      history = []
+    }
+    if let data = UserDefaults.standard.data(forKey: exercises_key) {
+      if let decoded = try? JSONDecoder().decode([ExerciseMetadata].self, from: data) {
+        exercises = decoded
+      } else {
+        // we had data, but it was corrupted, so use preset exercises
+        exercises = PRELOADED_EXERCISES.all
+      }
+    } else {
+      // we didn't have any saved data, so use preset exercises
+      exercises = PRELOADED_EXERCISES.all
+    }
+  }
+
+  private func save() {
+    if let encoded = try? JSONEncoder().encode(history) {
+      UserDefaults.standard.set(encoded, forKey: history_key)
+    }
+    if let encoded = try? JSONEncoder().encode(exercises) {
+      UserDefaults.standard.set(encoded, forKey: exercises_key)
+    }
+  }
+
+  func addExercise(exercise: ExerciseMetadata) {
+    exercises.append(exercise)
+    save()
+  }
+
+  func removeExercise(exercise: ExerciseMetadata) {
+    exercises.removeAll(where: { $0.id == exercise.id })
+    save()
+  }
+
+  func addWorkout(workout: Workout) {
+    history.append(workout)
+    save()
+  }
+
+  func removeWorkout(workout: Workout) {
+    history.removeAll(where: { $0.id == workout.id })
+    save()
+  }
+
 }
 
 struct Workout: Identifiable, Codable {

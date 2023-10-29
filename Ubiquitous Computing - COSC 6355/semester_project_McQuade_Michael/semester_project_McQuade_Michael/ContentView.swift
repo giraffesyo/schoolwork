@@ -1,17 +1,19 @@
 import SwiftUI
 
 struct ContentView: View {
+  @StateObject var store: Store = Store()
+
   @State private var currentWorkout: Workout?
-    @State private var selectedTab: Int = 0
-    init(currentWorkout: Workout? = nil, selectedTab: Int = 0) {
+  @State private var selectedTab: Int = 0
+  init(currentWorkout: Workout? = nil, selectedTab: Int = 0) {
     _currentWorkout = State(initialValue: currentWorkout)
-        
     _selectedTab = State(initialValue: selectedTab)
   }
   func startWorkout() {
     currentWorkout = Workout(startedAt: Date())
   }
   func endWorkout() {
+    store.addWorkout(workout: currentWorkout!)
     currentWorkout = nil
   }
 
