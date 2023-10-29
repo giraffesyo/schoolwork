@@ -36,13 +36,50 @@ struct GoalsView: View {
         }
       }
       Spacer()
+
+      Text("Current Streak")
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.white)
+
+      Text("0 weeks")
+        .font(.title)
+        .fontWeight(.bold)
+        .foregroundColor(.white)
+      Spacer()
+
+      // This is a button that will allow the user to change their goal
+      // to a different number of days per week.
+      Button(action: {
+        print("Change goal")
+      }) {
+        VStack {
+          Text("Current Goal")
+            .font(.title)
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+
+          HStack {
+            Text("1")
+              .font(.title)
+              .fontWeight(.bold)
+              .foregroundColor(.accentColor)
+            Text("day per week")
+              .font(.title)
+              .fontWeight(.bold)
+              .foregroundColor(.white)
+          }
+        }
+      }
+
+      Spacer()
     }
   }
 }
 
 struct DayView: View {
-   var day = ""
-   var exercised = false
+  var day = ""
+  var exercised = false
   var body: some View {
     VStack {
       Circle()
