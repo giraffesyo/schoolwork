@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HistoryView: View {
+  @EnvironmentObject var store: Store
+
   var body: some View {
 
     VStack {
@@ -11,6 +13,28 @@ struct HistoryView: View {
           .foregroundColor(.accentColor)
         Spacer()
       }
+      if store.history.count > 0 {
+        List {
+          ForEach(store.history) { workout in
+            NavigationLink(destination: TODOView()) {
+              HStack {
+                Text("\(workout.startedAt)")
+                Spacer()
+                Text("\(workout.exercises.count) exercises")
+              }
+            }
+          }
+        }
+      } else {
+        NoHistoryView()
+      }
+    }
+  }
+}
+
+struct NoHistoryView: View {
+  var body: some View {
+    VStack {
       Spacer()
       Text("No history yet")
         .font(.title)

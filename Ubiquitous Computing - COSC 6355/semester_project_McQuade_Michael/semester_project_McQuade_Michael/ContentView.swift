@@ -46,7 +46,7 @@ struct ContentView: View {
           }.tag(2)
       }.toolbarBackground(Color.accentColor).preferredColorScheme(.dark)
         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
-    }
+    }.environmentObject(store)
   }
 }
 

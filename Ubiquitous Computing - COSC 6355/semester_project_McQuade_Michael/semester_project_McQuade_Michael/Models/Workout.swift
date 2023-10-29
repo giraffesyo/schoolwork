@@ -67,10 +67,12 @@ struct Workout: Identifiable, Codable {
   var id = UUID()
   var startedAt: Date
   var endedAt: Date?
+  var exercises: [Exercise] = []
+
   var currentExercise: Exercise?
   mutating func endExercise() {
     currentExercise?.endedAt = Date()
-    // TODO: Save exercise to history
+    exercises.append(currentExercise!)
     currentExercise = nil
   }
 }
