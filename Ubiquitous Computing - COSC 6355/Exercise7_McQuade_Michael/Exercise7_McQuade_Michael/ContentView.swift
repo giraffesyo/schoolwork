@@ -8,19 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+  @StateObject var bpm = BPM()
+  var body: some View {
+    VStack {
+      // Single button w/ heart emoji
+      Button(
+        action: {
+
+        },
+        label: {
+          Text("❤️")
         }
-        .padding()
+      ).font(.system(size: 150))
+
+      HStack {
+        Text("\(bpm.value, specifier: "%.0f")").font(.system(size: 70))
+        VStack {
+          Text("BPM").foregroundColor(.red).font(.system(size: 28)).font(.headline).bold()
+
+        }.frame(width: .infinity)
+        Spacer()
+      }
     }
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+  static var previews: some View {
+    ContentView()
+  }
 }
