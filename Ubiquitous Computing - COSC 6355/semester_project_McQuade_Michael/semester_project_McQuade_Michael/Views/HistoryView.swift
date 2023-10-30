@@ -3,6 +3,10 @@ import SwiftUI
 struct HistoryView: View {
   @EnvironmentObject var store: Store
 
+  func delete(workout: Workout) {
+    store.removeWorkout(workout: workout)
+  }
+
   var body: some View {
     // show text label for today, yesterday, or date for other days
     let dateFormatter = DateFormatter()
@@ -20,7 +24,7 @@ struct HistoryView: View {
       }
       if store.history.count > 0 {
 
-        ScrollView {
+        List {
           ForEach(store.workoutsByDate.keys.sorted(by: >), id: \.self) { day in
             let dayString = dateFormatter.string(from: day)
             let label =
@@ -34,9 +38,12 @@ struct HistoryView: View {
             Text(label)
               .font(.title)
               .fontWeight(.bold)
-              .foregroundColor(.white)
+              .foregroundColor(.white).listRowBackground(Color.black)
+
             HistoryDayView(
-              workouts: store.workoutsByDate[day]!)
+              workouts: store.workoutsByDate[day]!,
+              delete: delete
+            ).listRowBackground(Color.black)
 
           }
         }
@@ -49,7 +56,7 @@ struct HistoryView: View {
 
 struct HistoryDayView: View {
   var workouts: [Workout]
-
+  var delete: (Workout) -> Void
   var body: some View {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "h:mm a"
@@ -76,7 +83,11 @@ struct HistoryDayView: View {
                 .stroke(Color.accentColor, lineWidth: 5)
             )
         }.padding(.horizontal)
-      }
+      }.onDelete(perform: { indexSet in
+        for index in indexSet {
+            delete(workouts[index])
+        }
+      })
 
   }
 }
