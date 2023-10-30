@@ -1,5 +1,15 @@
 import SwiftUI
 
+struct ExercisedDays {
+  var Monday: Bool = false
+  var Tuesday: Bool = false
+  var Wednesday: Bool = false
+  var Thursday: Bool = false
+  var Friday: Bool = false
+  var Saturday: Bool = false
+  var Sunday: Bool = false
+}
+
 @MainActor
 class Store: ObservableObject {
 
@@ -7,6 +17,36 @@ class Store: ObservableObject {
   let exercises_key: String = "exercises"
   @Published var history: [Workout]
   @Published var exercises: [ExerciseMetadata]
+  func getExercisedDaysThisWeek() -> ExercisedDays {
+    var exercisedDays = ExercisedDays()
+    
+    let today = Calendar.current.startOfDay(for: Date())
+    let thisWeek = Calendar.current.dateInterval(of: .weekOfYear, for: today)!
+    for workout in history {
+      if thisWeek.contains(workout.startedAt) {
+        let day = Calendar.current.component(.weekday, from: workout.startedAt)
+        switch day {
+        case 1:
+          exercisedDays.Sunday = true
+        case 2:
+          exercisedDays.Monday = true
+        case 3:
+          exercisedDays.Tuesday = true
+        case 4:
+          exercisedDays.Wednesday = true
+        case 5:
+          exercisedDays.Thursday = true
+        case 6:
+          exercisedDays.Friday = true
+        case 7:
+          exercisedDays.Saturday = true
+        default:
+          break
+        }
+      }
+    }
+    return exercisedDays
+  }
   var workoutsByDate: [Date: [Workout]] {
     var workoutsByDate: [Date: [Workout]] = [:]
     for workout in history {
