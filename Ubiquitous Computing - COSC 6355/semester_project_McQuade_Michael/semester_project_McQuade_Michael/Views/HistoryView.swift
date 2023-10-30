@@ -14,13 +14,18 @@ struct HistoryView: View {
         Spacer()
       }
       if store.history.count > 0 {
-        List {
-          ForEach(store.history) { workout in
-            NavigationLink(destination: TODOView()) {
-              HStack {
-                Text("\(workout.startedAt)")
-                Spacer()
-                Text("\(workout.exercises.count) exercises")
+        NavigationStack {
+          List {
+            ForEach(store.history) { workout in
+              NavigationLink(destination: TODOView()) {
+                HStack {
+                  Text("\(workout.startedAt)")
+                  Spacer()
+                  VStack {
+                    Text("\(workout.exercises.count) exercises")
+                    Text("\(workout.duration)")
+                  }
+                }
               }
             }
           }

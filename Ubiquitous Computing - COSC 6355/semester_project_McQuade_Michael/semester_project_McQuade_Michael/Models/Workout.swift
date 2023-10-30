@@ -68,6 +68,14 @@ struct Workout: Identifiable, Codable {
   var startedAt: Date
   var endedAt: Date?
   var exercises: [Exercise] = []
+  // calculated duration (DateInterval)
+  var duration: String {
+    let interval = DateInterval(start: startedAt, end: endedAt ?? Date())
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.unitsStyle = .abbreviated
+    return formatter.string(from: interval.duration)!
+  }
 
   var currentExercise: Exercise?
   mutating func endExercise() {
