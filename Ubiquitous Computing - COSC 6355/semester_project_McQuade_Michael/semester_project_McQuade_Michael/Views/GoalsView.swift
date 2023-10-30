@@ -146,6 +146,10 @@ struct GoalsViewWithWorkouts_Previews: PreviewProvider {
       workout: Workout(
         startedAt: Date().addingTimeInterval(-86400 * 2),
         endedAt: Date().addingTimeInterval(-86400 * 2 + 3600)))
+      mock_store.addWorkout(
+        workout: Workout(
+          startedAt: Date().addingTimeInterval(86400 * 2),
+          endedAt: Date().addingTimeInterval(86400 * 2 + 3600)))
     return ContentView(selectedTab: 1, store: mock_store)
   }
 }
