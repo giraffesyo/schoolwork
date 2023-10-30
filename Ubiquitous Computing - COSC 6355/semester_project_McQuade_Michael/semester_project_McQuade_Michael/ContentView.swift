@@ -5,9 +5,12 @@ struct ContentView: View {
 
   @State private var currentWorkout: Workout?
   @State private var selectedTab: Int = 0
-  init(currentWorkout: Workout? = nil, selectedTab: Int = 0) {
+  init(currentWorkout: Workout? = nil, selectedTab: Int = 0, store: Store? = nil) {
     _currentWorkout = State(initialValue: currentWorkout)
     _selectedTab = State(initialValue: selectedTab)
+    if let store = store {
+      _store = StateObject(wrappedValue: store)
+    }
   }
   func startWorkout() {
     currentWorkout = Workout(startedAt: Date())

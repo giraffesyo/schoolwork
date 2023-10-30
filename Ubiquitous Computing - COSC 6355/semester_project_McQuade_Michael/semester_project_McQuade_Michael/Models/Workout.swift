@@ -72,6 +72,11 @@ class Store: ObservableObject {
     save()
   }
 
+  func emptyHistory() {
+    history = []
+    save()
+  }
+
 }
 
 struct Workout: Identifiable, Codable {

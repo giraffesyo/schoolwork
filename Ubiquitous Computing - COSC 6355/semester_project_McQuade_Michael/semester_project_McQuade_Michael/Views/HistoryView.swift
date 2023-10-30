@@ -10,7 +10,7 @@ struct HistoryView: View {
     let today = dateFormatter.string(from: Date())
     let yesterday = dateFormatter.string(from: Date().addingTimeInterval(-86400))
 
-    return VStack {
+    return NavigationStack {
       HStack {
         Text("History")
           .font(.title)
@@ -19,7 +19,8 @@ struct HistoryView: View {
         Spacer()
       }
       if store.history.count > 0 {
-        NavigationStack {
+
+        ScrollView {
           ForEach(store.workoutsByDate.keys.sorted(by: >), id: \.self) { day in
             let dayString = dateFormatter.string(from: day)
             let label =
@@ -34,7 +35,9 @@ struct HistoryView: View {
               .font(.title)
               .fontWeight(.bold)
               .foregroundColor(.white)
-            HistoryDayView(workouts: store.workoutsByDate[day]!)
+            HistoryDayView(
+              workouts: store.workoutsByDate[day]!)
+
           }
         }
       } else {
@@ -50,26 +53,31 @@ struct HistoryDayView: View {
   var body: some View {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "h:mm a"
-    return VStack {
 
-      List {
-        ForEach(workouts) { workout in
-          // only show time
-          let time = dateFormatter.string(from: workout.startedAt)
-          NavigationLink(destination: TODOView()) {
-            HStack {
-              Text("\(workout.exercises.count) exercises")
-              Spacer()
-              VStack {
-                Text("\(time)")
-                Text("\(workout.duration)")
-              }
+    return
+      ForEach(workouts) { workout in
+        // only show time
+        let time = dateFormatter.string(from: workout.startedAt)
+        NavigationLink(destination: TODOView()) {
+          HStack {
+            Text("\(workout.exercises.count) exercises")
+            Spacer()
+            VStack {
+              Text("\(time)")
+              Text("\(workout.duration)")
+
             }
-          }
-        }
+          }.padding()
+            .background(Color(.black))
+            .cornerRadius(40)
+            .padding(10)
+            .overlay(
+              RoundedRectangle(cornerRadius: 40)
+                .stroke(Color.accentColor, lineWidth: 5)
+            )
+        }.padding(.horizontal)
       }
 
-    }
   }
 }
 
@@ -95,8 +103,20 @@ struct HistoryView_Previews: PreviewProvider {
 }
 
 struct HistoryMultipleDays_Previews: PreviewProvider {
+  static let mock_store = Store()
 
   static var previews: some View {
-    ContentView(selectedTab: 2)
+    mock_store.emptyHistory()
+    mock_store.addWorkout(
+      workout: Workout(startedAt: Date(), endedAt: Date().addingTimeInterval(3700)))
+    mock_store.addWorkout(
+      workout: Workout(
+        startedAt: Date().addingTimeInterval(-86400),
+        endedAt: Date().addingTimeInterval(-86400 + 3000)))
+    mock_store.addWorkout(
+      workout: Workout(
+        startedAt: Date().addingTimeInterval(-86400 * 2),
+        endedAt: Date().addingTimeInterval(-86400 * 2 + 3600)))
+    return ContentView(selectedTab: 2, store: mock_store)
   }
 }
