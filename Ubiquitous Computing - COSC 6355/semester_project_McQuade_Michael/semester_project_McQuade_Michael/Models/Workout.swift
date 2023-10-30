@@ -7,6 +7,17 @@ class Store: ObservableObject {
   let exercises_key: String = "exercises"
   @Published var history: [Workout]
   @Published var exercises: [ExerciseMetadata]
+  var workoutsByDate: [Date: [Workout]] {
+    var workoutsByDate: [Date: [Workout]] = [:]
+    for workout in history {
+      let date = Calendar.current.startOfDay(for: workout.startedAt)
+      if workoutsByDate[date] == nil {
+        workoutsByDate[date] = []
+      }
+      workoutsByDate[date]!.append(workout)
+    }
+    return workoutsByDate
+  }
   init() {
     if let data = UserDefaults.standard.data(forKey: history_key) {
       if let decoded = try? JSONDecoder().decode([Workout].self, from: data) {
