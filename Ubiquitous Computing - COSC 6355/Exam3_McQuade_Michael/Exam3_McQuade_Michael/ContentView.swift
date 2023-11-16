@@ -54,9 +54,65 @@ struct ContentView: View {
     }
     // recognize the text
     recognizeText()
-
     // print the recognized text
     print(recognizedText)
+    // print the top three words
+    print(topThreeWords())
+  }
+
+  // function to detect frequency words appear in recognized text
+  func detectFrequency() -> [String: Int] {
+    // create a dictionary to store the frequency
+    var frequency: [String: Int] = [:]
+    // split the recognized text into words
+    let words = recognizedText.split(separator: " ")
+    // loop through the words
+    for word in words {
+      // if the word is in the dictionary
+      if frequency[String(word)] != nil {
+        // increment the frequency
+        frequency[String(word)]! += 1
+      } else {
+        // add the word to the dictionary
+        frequency[String(word)] = 1
+      }
+    }
+    // return the frequency
+    return frequency
+  }
+
+  // returns top 3 words in recognized text
+  func topThreeWords() -> [String] {
+    // get the frequency
+    let frequency = detectFrequency()
+    // create an array to store the top 3 words
+    var topThree: [String] = []
+    // loop through the frequency
+    for (word, count) in frequency {
+      // if the topThree array is empty
+      if topThree.isEmpty {
+        // append the word
+        topThree.append(word)
+      } else {
+        // loop through the topThree array
+        for (index, topWord) in topThree.enumerated() {
+          // if the count is greater than the top word
+          if count > frequency[topWord]! {
+            // insert the word at the index
+            topThree.insert(word, at: index)
+            // break out of the loop
+            break
+          }
+          // if the index is 2
+          if index == 2 {
+            // append the word
+            topThree.append(word)
+          }
+        }
+      }
+    }
+    // return the top three words
+    return topThree
   }
 
   func applyBlurFilter() -> UIImage {
