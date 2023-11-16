@@ -37,6 +37,8 @@ struct ContentView: View {
   func setImage(index: Int) {
     image = UIImage(named: images[index])!
     originalImage = UIImage(named: images[index])!
+    imageFilter = .original
+    filterStrength = 0
     processImage()
   }
 
@@ -149,7 +151,7 @@ struct ContentView: View {
   var body: some View {
     VStack {
       Text("TXT Recognition vs Image Filters")
-        .padding()
+        .font(.custom("American Typewriter", size: 22)).multilineTextAlignment(.center)
       Picker(selection: $imageFilter, label: Text("Image Filter")) {
         Text(ImageFilter.original.rawValue).tag(ImageFilter.original)
         Text(ImageFilter.blur.rawValue).tag(ImageFilter.blur)
