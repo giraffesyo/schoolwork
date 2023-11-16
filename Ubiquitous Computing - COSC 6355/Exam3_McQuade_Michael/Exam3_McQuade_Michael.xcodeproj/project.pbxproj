@@ -1,0 +1,529 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		51521DA72B06CB16005C96B9 /* Exam3_McQuade_MichaelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51521DA62B06CB16005C96B9 /* Exam3_McQuade_MichaelApp.swift */; };
+		51521DA92B06CB16005C96B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51521DA82B06CB16005C96B9 /* ContentView.swift */; };
+		51521DAB2B06CB17005C96B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51521DAA2B06CB17005C96B9 /* Assets.xcassets */; };
+		51521DAE2B06CB17005C96B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51521DAD2B06CB17005C96B9 /* Preview Assets.xcassets */; };
+		51521DB42B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 51521DB32B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		51521DB92B06CB17005C96B9 /* Exam3_McQuade_MichaelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51521DB82B06CB17005C96B9 /* Exam3_McQuade_MichaelApp.swift */; };
+		51521DBB2B06CB17005C96B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51521DBA2B06CB17005C96B9 /* ContentView.swift */; };
+		51521DBD2B06CB17005C96B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51521DBC2B06CB17005C96B9 /* Assets.xcassets */; };
+		51521DC02B06CB17005C96B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51521DBF2B06CB17005C96B9 /* Preview Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		51521DB52B06CB17005C96B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51521D9B2B06CB15005C96B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51521DB22B06CB17005C96B9;
+			remoteInfo = "Exam3_McQuade_Michael Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		51521DC62B06CB17005C96B9 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				51521DB42B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		51521DA32B06CB16005C96B9 /* Exam3_McQuade_Michael.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Exam3_McQuade_Michael.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		51521DA62B06CB16005C96B9 /* Exam3_McQuade_MichaelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam3_McQuade_MichaelApp.swift; sourceTree = "<group>"; };
+		51521DA82B06CB16005C96B9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		51521DAA2B06CB17005C96B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		51521DAD2B06CB17005C96B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		51521DB32B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Exam3_McQuade_Michael Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		51521DB82B06CB17005C96B9 /* Exam3_McQuade_MichaelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam3_McQuade_MichaelApp.swift; sourceTree = "<group>"; };
+		51521DBA2B06CB17005C96B9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		51521DBC2B06CB17005C96B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		51521DBF2B06CB17005C96B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		51521DA02B06CB16005C96B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51521DB02B06CB17005C96B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		51521D9A2B06CB15005C96B9 = {
+			isa = PBXGroup;
+			children = (
+				51521DA52B06CB16005C96B9 /* Exam3_McQuade_Michael */,
+				51521DB72B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App */,
+				51521DA42B06CB16005C96B9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		51521DA42B06CB16005C96B9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51521DA32B06CB16005C96B9 /* Exam3_McQuade_Michael.app */,
+				51521DB32B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		51521DA52B06CB16005C96B9 /* Exam3_McQuade_Michael */ = {
+			isa = PBXGroup;
+			children = (
+				51521DA62B06CB16005C96B9 /* Exam3_McQuade_MichaelApp.swift */,
+				51521DA82B06CB16005C96B9 /* ContentView.swift */,
+				51521DAA2B06CB17005C96B9 /* Assets.xcassets */,
+				51521DAC2B06CB17005C96B9 /* Preview Content */,
+			);
+			path = Exam3_McQuade_Michael;
+			sourceTree = "<group>";
+		};
+		51521DAC2B06CB17005C96B9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				51521DAD2B06CB17005C96B9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		51521DB72B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				51521DB82B06CB17005C96B9 /* Exam3_McQuade_MichaelApp.swift */,
+				51521DBA2B06CB17005C96B9 /* ContentView.swift */,
+				51521DBC2B06CB17005C96B9 /* Assets.xcassets */,
+				51521DBE2B06CB17005C96B9 /* Preview Content */,
+			);
+			path = "Exam3_McQuade_Michael Watch App";
+			sourceTree = "<group>";
+		};
+		51521DBE2B06CB17005C96B9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				51521DBF2B06CB17005C96B9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		51521DA22B06CB16005C96B9 /* Exam3_McQuade_Michael */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 51521DC72B06CB17005C96B9 /* Build configuration list for PBXNativeTarget "Exam3_McQuade_Michael" */;
+			buildPhases = (
+				51521D9F2B06CB16005C96B9 /* Sources */,
+				51521DA02B06CB16005C96B9 /* Frameworks */,
+				51521DA12B06CB16005C96B9 /* Resources */,
+				51521DC62B06CB17005C96B9 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				51521DB62B06CB17005C96B9 /* PBXTargetDependency */,
+			);
+			name = Exam3_McQuade_Michael;
+			productName = Exam3_McQuade_Michael;
+			productReference = 51521DA32B06CB16005C96B9 /* Exam3_McQuade_Michael.app */;
+			productType = "com.apple.product-type.application";
+		};
+		51521DB22B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 51521DC32B06CB17005C96B9 /* Build configuration list for PBXNativeTarget "Exam3_McQuade_Michael Watch App" */;
+			buildPhases = (
+				51521DAF2B06CB17005C96B9 /* Sources */,
+				51521DB02B06CB17005C96B9 /* Frameworks */,
+				51521DB12B06CB17005C96B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Exam3_McQuade_Michael Watch App";
+			productName = "Exam3_McQuade_Michael Watch App";
+			productReference = 51521DB32B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		51521D9B2B06CB15005C96B9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					51521DA22B06CB16005C96B9 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					51521DB22B06CB17005C96B9 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 51521D9E2B06CB15005C96B9 /* Build configuration list for PBXProject "Exam3_McQuade_Michael" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 51521D9A2B06CB15005C96B9;
+			productRefGroup = 51521DA42B06CB16005C96B9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				51521DA22B06CB16005C96B9 /* Exam3_McQuade_Michael */,
+				51521DB22B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		51521DA12B06CB16005C96B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51521DAE2B06CB17005C96B9 /* Preview Assets.xcassets in Resources */,
+				51521DAB2B06CB17005C96B9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51521DB12B06CB17005C96B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51521DC02B06CB17005C96B9 /* Preview Assets.xcassets in Resources */,
+				51521DBD2B06CB17005C96B9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		51521D9F2B06CB16005C96B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51521DA92B06CB16005C96B9 /* ContentView.swift in Sources */,
+				51521DA72B06CB16005C96B9 /* Exam3_McQuade_MichaelApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51521DAF2B06CB17005C96B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51521DBB2B06CB17005C96B9 /* ContentView.swift in Sources */,
+				51521DB92B06CB17005C96B9 /* Exam3_McQuade_MichaelApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		51521DB62B06CB17005C96B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51521DB22B06CB17005C96B9 /* Exam3_McQuade_Michael Watch App */;
+			targetProxy = 51521DB52B06CB17005C96B9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		51521DC12B06CB17005C96B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		51521DC22B06CB17005C96B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		51521DC42B06CB17005C96B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Exam3_McQuade_Michael Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = R4VGXX56KF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Exam3_McQuade_Michael;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "edu.uh.cs.Exam3-McQuade-Michael";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.uh.cs.Exam3-McQuade-Michael.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 9.4;
+			};
+			name = Debug;
+		};
+		51521DC52B06CB17005C96B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Exam3_McQuade_Michael Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = R4VGXX56KF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Exam3_McQuade_Michael;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "edu.uh.cs.Exam3-McQuade-Michael";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.uh.cs.Exam3-McQuade-Michael.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 9.4;
+			};
+			name = Release;
+		};
+		51521DC82B06CB17005C96B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Exam3_McQuade_Michael/Preview Content\"";
+				DEVELOPMENT_TEAM = R4VGXX56KF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Exam3_McQuade_Michael;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.uh.cs.Exam3-McQuade-Michael";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		51521DC92B06CB17005C96B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Exam3_McQuade_Michael/Preview Content\"";
+				DEVELOPMENT_TEAM = R4VGXX56KF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Exam3_McQuade_Michael;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.uh.cs.Exam3-McQuade-Michael";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		51521D9E2B06CB15005C96B9 /* Build configuration list for PBXProject "Exam3_McQuade_Michael" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51521DC12B06CB17005C96B9 /* Debug */,
+				51521DC22B06CB17005C96B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		51521DC32B06CB17005C96B9 /* Build configuration list for PBXNativeTarget "Exam3_McQuade_Michael Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51521DC42B06CB17005C96B9 /* Debug */,
+				51521DC52B06CB17005C96B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		51521DC72B06CB17005C96B9 /* Build configuration list for PBXNativeTarget "Exam3_McQuade_Michael" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51521DC82B06CB17005C96B9 /* Debug */,
+				51521DC92B06CB17005C96B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 51521D9B2B06CB15005C96B9 /* Project object */;
+}
