@@ -36,7 +36,8 @@ struct ContentView: View {
 
   func setImage(index: Int) {
     image = UIImage(named: images[index])!
-    // processImage()
+    originalImage = UIImage(named: images[index])!
+    processImage()
   }
 
   func processImage() {
