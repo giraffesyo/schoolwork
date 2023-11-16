@@ -67,7 +67,7 @@ struct ContentView: View {
     // set the input image
     filter.setValue(ciImage, forKey: kCIInputImageKey)
     // set the intensity
-    filter.setValue(filterStrength, forKey: kCIInputRadiusKey)
+    filter.setValue(100 * filterStrength, forKey: kCIInputRadiusKey)
     // get the output image
     let outputImage = filter.outputImage!
     // create a context
@@ -82,13 +82,11 @@ struct ContentView: View {
     // create a CIImage from the UIImage
     let ciImage = CIImage(image: originalImage)!
     // create a filter
-    let filter = CIFilter(name: "CIColorMonochrome")!
+    let filter = CIFilter(name: "CIColorThreshold")!
     // set the input image
     filter.setValue(ciImage, forKey: kCIInputImageKey)
     // set the intensity
-    filter.setValue(filterStrength, forKey: kCIInputIntensityKey)
-    // set the color
-    filter.setValue(CIColor(red: 0, green: 0, blue: 0), forKey: kCIInputColorKey)
+    filter.setValue(0.5 * filterStrength, forKey: "inputThreshold")
     // get the output image
     let outputImage = filter.outputImage!
     // create a context
@@ -107,9 +105,9 @@ struct ContentView: View {
     case .original:
       filterStrength = 0
     case .blur:
-      filterStrength = 0.2
+      filterStrength = 0.25
     case .binarized:
-      filterStrength = 0.2
+      filterStrength = 0.25
     }
     // process the image
     processImage()
@@ -172,13 +170,17 @@ struct ContentView: View {
             .font(.largeTitle)
         }
         // slider to change filter strength, disabled if original image
-        Slider(value: $filterStrength, in: 0...3, step: 0.01)
-          .disabled(imageFilter == .original)
-          .onChange(
-            of: filterStrength,
-            perform: { value in
-              setFilterStrength(value: value)
-            })
+        Slider(
+          value: $filterStrength,
+          in: 0...3,
+          step: 0.01
+        )
+        .disabled(imageFilter == .original)
+        .onChange(
+          of: filterStrength,
+          perform: { value in
+            setFilterStrength(value: value)
+          })
       }
       // Multiline Text recognized from image
       Text(recognizedText)
