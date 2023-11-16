@@ -14,6 +14,7 @@ struct ContentView: View {
     "sample2",
     "sample3",
   ]
+  @State private var originalImage: UIImage
   @State private var image: UIImage
   @State private var imageFilter = ImageFilter.original
   @State private var filterStrength = 0.0
@@ -22,6 +23,8 @@ struct ContentView: View {
   init() {
     // set the image to the first image in the array
     image = UIImage(named: images[0])!
+    originalImage = UIImage(named: images[0])!
+
   }
 
   func selectRandomImage() {
@@ -37,6 +40,15 @@ struct ContentView: View {
   }
 
   func processImage() {
+    if imageFilter == .binarized {
+      image = applyBinarizeImageFilter()
+    }
+    if imageFilter == .blur {
+      image = applyBlurFilter()
+    }
+    if imageFilter == .original {
+      image = originalImage
+    }
     // recognize the text
     recognizeText()
 
@@ -44,17 +56,56 @@ struct ContentView: View {
     print(recognizedText)
   }
 
-  func changeImageFilter() {
+  func applyBlurFilter() -> UIImage {
+    // create a CIImage from the UIImage
+    let ciImage = CIImage(image: originalImage)!
+    // create a filter
+    let filter = CIFilter(name: "CIGaussianBlur")!
+    // set the input image
+    filter.setValue(ciImage, forKey: kCIInputImageKey)
+    // set the intensity
+    filter.setValue(filterStrength, forKey: kCIInputRadiusKey)
+    // get the output image
+    let outputImage = filter.outputImage!
+    // create a context
+    let context = CIContext()
+    // create a CGImage from the context
+    let cgImage = context.createCGImage(outputImage, from: outputImage.extent)!
+    // return the UIImage
+    return UIImage(cgImage: cgImage)
+  }
+
+  func applyBinarizeImageFilter() -> UIImage {
+    // create a CIImage from the UIImage
+    let ciImage = CIImage(image: originalImage)!
+    // create a filter
+    let filter = CIFilter(name: "CIColorMonochrome")!
+    // set the input image
+    filter.setValue(ciImage, forKey: kCIInputImageKey)
+    // set the intensity
+    filter.setValue(filterStrength, forKey: kCIInputIntensityKey)
+    // set the color
+    filter.setValue(CIColor(red: 0, green: 0, blue: 0), forKey: kCIInputColorKey)
+    // get the output image
+    let outputImage = filter.outputImage!
+    // create a context
+    let context = CIContext()
+    // create a CGImage from the context
+    let cgImage = context.createCGImage(outputImage, from: outputImage.extent)!
+    // return the UIImage
+    return UIImage(cgImage: cgImage)
+  }
+
+  func changeImageFilter(value: ImageFilter) {
+    print("changeImageFilter " + imageFilter.rawValue)
     // change the image filter
-    switch imageFilter {
+    imageFilter = value
+    switch value {
     case .original:
-      imageFilter = .blur
       filterStrength = 0
     case .blur:
-      imageFilter = .binarized
       filterStrength = 0.2
     case .binarized:
-      imageFilter = .original
       filterStrength = 0.2
     }
     // process the image
@@ -63,6 +114,7 @@ struct ContentView: View {
   // sets filter strength to whatever the slider is set to
   func setFilterStrength(value: Double) {
     filterStrength = value
+    processImage()
   }
 
   func recognizeText() {
@@ -101,7 +153,11 @@ struct ContentView: View {
         Text(ImageFilter.original.rawValue).tag(ImageFilter.original)
         Text(ImageFilter.blur.rawValue).tag(ImageFilter.blur)
         Text(ImageFilter.binarized.rawValue).tag(ImageFilter.binarized)
-      }.pickerStyle(SegmentedPickerStyle()).frame(width: 200).padding()
+      }.pickerStyle(SegmentedPickerStyle()).frame(width: 200).padding().onChange(
+        of: imageFilter,
+        perform: { value in
+          changeImageFilter(value: value)
+        })
       Image(uiImage: image)
         .resizable()
         .scaledToFit()
@@ -115,6 +171,11 @@ struct ContentView: View {
         // slider to change filter strength, disabled if original image
         Slider(value: $filterStrength, in: 0...3, step: 0.01)
           .disabled(imageFilter == .original)
+          .onChange(
+            of: filterStrength,
+            perform: { value in
+              setFilterStrength(value: value)
+            })
       }
       // Multiline Text recognized from image
       Text(recognizedText)
