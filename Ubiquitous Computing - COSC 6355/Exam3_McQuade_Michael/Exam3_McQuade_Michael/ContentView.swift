@@ -14,14 +14,14 @@ struct ContentView: View {
     "sample2",
     "sample3",
   ]
-  @State private var image = UIImage(named: "sample1")!
+  @State private var image: UIImage
   @State private var imageFilter = ImageFilter.original
   @State private var filterStrength = 0.0
   @State private var recognizedText = ""
 
   init() {
-    // set the image
-    setImage(index: 0)
+    // set the image to the first image in the array
+    image = UIImage(named: images[0])!
   }
 
   func selectRandomImage() {
@@ -33,7 +33,15 @@ struct ContentView: View {
 
   func setImage(index: Int) {
     image = UIImage(named: images[index])!
-    recognizeText(image: image)
+    // processImage()
+  }
+
+  func processImage() {
+    // recognize the text
+    recognizeText()
+
+    // print the recognized text
+    print(recognizedText)
   }
 
   func changeImageFilter() {
@@ -50,16 +58,16 @@ struct ContentView: View {
       filterStrength = 0.2
     }
     // process the image
-    recognizeText(image: image)
-    // print the recognized text
-    print(recognizedText)
+    processImage()
   }
   // sets filter strength to whatever the slider is set to
   func setFilterStrength(value: Double) {
     filterStrength = value
   }
 
-  func recognizeText(image: UIImage) {
+  func recognizeText() {
+    // empty the recognized text
+    recognizedText = ""
     // create a request handler
     let requestHandler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
     // create a request
@@ -70,17 +78,19 @@ struct ContentView: View {
       for observation in observations {
         // loop through the top candidates
         for candidate in observation.topCandidates(1) {
-          // get the recognized text
-          let recognizedText = candidate.string
-          // set the recognized text
-          self.recognizedText = recognizedText
+          // append to recognized text
+          self.recognizedText += candidate.string
         }
       }
     }
     // set the recognition level
     request.recognitionLevel = .accurate
-    // perform the request
-    try? requestHandler.perform([request])
+    // perform the request, catch any errors
+    do {
+      try requestHandler.perform([request])
+    } catch {
+      print(error)
+    }
   }
 
   var body: some View {
@@ -96,6 +106,7 @@ struct ContentView: View {
         .resizable()
         .scaledToFit()
         .frame(width: 300, height: 300)
+        .onAppear(perform: processImage)
       HStack {
         Button(action: selectRandomImage) {
           Image(systemName: "photo")
@@ -105,9 +116,11 @@ struct ContentView: View {
         Slider(value: $filterStrength, in: 0...3, step: 0.01)
           .disabled(imageFilter == .original)
       }
-      // Text recognized from image
+      // Multiline Text recognized from image
       Text(recognizedText)
+        .multilineTextAlignment(.center)
         .padding()
+
       Spacer()
     }
     .padding()
