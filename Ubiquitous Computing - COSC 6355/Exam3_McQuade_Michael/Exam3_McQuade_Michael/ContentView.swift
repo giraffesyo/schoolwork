@@ -14,7 +14,7 @@ struct ContentView: View {
   @State private var imageIndex = 0
   @State private var imageFilter = ImageFilter.original
   @State private var filterStrength = 0.0
-
+  @State private var recognizedText = ""
   func selectRandomImage() {
     // select a random image from the array
     imageIndex = Int.random(in: 0..<images.count)
@@ -42,11 +42,12 @@ struct ContentView: View {
   var body: some View {
     VStack {
       Text("TXT Recognition vs Image Filters")
+        .padding()
       Picker(selection: $imageFilter, label: Text("Image Filter")) {
         Text(ImageFilter.original.rawValue).tag(ImageFilter.original)
         Text(ImageFilter.blur.rawValue).tag(ImageFilter.blur)
         Text(ImageFilter.binarized.rawValue).tag(ImageFilter.binarized)
-      }.pickerStyle(SegmentedPickerStyle())
+      }.pickerStyle(SegmentedPickerStyle()).frame(width: 200).padding()
       Image(uiImage: images[imageIndex])
         .resizable()
         .scaledToFit()
@@ -59,6 +60,10 @@ struct ContentView: View {
         // slider to change filter strength
         Slider(value: $filterStrength, in: 0...3, step: 0.01)
       }
+      // Text recognized from image
+      Text(recognizedText)
+        .padding()
+      Spacer()
     }
     .padding()
   }
