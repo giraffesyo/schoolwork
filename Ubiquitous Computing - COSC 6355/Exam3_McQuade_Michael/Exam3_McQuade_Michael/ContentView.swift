@@ -1,4 +1,5 @@
 import SwiftUI
+import Vision
 
 enum ImageFilter: String {
   case original = "Original"
@@ -17,10 +18,22 @@ struct ContentView: View {
   @State private var imageFilter = ImageFilter.original
   @State private var filterStrength = 0.0
   @State private var recognizedText = ""
+
+  init() {
+    // set the image
+    setImage(index: 0)
+  }
+
   func selectRandomImage() {
     // select a random image from the array
     let randomIndex = Int.random(in: 0..<images.count)
-    image = UIImage(named: images[randomIndex])!
+    // set the image
+    setImage(index: randomIndex)
+  }
+
+  func setImage(index: Int) {
+    image = UIImage(named: images[index])!
+    recognizeText(image: image)
   }
 
   func changeImageFilter() {
@@ -36,10 +49,38 @@ struct ContentView: View {
       imageFilter = .original
       filterStrength = 0.2
     }
+    // process the image
+    recognizeText(image: image)
+    // print the recognized text
+    print(recognizedText)
   }
   // sets filter strength to whatever the slider is set to
   func setFilterStrength(value: Double) {
     filterStrength = value
+  }
+
+  func recognizeText(image: UIImage) {
+    // create a request handler
+    let requestHandler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
+    // create a request
+    let request = VNRecognizeTextRequest { (request, error) in
+      // get the results
+      guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
+      // loop through the results
+      for observation in observations {
+        // loop through the top candidates
+        for candidate in observation.topCandidates(1) {
+          // get the recognized text
+          let recognizedText = candidate.string
+          // set the recognized text
+          self.recognizedText = recognizedText
+        }
+      }
+    }
+    // set the recognition level
+    request.recognitionLevel = .accurate
+    // perform the request
+    try? requestHandler.perform([request])
   }
 
   var body: some View {
