@@ -8,16 +8,19 @@ enum ImageFilter: String {
 
 struct ContentView: View {
   // we have 3 images sample1, sample2, and sample3 in an array
-  var images: [UIImage] = [
-    UIImage(named: "sample1")!, UIImage(named: "sample2")!, UIImage(named: "sample3")!,
+  var images: [String] = [
+    "sample1",
+    "sample2",
+    "sample3",
   ]
-  @State private var imageIndex = 0
+  @State private var image = UIImage(named: "sample1")!
   @State private var imageFilter = ImageFilter.original
   @State private var filterStrength = 0.0
   @State private var recognizedText = ""
   func selectRandomImage() {
     // select a random image from the array
-    imageIndex = Int.random(in: 0..<images.count)
+    let randomIndex = Int.random(in: 0..<images.count)
+    image = UIImage(named: images[randomIndex])!
   }
 
   func changeImageFilter() {
@@ -48,7 +51,7 @@ struct ContentView: View {
         Text(ImageFilter.blur.rawValue).tag(ImageFilter.blur)
         Text(ImageFilter.binarized.rawValue).tag(ImageFilter.binarized)
       }.pickerStyle(SegmentedPickerStyle()).frame(width: 200).padding()
-      Image(uiImage: images[imageIndex])
+      Image(uiImage: image)
         .resizable()
         .scaledToFit()
         .frame(width: 300, height: 300)
@@ -57,8 +60,9 @@ struct ContentView: View {
           Image(systemName: "photo")
             .font(.largeTitle)
         }
-        // slider to change filter strength
+        // slider to change filter strength, disabled if original image
         Slider(value: $filterStrength, in: 0...3, step: 0.01)
+          .disabled(imageFilter == .original)
       }
       // Text recognized from image
       Text(recognizedText)
