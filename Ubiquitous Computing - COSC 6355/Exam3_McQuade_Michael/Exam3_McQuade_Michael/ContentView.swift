@@ -19,6 +19,7 @@ struct ContentView: View {
   @State private var imageFilter = ImageFilter.original
   @State private var filterStrength = 0.0
   @State private var recognizedText = ""
+  @StateObject var words = Words()
 
   init() {
     // set the image to the first image in the array
@@ -56,8 +57,8 @@ struct ContentView: View {
     recognizeText()
     // print the recognized text
     print(recognizedText)
-    // print the top three words
-    print(topThreeWords())
+    // send the top three words to the watch
+    words.send(topThreeWords())
   }
 
   // function to detect frequency words appear in recognized text

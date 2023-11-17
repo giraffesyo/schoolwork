@@ -8,19 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+  @StateObject var words = Words()
+
+  var body: some View {
+    VStack {
+
+      Text("Top 3 words recognized")
+        .multilineTextAlignment(.center)
+        .font(.title2)
+      List(words.value, id: \.self) { word in
+        Text(word)
+          .font(.title2)
+          .fontWeight(.bold)
+      }
     }
+    .padding()
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+  static var previews: some View {
+    ContentView()
+  }
 }
