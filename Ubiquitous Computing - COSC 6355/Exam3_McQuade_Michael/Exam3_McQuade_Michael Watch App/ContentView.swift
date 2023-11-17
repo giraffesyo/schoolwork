@@ -11,18 +11,18 @@ struct ContentView: View {
   @StateObject var words = Words()
 
   var body: some View {
+    // concatenate words into a single string
+    let word = words.value.joined(separator: ",")
     VStack {
 
       Text("Top 3 words recognized")
         .multilineTextAlignment(.center)
         .font(.title2)
-      List(words.value, id: \.self) { word in
-        Text(word)
-          .font(.title2)
-          .fontWeight(.bold)
-      }
+      Text(word)
+        .font(.title2)
+        .fontWeight(.bold)
     }
-    .padding()
+
   }
 }
 
