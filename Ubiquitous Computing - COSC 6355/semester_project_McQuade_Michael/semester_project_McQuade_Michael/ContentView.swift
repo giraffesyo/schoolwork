@@ -54,7 +54,7 @@ struct ContentView: View {
             .tabItem {
               Text("History")
               Image(systemName: "chart.bar")
-            }.tag(2).padding(.vertical)
+            }.tag(2).padding(.vertical)  // this padding is to fix overlap of tab bar and list view in history
         }.toolbarBackground(Color.accentColor, for: .tabBar).preferredColorScheme(.dark)
           .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
         NavigationLink(
