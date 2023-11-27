@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HistoryView: View {
   @EnvironmentObject var store: Store
-
+  @State private var showDeleteAlert = false
   func delete(workout: Workout) {
     store.removeWorkout(workout: workout)
   }
@@ -23,11 +23,21 @@ struct HistoryView: View {
         Spacer()
         // clear history button
         Button(action: {
-          store.emptyHistory()
+          showDeleteAlert = true
         }) {
           Text("Clear History")
             .foregroundColor(.accentColor)
             .background(Color(.black))
+        }
+        .alert(isPresented: $showDeleteAlert) {
+          Alert(
+            title: Text("Clear History"),
+            message: Text("Are you sure you want to clear your history?"),
+            primaryButton: .destructive(Text("Clear")) {
+              store.emptyHistory()
+            },
+            secondaryButton: .cancel()
+          )
         }
       }
       if store.history.count > 0 {
