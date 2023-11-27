@@ -54,8 +54,8 @@ struct ContentView: View {
             .tabItem {
               Text("History")
               Image(systemName: "chart.bar")
-            }.tag(2)
-        }.toolbarBackground(Color.accentColor).preferredColorScheme(.dark)
+            }.tag(2).padding(.vertical)
+        }.toolbarBackground(Color.accentColor, for: .tabBar).preferredColorScheme(.dark)
           .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
         NavigationLink(
 

@@ -5,18 +5,23 @@ struct CompletedWorkoutOverview: View {
   var body: some View {
 
     return VStack {
-      Text("Workout Overview")
-        .font(.title)
+
+      Text(currentWorkout.duration).font(.system(size: 60))
         .fontWeight(.bold)
-        .foregroundColor(.accentColor)
-      Text(currentWorkout.duration)
-      Text("Exercises:")
+        .foregroundColor(.white)
+        .padding()
+      Text("Exercises").font(.system(size: 24))
+        .fontWeight(.bold)
+        .foregroundColor(.white)
+        .padding(.bottom)
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, alignment: .leading)
       List {
         ForEach(currentWorkout.exercises) { exercise in
           Text(exercise.metadata.name)
         }
       }
-    }
+    }.navigationTitle("Workout Overview")
   }
 
 }
