@@ -1,5 +1,7 @@
 import SwiftUI
 
+/// ExercisedDays is a struct that contains a boolean for each day of the week.
+/// It is used to determine which days have been exercised on in the current week.
 struct ExercisedDays {
   var Monday: Bool = false
   var Tuesday: Bool = false
@@ -10,6 +12,12 @@ struct ExercisedDays {
   var Sunday: Bool = false
 }
 
+/// The store is the single source of truth for the application.
+/// All data is stored in the store, and all views are updated when the store changes.
+/// The store is loaded from UserDefaults when the app starts, and continuously saved to UserDefaults as it changes.
+/// The store is an ObservableObject, so views can subscribe to changes in the store.
+/// The store is also an Actor, so it can be accessed from multiple threads.
+/// This also allows us to pass a mocked store to views for testing, which is utilized in the previews.
 @MainActor
 class Store: ObservableObject {
 
@@ -119,6 +127,8 @@ class Store: ObservableObject {
 
 }
 
+/// A workout is a collection of exercises that are performed together.
+/// A workout can be started and ended, and the duration is calculated.
 struct Workout: Identifiable, Codable {
   var id = UUID()
   var startedAt: Date
@@ -141,12 +151,14 @@ struct Workout: Identifiable, Codable {
   }
 }
 
+/// The type of exercise, which determines how it is tracked and displayed.
 enum ExerciseType: String, Codable {
   case bodyweight_sets = "Bodyweight"
   case time = "Timed"
   case weighted_sets = "Weighted"
 }
 
+/// An exercise is the smallest unit that composes a workout.
 struct Exercise: Identifiable, Codable {
   var id = UUID()
   var metadata: ExerciseMetadata
@@ -155,15 +167,12 @@ struct Exercise: Identifiable, Codable {
   var startedAt: Date?
   var endedAt: Date?
 
-  /**
-   Increments the number of sets for this exercise.
-   */
+  /// Increments the number of sets for this exercise.
   mutating func incrementSets() {
     self.sets = sets + 1
   }
-  /**
-   Decrements the number of sets for this exercise, but only if the number of sets is greater than 0.
-   */
+
+  /// Decrements the number of sets for this exercise, but only if the number of sets is greater than 0.
   mutating func decrementSets() {
     if sets > 0 {
       self.sets = sets - 1
@@ -171,6 +180,7 @@ struct Exercise: Identifiable, Codable {
   }
 }
 
+/// The metadata for an exercise, which is used to display information about the exercise.
 struct ExerciseMetadata: Identifiable, Codable {
   var id = UUID()
   var name: String
@@ -181,8 +191,7 @@ struct ExerciseMetadata: Identifiable, Codable {
 
 }
 
-// preset array of exercises for testing
-
+/// A preset array of exercises that are used to populate the initial list of exercises when the app is first installed.
 struct PRELOADED_EXERCISES {
   static let pushups = ExerciseMetadata(
     name: "Pushups",
