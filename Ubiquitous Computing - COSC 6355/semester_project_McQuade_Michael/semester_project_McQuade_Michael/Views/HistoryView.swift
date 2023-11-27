@@ -14,13 +14,12 @@ struct HistoryView: View {
     let today = dateFormatter.string(from: Date())
     let yesterday = dateFormatter.string(from: Date().addingTimeInterval(-86400))
 
-    return NavigationStack {
-      HStack {
-        Text("History")
-          .font(.title)
-          .fontWeight(.bold)
-          .foregroundColor(.accentColor)
-        Spacer()
+      return   VStack{   HStack {
+          Text("History")
+              .font(.title)
+              .fontWeight(.bold)
+              .foregroundColor(.accentColor)
+          Spacer()
       }
       if store.history.count > 0 {
 
