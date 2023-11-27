@@ -19,9 +19,10 @@ struct ContentView: View {
     currentWorkout = Workout(startedAt: Date())
   }
   func endWorkout() {
+    currentWorkout!.endedAt = Date()
     store.addWorkout(workout: currentWorkout!)
-    selectedTab = 2  // switch to history tab
     currentWorkout = nil
+    selectedTab = 2  // switch to history tab
   }
 
   var body: some View {
