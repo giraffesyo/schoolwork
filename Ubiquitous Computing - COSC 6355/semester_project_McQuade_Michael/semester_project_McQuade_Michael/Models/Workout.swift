@@ -25,7 +25,9 @@ class Store: ObservableObject {
   let exercises_key: String = "exercises"
   @Published var history: [Workout]
   @Published var exercises: [ExerciseMetadata]
-  @Published var path: NavigationPath = NavigationPath()
+  /// When set, forces the user to navigate to the CompletedWorkoutOverview view.
+  @Published var presentingWorkout: Workout?
+
   func getExercisedDaysThisWeek() -> ExercisedDays {
     var exercisedDays = ExercisedDays()
 

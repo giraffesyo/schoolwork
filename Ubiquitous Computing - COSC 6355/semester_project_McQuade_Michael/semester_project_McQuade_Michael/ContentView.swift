@@ -22,7 +22,7 @@ struct ContentView: View {
   }
   func endWorkout() {
     store.addWorkout(workout: currentWorkout!)
-    presentingWorkout = currentWorkout
+    store.presentingWorkout = currentWorkout
     currentWorkout = nil
   }
 
@@ -62,16 +62,16 @@ struct ContentView: View {
           destination: CompletedWorkoutOverview(
             currentWorkout: Binding<Workout>(
               get: {
-                if let workout = self.presentingWorkout {
+                if let workout = store.presentingWorkout {
                   return workout
                 } else {
                   return Workout(startedAt: Date())
                 }
 
-              }, set: { self.presentingWorkout = $0 })
+              }, set: { store.presentingWorkout = $0 })
           ),
           isActive: Binding<Bool>(
-            get: { self.presentingWorkout != nil }, set: { _ in self.presentingWorkout = nil })
+            get: { store.presentingWorkout != nil }, set: { _ in store.presentingWorkout = nil })
         ) {
           EmptyView()
         }.hidden()
