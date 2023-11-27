@@ -41,8 +41,8 @@ struct CompletedWorkoutOverview_Previews: PreviewProvider {
 
     return ContentView(
       currentWorkout: nil,
-      selectedTab: 0,
-      store: mock_store,
-      presentingWorkout: mock_store.history[0])
+      selectedTab: 2,
+      store: mock_store
+    )
   }
 }

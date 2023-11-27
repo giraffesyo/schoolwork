@@ -14,12 +14,13 @@ struct HistoryView: View {
     let today = dateFormatter.string(from: Date())
     let yesterday = dateFormatter.string(from: Date().addingTimeInterval(-86400))
 
-      return   VStack{   HStack {
-          Text("History")
-              .font(.title)
-              .fontWeight(.bold)
-              .foregroundColor(.accentColor)
-          Spacer()
+    return NavigationStack {
+      HStack {
+        Text("History")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.accentColor)
+        Spacer()
       }
       if store.history.count > 0 {
 
@@ -64,7 +65,7 @@ struct HistoryDayView: View {
       ForEach(workouts) { workout in
         // only show time
         let time = dateFormatter.string(from: workout.startedAt)
-        NavigationLink(destination: TODOView()) {
+        NavigationLink(destination: CompletedWorkoutOverview(currentWorkout: .constant(workout))) {
           HStack {
             Text("\(workout.exercises.count) exercises")
             Spacer()
@@ -84,7 +85,7 @@ struct HistoryDayView: View {
         }.padding(.horizontal)
       }.onDelete(perform: { indexSet in
         for index in indexSet {
-            delete(workouts[index])
+          delete(workouts[index])
         }
       })
 

@@ -5,11 +5,9 @@ struct ContentView: View {
 
   @State private var currentWorkout: Workout?
   @State private var selectedTab: Int = 0
-  @State private var presentingWorkout: Workout?
 
   init(
-    currentWorkout: Workout? = nil, selectedTab: Int = 0, store: Store? = nil,
-    presentingWorkout: Workout? = nil
+    currentWorkout: Workout? = nil, selectedTab: Int = 0, store: Store? = nil
   ) {
     _currentWorkout = State(initialValue: currentWorkout)
     _selectedTab = State(initialValue: selectedTab)
@@ -22,7 +20,7 @@ struct ContentView: View {
   }
   func endWorkout() {
     store.addWorkout(workout: currentWorkout!)
-    store.presentingWorkout = currentWorkout
+    selectedTab = 2  // switch to history tab
     currentWorkout = nil
   }
 
@@ -57,24 +55,6 @@ struct ContentView: View {
             }.tag(2).padding(.vertical)  // this padding is to fix overlap of tab bar and list view in history
         }.toolbarBackground(Color.accentColor, for: .tabBar).preferredColorScheme(.dark)
           .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
-        NavigationLink(
-
-          destination: CompletedWorkoutOverview(
-            currentWorkout: Binding<Workout>(
-              get: {
-                if let workout = store.presentingWorkout {
-                  return workout
-                } else {
-                  return Workout(startedAt: Date())
-                }
-
-              }, set: { store.presentingWorkout = $0 })
-          ),
-          isActive: Binding<Bool>(
-            get: { store.presentingWorkout != nil }, set: { _ in store.presentingWorkout = nil })
-        ) {
-          EmptyView()
-        }.hidden()
       }
     }.environmentObject(store)
   }
