@@ -16,11 +16,22 @@ struct CompletedWorkoutOverview: View {
         .padding(.bottom)
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .leading)
-      List {
-        ForEach(currentWorkout.exercises) { exercise in
-          Text(exercise.metadata.name)
-        }
-      }
+      currentWorkout.exercises.count == 0
+        ? AnyView(
+          Text("No exercises performed")
+            .font(.system(size: 18))
+            .fontWeight(.bold)
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        )
+        : AnyView(
+
+          List {
+            ForEach(currentWorkout.exercises) { exercise in
+              Text(exercise.metadata.name)
+            }
+          })
+      Spacer()
     }.navigationTitle("Workout Overview")
   }
 
