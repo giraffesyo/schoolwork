@@ -91,6 +91,7 @@ class Store: ObservableObject {
     }
   }
 
+  /// Saves the store to UserDefaults.
   private func save() {
     if let encoded = try? JSONEncoder().encode(history) {
       UserDefaults.standard.set(encoded, forKey: history_key)
@@ -100,26 +101,29 @@ class Store: ObservableObject {
     }
   }
 
+  /// Given an exercise, adds it to the list of exercises.
   func addExercise(exercise: ExerciseMetadata) {
     exercises.append(exercise)
     save()
   }
 
+  /// Given an exercise, removes it from the list of exercises.
   func removeExercise(exercise: ExerciseMetadata) {
     exercises.removeAll(where: { $0.id == exercise.id })
     save()
   }
 
+  /// Given a workout, adds it to the history.
   func addWorkout(workout: Workout) {
     history.append(workout)
     save()
   }
-
+  /// Given a workout, removes it from the history.
   func removeWorkout(workout: Workout) {
     history.removeAll(where: { $0.id == workout.id })
     save()
   }
-
+  /// Removes all workouts from the history.
   func emptyHistory() {
     history = []
     save()
