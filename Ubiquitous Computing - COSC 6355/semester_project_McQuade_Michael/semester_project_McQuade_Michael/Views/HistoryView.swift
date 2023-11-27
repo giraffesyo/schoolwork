@@ -65,24 +65,29 @@ struct HistoryDayView: View {
       ForEach(workouts) { workout in
         // only show time
         let time = dateFormatter.string(from: workout.startedAt)
-        NavigationLink(destination: CompletedWorkoutOverview(currentWorkout: .constant(workout))) {
+        ZStack {
+          NavigationLink(destination: CompletedWorkoutOverview(currentWorkout: .constant(workout)))
+          {
+            EmptyView()
+          }
           HStack {
-            Text("\(workout.exercises.count) exercises")
-            Spacer()
-            VStack {
-              Text("\(time)")
-              Text("\(workout.duration)")
-
+            HStack {
+              Text("\(workout.exercises.count) exercises")
+              Spacer()
+              HStack {
+                Text("\(time)")
+                Text("\(workout.duration)")
+              }
+              Spacer()
+              Image(systemName: "chevron.right").foregroundColor(.accentColor).aspectRatio(
+                contentMode: .fit
+              ).frame(width: 7)
             }
-          }.padding()
-            .background(Color(.black))
-            .cornerRadius(40)
-            .padding(10)
-            .overlay(
-              RoundedRectangle(cornerRadius: 40)
-                .stroke(Color.accentColor, lineWidth: 5)
-            )
-        }.padding(.horizontal)
+          }.padding().background(Color(.black)).foregroundColor(.white).cornerRadius(10)
+        }.padding(.horizontal).overlay(
+          RoundedRectangle(cornerRadius: 10).stroke(Color.accentColor, lineWidth: 2)
+        )
+
       }.onDelete(perform: { indexSet in
         for index in indexSet {
           delete(workouts[index])
