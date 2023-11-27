@@ -21,6 +21,14 @@ struct HistoryView: View {
           .fontWeight(.bold)
           .foregroundColor(.accentColor)
         Spacer()
+        // clear history button
+        Button(action: {
+          store.emptyHistory()
+        }) {
+          Text("Clear History")
+            .foregroundColor(.accentColor)
+            .background(Color(.black))
+        }
       }
       if store.history.count > 0 {
 
