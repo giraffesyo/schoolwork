@@ -28,34 +28,34 @@ struct ContentView: View {
     ZStack {
       Color(.black)
         .edgesIgnoringSafeArea(.all)
-      NavigationStack {
-        TabView(selection: $selectedTab) {
-          (currentWorkout != nil
-            ? AnyView(
-              ActiveWorkoutView(
-                currentWorkout:
-                  Binding<Workout>(
-                    get: { self.currentWorkout! }, set: { self.currentWorkout = $0 }),
-                endWorkout: endWorkout
-              ))
-            : AnyView(StartWorkoutView(startWorkout: startWorkout)))
-            .tabItem {
-              Text("Workout")
-              Image(systemName: "figure.walk")
-            }.tag(0)
-          GoalsView()
-            .tabItem {
-              Text("Goals")
-              Image(systemName: "chart.pie")
-            }.tag(1)
-          HistoryView()
-            .tabItem {
-              Text("History")
-              Image(systemName: "chart.bar")
-            }.tag(2).padding(.vertical)  // this padding is to fix overlap of tab bar and list view in history
-        }.toolbarBackground(Color.accentColor, for: .tabBar).preferredColorScheme(.dark)
-          .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
-      }
+
+      TabView(selection: $selectedTab) {
+        (currentWorkout != nil
+          ? AnyView(
+            ActiveWorkoutView(
+              currentWorkout:
+                Binding<Workout>(
+                  get: { self.currentWorkout! }, set: { self.currentWorkout = $0 }),
+              endWorkout: endWorkout
+            ))
+          : AnyView(StartWorkoutView(startWorkout: startWorkout)))
+          .tabItem {
+            Text("Workout")
+            Image(systemName: "figure.walk")
+          }.tag(0)
+        GoalsView()
+          .tabItem {
+            Text("Goals")
+            Image(systemName: "chart.pie")
+          }.tag(1)
+        HistoryView()
+          .tabItem {
+            Text("History")
+            Image(systemName: "chart.bar")
+          }.tag(2).padding(.vertical)  // this padding is to fix overlap of tab bar and list view in history
+      }.toolbarBackground(Color.accentColor, for: .tabBar).preferredColorScheme(.dark)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+
     }.environmentObject(store)
   }
 }
