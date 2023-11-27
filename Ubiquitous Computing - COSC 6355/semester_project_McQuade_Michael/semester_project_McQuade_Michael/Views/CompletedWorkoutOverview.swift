@@ -25,7 +25,6 @@ struct CompletedWorkoutOverview: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         )
         : AnyView(
-
           List {
             ForEach(currentWorkout.exercises) { exercise in
               Text(exercise.metadata.name)
