@@ -103,7 +103,7 @@ struct ExerciseListView: View {
     @Binding var exercise: Exercise
     @State var showWeightPicker = false
     @FocusState private var keyboardFocused
-      
+
     var body: some View {
       VStack {
         Image(exercise.metadata.image)
@@ -128,7 +128,7 @@ struct ExerciseListView: View {
                   showWeightPicker = true
 
                 }) {
-                  Text("\(exercise.weight ?? 0)")
+                  Text("\(exercise.weight)")
                     .font(.system(size: 40))
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -153,16 +153,20 @@ struct ExerciseListView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.accentColor)
               HStack {
-                Button(action: {}) {
+                Button(action: {
+                  exercise.decrementSets()
+                }) {
                   Image(systemName: "minus.circle")
                     .font(.system(size: 40))
                     .foregroundColor(.accentColor)
                 }
-                Text("\(exercise.sets ?? 0)")
+                Text("\(exercise.sets)")
                   .font(.system(size: 40))
                   .fontWeight(.bold)
                   .foregroundColor(.white)
-                Button(action: {}) {
+                Button(action: {
+                  exercise.incrementSets()
+                }) {
                   Image(systemName: "plus.circle")
                     .font(.system(size: 40))
                     .foregroundColor(.accentColor)

@@ -19,7 +19,7 @@ class Store: ObservableObject {
   @Published var exercises: [ExerciseMetadata]
   func getExercisedDaysThisWeek() -> ExercisedDays {
     var exercisedDays = ExercisedDays()
-    
+
     let today = Calendar.current.startOfDay(for: Date())
     let thisWeek = Calendar.current.dateInterval(of: .weekOfYear, for: today)!
     for workout in history {
@@ -150,10 +150,25 @@ enum ExerciseType: String, Codable {
 struct Exercise: Identifiable, Codable {
   var id = UUID()
   var metadata: ExerciseMetadata
-  var sets: Int?
-  var weight: Int?
+  var sets: Int = 0
+  var weight: Int = 0
   var startedAt: Date?
   var endedAt: Date?
+
+  /**
+   Increments the number of sets for this exercise.
+   */
+  mutating func incrementSets() {
+    self.sets = sets + 1
+  }
+  /**
+   Decrements the number of sets for this exercise, but only if the number of sets is greater than 0.
+   */
+  mutating func decrementSets() {
+    if sets > 0 {
+      self.sets = sets - 1
+    }
+  }
 }
 
 struct ExerciseMetadata: Identifiable, Codable {
