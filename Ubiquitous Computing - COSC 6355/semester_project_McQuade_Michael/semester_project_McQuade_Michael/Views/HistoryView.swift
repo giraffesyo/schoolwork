@@ -59,7 +59,7 @@ struct HistoryView: View {
               .foregroundColor(.white).listRowBackground(Color.black)
 
             HistoryDayView(
-              workouts: store.workoutsByDate[day]!,
+              workouts: store.workoutsByDate[day]!.reversed(),
               delete: delete
             ).listRowBackground(Color.black)
 
