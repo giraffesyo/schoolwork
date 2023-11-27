@@ -25,6 +25,7 @@ class Store: ObservableObject {
   let exercises_key: String = "exercises"
   @Published var history: [Workout]
   @Published var exercises: [ExerciseMetadata]
+  @Published var path: NavigationPath = NavigationPath()
   func getExercisedDaysThisWeek() -> ExercisedDays {
     var exercisedDays = ExercisedDays()
 
