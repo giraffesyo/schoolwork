@@ -65,6 +65,15 @@ struct GoalsView: View {
           .fontWeight(.bold)
           .foregroundColor(.accentColor)
         Spacer()
+        // Edit goals button, does the same thing as the button below
+        Button(action: {
+
+          showChangeGoalAlert = true
+        }) {
+          Text("Change Goal")
+            .foregroundColor(.accentColor)
+            .background(Color(.black))
+        }
       }
       WeeklyGoalsView()
       Spacer()
