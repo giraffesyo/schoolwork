@@ -20,6 +20,7 @@
 		51C2A9FF2AE47A0500469072 /* StartWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2A9FE2AE47A0500469072 /* StartWorkoutView.swift */; };
 		51C2AA012AE47A8D00469072 /* WorkoutTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C2AA002AE47A8D00469072 /* WorkoutTimerView.swift */; };
 		51DF107D2B15CE0000B38AC4 /* CurrentExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF107C2B15CE0000B38AC4 /* CurrentExerciseView.swift */; };
+		51DF107F2B15CE9300B38AC4 /* CreateExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF107E2B15CE9300B38AC4 /* CreateExerciseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		51C2AA002AE47A8D00469072 /* WorkoutTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTimerView.swift; sourceTree = "<group>"; };
 		51C2B2092B15BD1200E47FB8 /* semester-project-McQuade-Michael-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "semester-project-McQuade-Michael-Info.plist"; sourceTree = SOURCE_ROOT; };
 		51DF107C2B15CE0000B38AC4 /* CurrentExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentExerciseView.swift; sourceTree = "<group>"; };
+		51DF107E2B15CE9300B38AC4 /* CreateExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateExerciseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				516699A02AEEF445001949A9 /* HistoryView.swift */,
 				5180FCE52B1423D7004A6C6A /* CompletedWorkoutOverview.swift */,
 				51DF107C2B15CE0000B38AC4 /* CurrentExerciseView.swift */,
+				51DF107E2B15CE9300B38AC4 /* CreateExerciseView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				51C2AA012AE47A8D00469072 /* WorkoutTimerView.swift in Sources */,
 				51C2A9ED2AE44A0000469072 /* ContentView.swift in Sources */,
 				5166999F2AEEEF90001949A9 /* GoalsView.swift in Sources */,
+				51DF107F2B15CE9300B38AC4 /* CreateExerciseView.swift in Sources */,
 				51DF107D2B15CE0000B38AC4 /* CurrentExerciseView.swift in Sources */,
 				51C2A9EB2AE44A0000469072 /* semester_project_McQuade_MichaelApp.swift in Sources */,
 				51C2A9F92AE4794B00469072 /* ActiveWorkoutView.swift in Sources */,

@@ -5,7 +5,7 @@ struct ActiveWorkoutView: View {
   var endWorkout: () -> Void
   var body: some View {
 
-    VStack {
+    NavigationStack {
       HStack {
         Text("Workout")
           .font(.title)
@@ -28,6 +28,7 @@ struct ActiveWorkoutView: View {
 }
 
 struct ExerciseListView: View {
+    @EnvironmentObject var store: Store
   @Binding var currentWorkout: Workout
   func handleExerciseTap(exercise: ExerciseMetadata) {
     currentWorkout.currentExercise = Exercise(metadata: exercise)
@@ -46,18 +47,28 @@ struct ExerciseListView: View {
         .foregroundColor(.accentColor)
         Spacer()
         currentlyExercising
-          ? Button(action: {
-            currentWorkout.endExercise()
-          }) {
-            Text("End Exercise")
-              .foregroundColor(.accentColor)
-              .background(Color(.black))
-          } : nil
+          ? AnyView(
+            Button(action: {
+              currentWorkout.endExercise()
+            }) {
+              Text("End Exercise")
+                .foregroundColor(.accentColor)
+                .background(Color(.black))
+            })
+          :  // we show Add Exercise button if we're not currently exercising
+          AnyView(
+            NavigationLink(
+              destination: CreateExerciseView()
+            ) {
+              Text("Add Exercise")
+                .foregroundColor(.accentColor)
+                .background(Color(.black))
+            })
       }.frame(maxWidth: .infinity, alignment: .leading)
       currentWorkout.currentExercise == nil
         ? AnyView(
           List {
-            ForEach(PRELOADED_EXERCISES.all) { metadata in
+              ForEach(store.exercises) { metadata in
               ExerciseListRowView(metadata: metadata, handleExerciseTap: handleExerciseTap)
             }
           })
