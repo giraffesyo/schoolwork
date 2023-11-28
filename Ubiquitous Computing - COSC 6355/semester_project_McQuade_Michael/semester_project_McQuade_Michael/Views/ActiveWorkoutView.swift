@@ -68,37 +68,34 @@ struct ExerciseListView: View {
                 get: { self.currentWorkout.currentExercise! },
                 set: { self.currentWorkout.currentExercise = $0 })
           ))
-
     }
-
   }
+}
 
-  struct ExerciseListRowView: View {
-    var metadata: ExerciseMetadata
-    var handleExerciseTap: (ExerciseMetadata) -> Void
-    var body: some View {
-      HStack {
-        Image(metadata.image)
-          .resizable()
-          .frame(width: 50, height: 50)
-          .clipShape(Circle())
-        VStack(alignment: .leading) {
-          HStack {
-            Text(metadata.name)
-              .font(.headline)
-            Spacer()
-            Text(metadata.type.rawValue)
-              .font(.subheadline)
-          }
-          Text(metadata.description)
+struct ExerciseListRowView: View {
+  var metadata: ExerciseMetadata
+  var handleExerciseTap: (ExerciseMetadata) -> Void
+  var body: some View {
+    HStack {
+      Image(metadata.image)
+        .resizable()
+        .frame(width: 50, height: 50)
+        .clipShape(Circle())
+      VStack(alignment: .leading) {
+        HStack {
+          Text(metadata.name)
+            .font(.headline)
+          Spacer()
+          Text(metadata.type.rawValue)
             .font(.subheadline)
         }
-      }.onTapGesture {
-        handleExerciseTap(metadata)
+        Text(metadata.description)
+          .font(.subheadline)
       }
+    }.onTapGesture {
+      handleExerciseTap(metadata)
     }
   }
-
 }
 
 struct ActiveWorkoutView_Previews: PreviewProvider {
