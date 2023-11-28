@@ -27,7 +27,10 @@ struct CompletedWorkoutOverview: View {
         : AnyView(
           List {
             ForEach(currentWorkout.exercises) { exercise in
-              Text(exercise.metadata.name)
+              HStack {
+                Text(exercise.metadata.name)
+
+              }
             }
           })
       Spacer()
@@ -41,12 +44,15 @@ struct CompletedWorkoutOverview: View {
 struct CompletedWorkoutOverview_Previews: PreviewProvider {
 
   static let mock_store = Store()
-
   static var previews: some View {
+    mock_store.emptyHistory()
 
-    let workout = Workout(
-      startedAt: Date().addingTimeInterval(86400 * 2),
-      endedAt: Date().addingTimeInterval(86400 * 2 + 3600))
+    var workout = Workout(
+      startedAt: Date().addingTimeInterval(-43200 * 2),
+      endedAt: Date().addingTimeInterval(-43200 * 2 + 3600))
+    workout.exercises.append(
+      Exercise(metadata: PRELOADED_EXERCISES.curl)
+    )
     mock_store.addWorkout(workout: workout)
 
     return ContentView(
