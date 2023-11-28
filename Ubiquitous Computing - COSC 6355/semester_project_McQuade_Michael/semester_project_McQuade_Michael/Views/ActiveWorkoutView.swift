@@ -140,7 +140,7 @@ struct ExerciseListView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                       keyboardFocused = true
                     }
-                  }.foregroundColor(.black)
+                  }.foregroundColor(.white)
                   Button("OK") {
                     showWeightPicker = false
                   }
