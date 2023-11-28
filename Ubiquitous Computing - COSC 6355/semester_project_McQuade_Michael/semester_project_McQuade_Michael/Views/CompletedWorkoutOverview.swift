@@ -29,7 +29,14 @@ struct CompletedWorkoutOverview: View {
             ForEach(currentWorkout.exercises) { exercise in
               HStack {
                 Text(exercise.metadata.name)
-
+                if exercise.metadata.type == .bodyweight_sets {
+                  Text("\(exercise.sets) sets")
+                } else if exercise.metadata.type == .weighted_sets {
+                  Text("\(exercise.sets) sets")
+                  Text("\(exercise.weight) lbs")
+                } else if exercise.metadata.type == .time {
+                  Text("\(exercise.duration)")
+                }
               }
             }
           })
@@ -51,7 +58,16 @@ struct CompletedWorkoutOverview_Previews: PreviewProvider {
       startedAt: Date().addingTimeInterval(-43200 * 2),
       endedAt: Date().addingTimeInterval(-43200 * 2 + 3600))
     workout.exercises.append(
-      Exercise(metadata: PRELOADED_EXERCISES.curl)
+      Exercise(
+        metadata: PRELOADED_EXERCISES.curl, sets: 3, weight: 50,
+        startedAt: Date().addingTimeInterval(-43200 * 2 + 1800),
+        endedAt: Date().addingTimeInterval(-43200 * 2 + 3600))
+    )
+    workout.exercises.append(
+      Exercise(
+        metadata: PRELOADED_EXERCISES.eliptical,
+        startedAt: Date().addingTimeInterval(-43200 * 2 + 1800),
+        endedAt: Date().addingTimeInterval(-43200 * 2 + 3600))
     )
     mock_store.addWorkout(workout: workout)
 

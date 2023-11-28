@@ -186,8 +186,16 @@ struct Exercise: Identifiable, Codable {
   var metadata: ExerciseMetadata
   var sets: Int = 0
   var weight: Int = 0
-  var startedAt: Date?
+  var startedAt: Date = Date()
   var endedAt: Date?
+  // calculated duration (DateInterval)
+  var duration: String {
+    let interval = DateInterval(start: startedAt, end: endedAt ?? Date())
+    let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.unitsStyle = .abbreviated
+    return formatter.string(from: interval.duration)!
+  }
 
   /// Increments the number of sets for this exercise.
   mutating func incrementSets() {
