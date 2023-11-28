@@ -1,20 +1,18 @@
+import PhotosUI
 import SwiftUI
 
 struct CreateExerciseView: View {
-  @EnvironmentObject var store: Store
-  @State var showIconPicker = false
-  @State var name = ""
-  @State var description = ""
-  @State var type = ExerciseType.bodyweight_sets
+  @EnvironmentObject private var store: Store
+  //  @State private var showImagePicker = false
+  @State private var selectedPhoto: PhotosPickerItem?
+
+  @State private var image: UIImage?
+  @State private var name = ""
+  @State private var description = ""
+  @State private var type = ExerciseType.bodyweight_sets
+
   var body: some View {
     ScrollView {
-      // Image picker, using system image icon
-      Image(systemName: "camera")
-        .resizable()
-        .frame(width: 100, height: 100)
-        .onTapGesture {
-          // open image picker
-        }
       HStack {
         Text("Name")
           .font(.title)
@@ -42,6 +40,22 @@ struct CreateExerciseView: View {
         Text("Time").tag(ExerciseType.time)
 
       }.pickerStyle(SegmentedPickerStyle())
+      // image picker
+      HStack {
+        Text("Image")
+          .font(.title)
+          .fontWeight(.bold)
+          .foregroundColor(.white)
+          .background(Color(.black))
+        Spacer()
+      }
+      PhotosPicker(selection: $selectedPhoto, matching: .images) {
+        Label("Select a photo", systemImage: "photo")
+      }
+      .tint(.black)
+      .controlSize(.large)
+      .buttonStyle(.borderedProminent)
+
       // description box
       HStack {
         Text("Description")
