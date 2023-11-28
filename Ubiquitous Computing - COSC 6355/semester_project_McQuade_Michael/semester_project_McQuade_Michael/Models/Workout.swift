@@ -21,12 +21,22 @@ struct ExercisedDays {
 @MainActor
 class Store: ObservableObject {
 
+  /// history_key is the key used to store the history in UserDefaults.
   let history_key: String = "history"
+  /// exercises_key is the key used to store the exercises in UserDefaults.
   let exercises_key: String = "exercises"
+  /// goals_key is the key used to store the goals in UserDefaults.
+  let goals_key: String = "goals"
   @Published var history: [Workout]
   @Published var exercises: [ExerciseMetadata]
   /// When set, forces the user to navigate to the CompletedWorkoutOverview view.
   @Published var presentingWorkout: Workout?
+  /// Given an integer, sets the goal for the number of workouts per week.
+  @Published var goals: Int {
+    didSet {
+      UserDefaults.standard.set(goals, forKey: goals_key)
+    }
+  }
 
   func getExercisedDaysThisWeek() -> ExercisedDays {
     var exercisedDays = ExercisedDays()
@@ -91,6 +101,11 @@ class Store: ObservableObject {
     } else {
       // we didn't have any saved data, so use preset exercises
       exercises = PRELOADED_EXERCISES.all
+    }
+    if let goals = UserDefaults.standard.object(forKey: goals_key) as? Int {
+      self.goals = goals
+    } else {
+      self.goals = 3
     }
   }
 

@@ -44,11 +44,8 @@ struct WeeklyGoalsView: View {
   @EnvironmentObject var store: Store
   var body: some View {
     let exercisedDays = store.getExercisedDaysThisWeek()
-    print(exercisedDays)
     return HStack {
-
       ForEach(Days.all, id: \.self) { day in
-
         DayView(day: day, exercised: checkIfExercisedOn(day: day, exercisedDays: exercisedDays))
       }
     }
@@ -57,6 +54,8 @@ struct WeeklyGoalsView: View {
 
 struct GoalsView: View {
   @EnvironmentObject var store: Store
+  @State private var showChangeGoalAlert = false
+
   var body: some View {
 
     VStack {
@@ -85,6 +84,7 @@ struct GoalsView: View {
       // to a different number of days per week.
       Button(action: {
         print("Change goal")
+        showChangeGoalAlert = true
       }) {
         VStack {
           Text("Current Goal")
@@ -93,7 +93,7 @@ struct GoalsView: View {
             .foregroundColor(.white)
 
           HStack {
-            Text("1")
+            Text("\(store.goals)")
               .font(.title)
               .fontWeight(.bold)
               .foregroundColor(.accentColor)
@@ -101,6 +101,13 @@ struct GoalsView: View {
               .font(.title)
               .fontWeight(.bold)
               .foregroundColor(.white)
+          }
+        }
+      }  // alert for changing goal, with options 1-7
+      .alert("Change goal", isPresented: $showChangeGoalAlert) {
+        ForEach(1...7, id: \.self) { goal in
+          Button("\(goal)") {
+            store.goals = goal
           }
         }
       }
@@ -146,10 +153,10 @@ struct GoalsViewWithWorkouts_Previews: PreviewProvider {
       workout: Workout(
         startedAt: Date().addingTimeInterval(-86400 * 2),
         endedAt: Date().addingTimeInterval(-86400 * 2 + 3600)))
-      mock_store.addWorkout(
-        workout: Workout(
-          startedAt: Date().addingTimeInterval(86400 * 2),
-          endedAt: Date().addingTimeInterval(86400 * 2 + 3600)))
+    mock_store.addWorkout(
+      workout: Workout(
+        startedAt: Date().addingTimeInterval(86400 * 2),
+        endedAt: Date().addingTimeInterval(86400 * 2 + 3600)))
     return ContentView(selectedTab: 1, store: mock_store)
   }
 }
