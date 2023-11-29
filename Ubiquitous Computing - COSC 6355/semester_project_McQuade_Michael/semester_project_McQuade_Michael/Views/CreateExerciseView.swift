@@ -6,7 +6,7 @@ struct CreateExerciseView: View {
   //  @State private var showImagePicker = false
   @State private var selectedPhoto: PhotosPickerItem?
   @Binding var navigationStack: NavigationPath
-  @State private var image: UIImage?
+  @State private var image: Image?
   @State private var name = ""
   @State private var description = ""
   @State private var type = ExerciseType.bodyweight_sets  // initial value
@@ -50,7 +50,16 @@ struct CreateExerciseView: View {
         Spacer()
       }
       PhotosPicker(selection: $selectedPhoto, matching: .images) {
-        Label("Select a photo", systemImage: "photo")
+        selectedPhoto == nil
+          ? AnyView(
+            Label("Select a photo", systemImage: "photo"))
+          : AnyView(
+            image?
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 100, height: 100)
+            
+          )
       }
       .tint(.black)
       .controlSize(.large)
@@ -70,6 +79,9 @@ struct CreateExerciseView: View {
         prompt: Text("Enter a description...").foregroundColor(.gray)
       )
       Spacer()
+    }
+    .task(id: selectedPhoto) {
+      image = try? await selectedPhoto?.loadTransferable(type: Image.self)
     }
     .navigationTitle("Adding New Exercise")
     .toolbar {
