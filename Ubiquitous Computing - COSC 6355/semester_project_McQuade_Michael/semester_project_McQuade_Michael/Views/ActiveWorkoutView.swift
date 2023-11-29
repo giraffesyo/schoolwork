@@ -95,12 +95,21 @@ struct ExerciseListView: View {
 struct ExerciseListRowView: View {
   var metadata: ExerciseMetadata
   var handleExerciseTap: (ExerciseMetadata) -> Void
+  @EnvironmentObject var store: Store
+
   var body: some View {
     HStack {
-      Image(metadata.image)
-        .resizable()
-        .frame(width: 50, height: 50)
-        .clipShape(Circle())
+      if metadata.customImage {
+        Image(uiImage: store.loadImage(name: metadata.image))
+          .resizable()
+          .frame(width: 50, height: 50)
+          .clipShape(Circle())
+      } else {
+        Image(metadata.image)
+          .resizable()
+          .frame(width: 50, height: 50)
+          .clipShape(Circle())
+      }
       VStack(alignment: .leading) {
         HStack {
           Text(metadata.name)

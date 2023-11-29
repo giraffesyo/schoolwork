@@ -118,6 +118,30 @@ class Store: ObservableObject {
       UserDefaults.standard.set(encoded, forKey: exercises_key)
     }
   }
+  /// helper function to get documents directory
+  private func getDocumentsDirectory() -> URL {
+    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    let documentsDirectory = paths[0]
+    return documentsDirectory
+  }
+
+  // given an image and a name, saves the image to the application sandbox
+  func saveImage(image: UIImage, name: String) {
+    let data = image.pngData()
+    let filename = getDocumentsDirectory().appendingPathComponent(name)
+    try? data?.write(to: filename)
+  }
+
+  func loadImage(name: String) -> UIImage {
+    let filename = getDocumentsDirectory().appendingPathComponent(name)
+    guard FileManager.default.fileExists(atPath: filename.path) else {
+      return UIImage(systemName: "questionmark.circle")!
+    }
+    guard let image = UIImage(contentsOfFile: filename.path) else {
+      return UIImage(systemName: "questionmark.circle")!
+    }
+    return image
+  }
 
   /// Given an exercise, adds it to the list of exercises.
   func addExercise(exercise: ExerciseMetadata) {

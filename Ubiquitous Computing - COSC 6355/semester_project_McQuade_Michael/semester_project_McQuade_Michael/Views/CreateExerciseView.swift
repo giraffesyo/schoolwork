@@ -58,7 +58,7 @@ struct CreateExerciseView: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
               .frame(width: 100, height: 100)
-            
+
           )
       }
       .tint(.black)
@@ -86,13 +86,20 @@ struct CreateExerciseView: View {
     .navigationTitle("Adding New Exercise")
     .toolbar {
       Button("Add") {
+        // if we have an image, save it to application sandbox
+        if let image = image {
+          guard let uiImage = image.getUIImage(newSize: CGSizeMake(100, 100)) else {
+            return
+          }
+          store.saveImage(image: uiImage, name: name)
+        }
         // add exercise to store
         store.addExercise(
           exercise: ExerciseMetadata(
             name: name,
             description: description,
-            customImage: false,
-            image: "pushups",
+            customImage: true,
+            image: name,
             type: type
           )
         )
@@ -102,6 +109,17 @@ struct CreateExerciseView: View {
         navigationStack.removeLast()
       }
     }
+  }
+}
+
+extension Image {
+  @MainActor
+  func getUIImage(newSize: CGSize) -> UIImage? {
+    let image = resizable()
+      .scaledToFill()
+      .frame(width: newSize.width, height: newSize.height)
+      .clipped()
+    return ImageRenderer(content: image).uiImage
   }
 }
 
