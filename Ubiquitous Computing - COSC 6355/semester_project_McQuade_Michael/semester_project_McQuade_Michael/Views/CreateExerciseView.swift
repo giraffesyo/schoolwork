@@ -5,11 +5,11 @@ struct CreateExerciseView: View {
   @EnvironmentObject private var store: Store
   //  @State private var showImagePicker = false
   @State private var selectedPhoto: PhotosPickerItem?
-
+  @Binding var navigationStack: NavigationPath
   @State private var image: UIImage?
   @State private var name = ""
   @State private var description = ""
-  @State private var type = ExerciseType.bodyweight_sets
+  @State private var type = ExerciseType.bodyweight_sets  // initial value
 
   var body: some View {
     ScrollView {
@@ -84,6 +84,10 @@ struct CreateExerciseView: View {
             type: type
           )
         )
+        // print out navigation stack
+        print(navigationStack)
+        // go back to previous screen
+        navigationStack.removeLast()
       }
     }
   }

@@ -2,10 +2,11 @@ import SwiftUI
 
 struct ActiveWorkoutView: View {
   @Binding var currentWorkout: Workout
+  @State private var navigationStack = NavigationPath()
   var endWorkout: () -> Void
   var body: some View {
 
-    NavigationStack {
+    NavigationStack(path: $navigationStack) {
       HStack {
         Text("Workout")
           .font(.title)
@@ -21,15 +22,21 @@ struct ActiveWorkoutView: View {
       // Live timer
       WorkoutTimerView(currentWorkout: $currentWorkout)
       // Exercise list
-      ExerciseListView(currentWorkout: $currentWorkout)
+      ExerciseListView(currentWorkout: $currentWorkout, navigationStack: $navigationStack)
+        .navigationDestination(for: String.self) { destination in
+          CreateExerciseView(
+            navigationStack: $navigationStack
+          )
+        }
       Spacer()
     }
   }
 }
 
 struct ExerciseListView: View {
-    @EnvironmentObject var store: Store
+  @EnvironmentObject var store: Store
   @Binding var currentWorkout: Workout
+  @Binding var navigationStack: NavigationPath
   func handleExerciseTap(exercise: ExerciseMetadata) {
     currentWorkout.currentExercise = Exercise(metadata: exercise)
   }
@@ -57,18 +64,19 @@ struct ExerciseListView: View {
             })
           :  // we show Add Exercise button if we're not currently exercising
           AnyView(
-            NavigationLink(
-              destination: CreateExerciseView()
-            ) {
+            Button(action: {
+              navigationStack.append("CreateExerciseView")
+            }) {
               Text("Add Exercise")
                 .foregroundColor(.accentColor)
                 .background(Color(.black))
-            })
+            }
+          )
       }.frame(maxWidth: .infinity, alignment: .leading)
       currentWorkout.currentExercise == nil
         ? AnyView(
           List {
-              ForEach(store.exercises) { metadata in
+            ForEach(store.exercises) { metadata in
               ExerciseListRowView(metadata: metadata, handleExerciseTap: handleExerciseTap)
             }
           })
@@ -80,6 +88,7 @@ struct ExerciseListView: View {
                 set: { self.currentWorkout.currentExercise = $0 })
           ))
     }
+
   }
 }
 
