@@ -10,6 +10,8 @@ struct CreateExerciseView: View {
   @State private var name = ""
   @State private var description = ""
   @State private var type = ExerciseType.bodyweight_sets  // initial value
+  @State private var alertMessage = ""
+  @State private var showAlert = false
 
   var body: some View {
     ScrollView {
@@ -83,16 +85,38 @@ struct CreateExerciseView: View {
     .task(id: selectedPhoto) {
       image = try? await selectedPhoto?.loadTransferable(type: Image.self)
     }
+    .alert(isPresented: $showAlert) {
+      Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+    }
     .navigationTitle("Adding New Exercise")
     .toolbar {
       Button("Add") {
+        // validate input
+        if name == "" {
+          alertMessage = "Please enter a name"
+          showAlert = true
+          return
+        }
+        if description == "" {
+          alertMessage = "Please enter a description"
+          showAlert = true
+          return
+        }
+        if image == nil {
+          alertMessage = "Please select an image"
+          showAlert = true
+          return
+        }
         // if we have an image, save it to application sandbox
         if let image = image {
           guard let uiImage = image.getUIImage(newSize: CGSizeMake(100, 100)) else {
+            alertMessage = "Error saving image"
+            showAlert = true
             return
           }
           store.saveImage(image: uiImage, name: name)
         }
+
         // add exercise to store
         store.addExercise(
           exercise: ExerciseMetadata(
@@ -103,8 +127,6 @@ struct CreateExerciseView: View {
             type: type
           )
         )
-        // print out navigation stack
-        print(navigationStack)
         // go back to previous screen
         navigationStack.removeLast()
       }
